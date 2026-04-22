@@ -32,6 +32,7 @@ attachment::att_amend_desc()
 #on shiny.io log said no package called "markdown" so ran
 usethis::use_package("markdown")
 devtools::document()
+usethis::use_package("dplyr")
 
 ################################################################################ #
 
@@ -39,6 +40,52 @@ rsconnect::writeManifest()
 
 ################################################################################ #
 
+# adding CVhelp code to package
+devtools::install_github("https://github.com/swhitCBR/CVhelp",auth_token = "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")
+# creating static data sets for CVhelp
+
+
+devtools::install_github("https://github.com/swhitCBR/CVhelp",auth_token = "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")
+
+
+################################################################################ #
+
+devtools::install_github("https://github.com/swhitCBR/CVhelp",auth_token = "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")
+
+# get_ann_HORbar_WYT_data <- function(){
+#     HOR_bar_ann_data <- data.frame(CVhelp::get_HOR_barrier_data(dt_rng = c("2011-01-01", "2024-12-31")) %>% 
+#                 dplyr::mutate(year=format(date,"%Y"),
+#                             Year=as.numeric(year)) %>%
+#                 dplyr::group_by(Year) %>% 
+#                 dplyr::summarize(barrier_days=sum(barrierTF),
+#                                 barrier=ifelse(sum(barrierTF)>0,"In","Out"))) #%>%
+    
+#     WYT_data <- CVhelp:::get_WYT_data(dt_rng=c("2011-01-01","2024-12-31")) #%>% rename(year=Year)# local access
+#     ann_HORbar_WYT_data <- HOR_bar_ann_data %>% dplyr::left_join(WYT_data,by="Year")
+#     return(ann_HORbar_WYT_data)}
+
+# shiny::actionButton("refresh_ann_data_butt","refresh")
+# shiny::observeEvent(input$refresh_ann_data_butt,{
+#   
+#   })
+
+# devtools::load_all("../CVhelp")
+ann_HORbar_WYT_data <- CVhelp::get_ann_HORbar_WYT_data()
+CVhelp_dat_l <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "long")
+CVhelp_dat_w <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide")
+
+usethis::use_data(ann_HORbar_WYT_data,overwrite = T)
+usethis::use_data(CVhelp_dat_l,overwrite = T)
+usethis::use_data(CVhelp_dat_w,overwrite = T)
+
+devtools::document()
+
+
+# usethis::use_package("DT")
+# library(DT)
+################################################################################ #
+
+# relocacted "C:\repos\CVPAS_meta\utils_ui_SEEMINGLY UNUSED.R"
 
 
 ## Add modules ----

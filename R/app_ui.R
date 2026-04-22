@@ -127,8 +127,8 @@ app_ui <- function(request) {
               ,
               shinydashboard::tabItem(
                 "main",
-                mod_main_page_ui("main_page_ui_1")
-              )
+                mod_main_page_ui("main_page_ui_1"),
+                uiOutput("table_in_WY_UI")
               # shinydashboard::tabItem(
               #   "met_ref",
               #   mod_supplementary_page_ui("supplementary_page_ui_1")
@@ -143,7 +143,7 @@ app_ui <- function(request) {
               #   "estimates",
               #   tagList(
               #   )
-              # )
+              )
             )
           )
           # ,

@@ -5,6 +5,6 @@ account: swhit-cbr
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 17195960
-bundleId: 11887084
+bundleId:
 url: https://swhit-cbr.shinyapps.io/cvpasapp/
 version: 1

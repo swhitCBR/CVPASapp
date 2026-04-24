@@ -615,6 +615,37 @@
         "RemoteSha": "7.0.0"
       }
     },
+    "daterangepicker": {
+      "Source": "CRAN",
+      "GithubRepo": null,
+      "GithubUsername": null,
+      "GithubRef": null,
+      "GithubSha1": null,
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "daterangepicker",
+        "Type": "Package",
+        "Title": "Create a Shiny Date-Range Input",
+        "Version": "0.2.0",
+        "Authors@R": "c(\n    person(\"Sebastian\",\"Gatscha\", email = \"sebastian_gatscha@gmx.at\", role = c(\"aut\", \"cre\"))\n    )",
+        "Maintainer": "Sebastian Gatscha <sebastian_gatscha@gmx.at>",
+        "Description": "A Shiny Input for date-ranges, which pops up two calendars for selecting dates, times, or predefined ranges like \"Last 30 Days\". It wraps the JavaScript library 'daterangepicker' which is available at <https://www.daterangepicker.com>.",
+        "License": "MIT + file LICENSE",
+        "Depends": "R (>= 3.2.0)",
+        "Imports": "htmltools, jsonify, utils, shiny",
+        "URL": "https://github.com/trafficonese/daterangepicker/,\nhttps://www.daterangepicker.com,\nhttps://trafficonese.github.io/daterangepicker/",
+        "BugReports": "https://github.com/trafficonese/daterangepicker/issues",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.2.0",
+        "Suggests": "testthat (>= 2.1.0), covr",
+        "NeedsCompilation": "no",
+        "Packaged": "2023-05-10 11:37:09 UTC; kona1",
+        "Author": "Sebastian Gatscha [aut, cre]",
+        "Repository": "CRAN",
+        "Date/Publication": "2023-05-10 12:00:06 UTC",
+        "Built": "R 4.5.3; ; 2026-04-14 03:18:22 UTC; windows"
+      }
+    },
     "desc": {
       "Source": "CRAN",
       "GithubRepo": null,
@@ -1386,6 +1417,40 @@
         "Built": "R 4.4.1; ; 2024-08-02 01:28:12 UTC; windows"
       }
     },
+    "jsonify": {
+      "Source": "CRAN",
+      "GithubRepo": null,
+      "GithubUsername": null,
+      "GithubRef": null,
+      "GithubSha1": null,
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "jsonify",
+        "Type": "Package",
+        "Title": "Convert Between 'R' Objects and Javascript Object Notation\n(JSON)",
+        "Version": "1.2.2",
+        "Date": "2022-11-10",
+        "Authors@R": "c(\n    person(\"David\", \"Cooley\", ,\"dcooley@symbolix.com.au\", role = c(\"aut\", \"cre\")),\n    person(\"Chris\", \"Muir\", role = \"ctb\"),\n    person(\"Brendan\", \"Knapp\", role = \"ctb\", comment = c(ORCID = \"0000-0003-3284-4972\"))\n    )",
+        "Description": "Conversions between 'R' objects and Javascript Object Notation (JSON) using \n    the 'rapidjsonr' library <https://CRAN.R-project.org/package=rapidjsonr>. ",
+        "License": "MIT + file LICENSE",
+        "Depends": "R (>= 3.3.0)",
+        "SystemRequirements": "C++11",
+        "Imports": "Rcpp (>= 0.12.18)",
+        "LinkingTo": "rapidjsonr (>= 1.2.0), Rcpp",
+        "RoxygenNote": "7.1.0",
+        "Suggests": "covr, testthat, knitr, rmarkdown",
+        "Encoding": "UTF-8",
+        "VignetteBuilder": "knitr",
+        "NeedsCompilation": "yes",
+        "Packaged": "2022-11-09 21:45:14 UTC; david",
+        "Author": "David Cooley [aut, cre],\n  Chris Muir [ctb],\n  Brendan Knapp [ctb] (<https://orcid.org/0000-0003-3284-4972>)",
+        "Maintainer": "David Cooley <dcooley@symbolix.com.au>",
+        "Repository": "CRAN",
+        "Date/Publication": "2022-11-09 22:20:02 UTC",
+        "Built": "R 4.5.1; x86_64-w64-mingw32; 2025-10-29 01:44:15 UTC; windows",
+        "Archs": "x64"
+      }
+    },
     "jsonlite": {
       "Source": "CRAN",
       "GithubRepo": null,
@@ -2089,6 +2154,41 @@
         "Date/Publication": "2025-07-10 17:50:02 UTC",
         "Built": "R 4.5.1; x86_64-w64-mingw32; 2025-08-04 01:38:39 UTC; windows",
         "Archs": "x64"
+      }
+    },
+    "rapidjsonr": {
+      "Source": "CRAN",
+      "GithubRepo": null,
+      "GithubUsername": null,
+      "GithubRef": null,
+      "GithubSha1": null,
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "rapidjsonr",
+        "Type": "Package",
+        "Title": "'Rapidjson' C++ Header Files",
+        "Version": "1.2.1",
+        "Date": "2025-11-23",
+        "Authors@R": "c(\n    person(\"David\", \"Cooley\", ,\"dcooley@symbolix.com.au\", role = c(\"aut\", \"cre\")),\n    person(\"Milo\", \"Yip\", , role = \"ctb\", comment = \"Author of c++ rapidjson library, provided through THL A29 Limited, a Tencent company\"),\n    person(\"Alexander\", \"Chemeris\", role = \"ctb\", comment = \"Author of c++ msinttypes library\")\n    )",
+        "Description": "Provides JSON parsing capability through the 'Rapidjson' 'C++' header-only library. ",
+        "License": "MIT + file LICENSE",
+        "Encoding": "UTF-8",
+        "RoxygenNote": "7.3.1",
+        "SystemRequirements": "GNU make",
+        "NeedsCompilation": "no",
+        "Packaged": "2025-11-23 16:12:43 UTC; david",
+        "Author": "David Cooley [aut, cre],\n  Milo Yip [ctb] (Author of c++ rapidjson library, provided through THL\n    A29 Limited, a Tencent company),\n  Alexander Chemeris [ctb] (Author of c++ msinttypes library)",
+        "Maintainer": "David Cooley <dcooley@symbolix.com.au>",
+        "Repository": "CRAN",
+        "Date/Publication": "2025-11-24 08:50:07 UTC",
+        "Built": "R 4.5.2; ; 2025-12-03 00:54:34 UTC; windows",
+        "RemoteType": "standard",
+        "RemoteRef": "rapidjsonr",
+        "RemotePkgRef": "rapidjsonr",
+        "RemoteRepos": "https://cran.rstudio.com",
+        "RemoteReposName": "CRAN",
+        "RemotePkgPlatform": "x86_64-w64-mingw32",
+        "RemoteSha": "1.2.1"
       }
     },
     "rappdirs": {
@@ -3016,7 +3116,7 @@
       "checksum": "b3bfcf09513fa3b4e051c25b53227f15"
     },
     "app.R": {
-      "checksum": "bd9509e1f66fe7180e993103a61b0bf1"
+      "checksum": "39f15bb5887b742afd3834c13f8b2409"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "d43c9ca5b4999c6e1ffc17ff8e80d2bc"
@@ -3031,13 +3131,13 @@
       "checksum": "374fd22e504eb12b4e8e882401d1bfe2"
     },
     "DESCRIPTION": {
-      "checksum": "14d69bf343310be4b57b129cbfdbd22a"
+      "checksum": "eecfdb99b2512790e6786bc24a265b94"
     },
     "dev/01_start.R": {
       "checksum": "999c179998525d4cf0ef886adfbec1c8"
     },
     "dev/02_dev.R": {
-      "checksum": "00b87d8dda72cddce2fd9a7bb74b8aba"
+      "checksum": "6bb45a1deab0fa3d1cd5fcfe7fd1d46e"
     },
     "dev/03_deploy.R": {
       "checksum": "121d2bde8a3cc098e028b3492a268fe9"
@@ -3052,7 +3152,7 @@
       "checksum": "9008fcb8f0bb7469f7b7982211646858"
     },
     "inst/app/www/custom.css": {
-      "checksum": "1f9eae00b591d4830d7236c7642b8b23"
+      "checksum": "e8963e0c2f8b57e01b7cd7007e118edc"
     },
     "inst/app/www/favicon.ico": {
       "checksum": "c31cac31d4a7d7486da4364a57c6f248"
@@ -3062,6 +3162,21 @@
     },
     "inst/app/www/mds/main_text.md": {
       "checksum": "f39b1d6965eb27072ad9079cbbc113e8"
+    },
+    "inst/app/www/mds/page.md": {
+      "checksum": "8f3a2b483b4dbdc06b680bd57153d417"
+    },
+    "inst/app/www/mds/sidebar.md": {
+      "checksum": "d5d31979a4016792cb07340cf8a124d0"
+    },
+    "inst/app/www/mds/welcome_modal_top.md": {
+      "checksum": "636a7801d03fc379fe60645f5c9b0181"
+    },
+    "inst/app/www/modal/welcome_modal_top.md": {
+      "checksum": "636a7801d03fc379fe60645f5c9b0181"
+    },
+    "inst/global.R": {
+      "checksum": "39b4a00b7546c6f29263f55e373059d1"
     },
     "inst/golem-config.yml": {
       "checksum": "abe08f0b0fc3106dffeb21d24badcddd"
@@ -3085,10 +3200,10 @@
       "checksum": "f9449395606b508d0215d74d5441533f"
     },
     "R/app_server.R": {
-      "checksum": "b78ac262c2d2936fa194afa3c7c8b7b9"
+      "checksum": "f1f7459e07319b20874d92c737564934"
     },
     "R/app_ui.R": {
-      "checksum": "be9acd5f170e3cd003c54eee74e3eb30"
+      "checksum": "99e514f6834f706ff8e138ef7ce782af"
     },
     "R/data.R": {
       "checksum": "a3b1ac8cf8cc8b264127bb8d17372a9c"
@@ -3103,16 +3218,22 @@
       "checksum": "44d920ffc07a88f65d379a411414ed14"
     },
     "R/mod_main_page.R": {
-      "checksum": "9573009b54423bfb3675c369b67ec89e"
+      "checksum": "f25678be8279749a01de30c9b464105b"
     },
     "R/run_app.R": {
-      "checksum": "4d19509f058abc65cfd23c7353a7c94c"
+      "checksum": "5ca384fc23bd323f795fa4fb12dc2921"
     },
     "R/utils_CBRtheme.R": {
-      "checksum": "bfc9e641e6ca7c156800822422155f90"
+      "checksum": "e0ef3ce5460e29c4cac29280de9acb19"
     },
     "R/utils_golem_init_wrap.R": {
       "checksum": "11d647cec02c4c16848a4d6f0c8fe06b"
+    },
+    "R/utils_md_txt_extract.R": {
+      "checksum": "30d08237a5c997eefc230fb3267e640a"
+    },
+    "R/utils_prep_datasets.R": {
+      "checksum": "404c9098b1f880286976d3f001036392"
     },
     "README.md": {
       "checksum": "8cd8fe9c5c358427e74a45f7e0be16b0"

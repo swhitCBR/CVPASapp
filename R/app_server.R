@@ -7,8 +7,8 @@
 app_server <- function(input, output, session) {
   # autoselect specify starting tab
 
-  tab_selected <- reactiveVal("about")
-  shinydashboard::updateTabItems("tabs", session = session, selected = "about")
+  tab_selected <- reactiveVal("main_input")
+  shinydashboard::updateTabItems("tabs", session = session, selected = "main_input")
 
   # {DEBUGGING}
   observeEvent(input$tabs, {  
@@ -211,7 +211,46 @@ app_server <- function(input, output, session) {
         value = c(global$start_day, global$end_day),
         width = '99%'))
   })
+  
+  # Fork length reference selection
+  output$flength_sel_ui <- renderUI({
+    shiny::tagList(
+      column(
+        width = 3,
+        HTML("<p style ='font-size:80%'>Fork length of juvenile Steelhead used in acoustic telemetry studies (2011-2016). </p>")
+      ),
+      column(width = 9, shiny::uiOutput("flength_dash_ui"))
+    )
+  })
+  
+  output$flength_dash_ui <- renderUI({
+    shiny::tagList(
+      plotOutput("flength_ref_hist",height = "100px")
+      )
+  })
+  
+  # Reference forklength histogram
+  output$flength_ref_hist <- renderPlot({
+    # input$flength_num_in_dash
+    ggplot_flength_ref_hist(flength_in=global$flength,flength_hst_xlims_in=c(100,400))
+    # ggplot_flength_ref_hist(flength_in=global$flength,flength_hst_xlims_in=c(100,400))
+    # tmp_out <- data.frame(value=rnorm(20))
+    # ggplot2::ggplot(data=tmp_out,ggplot2::aes(x=value)) + ggplot2::geom_histogram()
+    }
+    ,
+  alt = "histogram depicting an approximately normal distribution of fork lengths centered at 244 millimeters with most tags between 160 and 330 millimeters"
+  )
+  
 
+  output$doy_ref_strt_loc <- renderPlot({
+    # triggers re-rendering
+    # input$start_loc_in
+    # input$radio_doy_type
+    ggplt_doy_ref_hist(DOY_arvDF_l_in=DOY_arvDF_l,
+                       LOC_in=global$LOC,start_day_in=global$start_day,
+                       end_day_in=global$end_day)
+  })
+  
    output$input_page_UI <- renderUI({
     tagList(
      uiOutput("input_panel_UI"),
@@ -264,21 +303,31 @@ app_server <- function(input, output, session) {
               h5("Select a water year by clicking on a row"),
               uiOutput("table_in_WY_UI")
             ),
-            column(
+
+            shinydashboardPlus::box(
+              title=strong("Time of Year"),
+              id = "date_pick_box",
               width = 6,
-              br(),
-              shinydashboardPlus::box(
-                id = "date_pick_box",
-                width = 12,
-                headerBorder = F,
-                h5(strong("Time of Year")),
-                p(
-                  "Provide a date or range of dates representing arrival at the selected junction (HOR or TCJ) by entering date(s) or adjusting Day of Year slider"
-                )
-              ),
+              collapsible = T,
+            # 
+            # column(
+            #   width = 6,
+            #   br(),
+              # shinydashboardPlus::box(
+              #   id = "date_pick_box",
+              #   width = 12,
+              #   headerBorder = F,
+                # h5(strong("Time of Year")),
+                p("Provide a date or range of dates representing arrival at the selected junction (HOR or TCJ) by entering date(s) or adjusting Day of Year slider")
+              # )
+              ,
               shiny::uiOutput("start_date_entry_ui"),
               hr(),
-              shiny::uiOutput("DOY_slider_ui")
+              shiny::uiOutput("DOY_slider_ui"),
+            
+              plotOutput("doy_ref_strt_loc", height = "100px")
+            ,
+            shiny::uiOutput("flength_sel_ui")
             )
           ),
           shiny::tabPanel(

@@ -79,6 +79,23 @@ usethis::use_data(ann_HORbar_WYT_data,overwrite = T)
 usethis::use_data(CVhelp_dat_l,overwrite = T)
 usethis::use_data(CVhelp_dat_w,overwrite = T)
 
+
+# taken from this
+devtools::load_all("../CVPAS_beta")
+data(DOY_arvDF_l)
+usethis::use_data(DOY_arvDF_l,overwrite=T)
+
+
+# data(x.df)
+
+# flength_ref_dat <- data.frame(flength=x.df[,"flength"])
+# usethis::use_data(flength_ref_dat,overwrite=T)
+
+
+usethis::use_package("ggplot2")
+# CVPAS_beta
+DOY_arvDF_l_in
+
 devtools::document()
 
 

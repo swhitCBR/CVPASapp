@@ -28,14 +28,14 @@ mod_main_page_ui <- function(id) {
         tags$script(src = "www/scripts/jquery-ui/dialog/jquery-ui.min.js"),
         tags$script(src = "www/scripts/panzoom/panzoom.js")
       )
-      ,
-      shinydashboard::box(
-        title = HTML("Main Page Title"),
-        width = 12,
-        solidHeader = TRUE,
-        status = "primary",
-        shiny::includeMarkdown(system.file("app/www/mds/main_text.md", package = "CVPASalpha"))
-      )
+      # ,
+      # shinydashboard::box(
+      #   title = HTML("Main Page Title"),
+      #   width = 12,
+      #   solidHeader = TRUE,
+      #   status = "primary",
+      #   shiny::includeMarkdown(system.file("app/www/mds/main_text.md", package = "CVPASalpha"))
+      # )
       )
   )
 }

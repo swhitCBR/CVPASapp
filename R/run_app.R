@@ -14,6 +14,10 @@ run_app <- function(
   uiPattern = "/",
   ...
 ) {
+  
+  # sourcing static objects used by the app
+  source(system.file("global.R",package = "CVPASapp"))
+  
   with_golem_options(
     app = shinyApp(
       ui = app_ui,
@@ -25,4 +29,6 @@ run_app <- function(
     ),
     golem_opts = list(...)
   )
+
+  
 }

@@ -32,3 +32,41 @@ table.dataTable tbody tr:hover, table.dataTable tbody tr:hover td {
     background-color: #01394A !important;
     color: #F8F8F8 !important;
 }
+
+
+/* slider bar color */
+
+
+.irs--shiny .irs-bar {
+  /* 
+    border-top: 1px solid #024c63 !important;
+    border-bottom: 1px solid #024c63 !important;*/
+    background: #024c63 !important;
+}
+
+.irs--shiny .irs-bar--single {
+/* T    top: 25px; */
+/* T    height: 8px; */
+    border-top: 1px solid transparent !important;
+    border-bottom: 1px solid transparent !important;
+    background: transparent !important;
+/* T    cursor: s-resize; */
+/* T    z-index: 2; */
+}
+
+.treeview-menu {
+    padding: 5px 5px 5px 25px !important;
+    display: block;
+    font-size: 10px !important
+}
+
+
+.irs--shiny .irs-from,
+.irs--shiny .irs-to,
+.irs--shiny .irs-single {
+  color: #fff;
+  text-shadow: none;
+  padding: 1px 3px;
+  background-color: #024c63 !important;
+}
+  

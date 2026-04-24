@@ -86,7 +86,7 @@ devtools::document()
 ################################################################################ #
 
 # relocacted "C:\repos\CVPAS_meta\utils_ui_SEEMINGLY UNUSED.R"
-
+usethis::use_package("daterangepicker")
 
 ## Add modules ----
 ## Create a module infrastructure in R/

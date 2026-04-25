@@ -70,3 +70,27 @@ table.dataTable tbody tr:hover, table.dataTable tbody tr:hover td {
   background-color: #024c63 !important;
 }
   
+.irs--shiny .irs-from,
+.irs--shiny .irs-to,
+.irs--shiny .irs-single {
+  color: #fff;
+  text-shadow: none;
+  padding: 1px 3px;
+  background-color: #024c63 !important;
+}
+
+/* nope.dropdown-menu */
+.dropdown-item {
+  color: #fff !important;
+  text-shadow: none;
+  padding: 1px 3px;
+  /* background-color: #024c63 !important; */
+}
+
+
+.dropdown-menu .active {
+  color: #fff !important;
+  text-shadow: none;
+  padding: 1px 3px;
+  background-color: #024c63 !important; 
+}

@@ -90,17 +90,27 @@
     BAR = init_bar
   )
 
-# ann_HORbar_WYT_data_TAB <- reactiveVal(
-#  ann_HORbar_WYT_data |>
-#         dplyr::mutate(
-#           Model = ifelse(
-#             Year %in%
-#               c("2011", "2012", "2013", "2014", "2015", "2016"),
-#             "Yes",
-#             "No"
-#           )
-#         ) |>
-#         dplyr::select(Year, WYT, barrier, Model))
-
 # prepare data stored in package for creation of Datatable in app
 ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in = ann_HORbar_WYT_data))
+
+
+    # .svg plot read_in
+    HOR_CHP_xml <- xml2::read_xml(
+      "inst/app/www/images/svg/basic route schematic/HOR_CHP.svg"
+    )
+    HOR_CHP_bar_in_xml <- xml2::read_xml(
+      "inst/app/www/images/svg/basic route schematic/HOR_CHP_bar_in.svg"
+    )
+    TCJ_CHP_xml <- xml2::read_xml(
+      "inst/app/www/images/svg/basic route schematic/TCJ_CHP.svg"
+    )
+    TCJ_CHP_bar_in_xml <- xml2::read_xml(
+      "inst/app/www/images/svg/basic route schematic/TCJ_CHP_bar_in.svg"
+    )
+
+        barrier_opt <- c("In" = "In", "Out" = "Out")
+    barrier_label <- "HOR Barrier:"
+    loc_opt <- c(
+      'Head of Old River (HOR)' = "HOR",
+      'Turner Cut Junction (TCJ)' = "TCJ"
+    )

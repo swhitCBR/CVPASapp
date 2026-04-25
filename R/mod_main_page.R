@@ -13,21 +13,22 @@ mod_main_page_ui <- function(id) {
     
     fluidRow(
 
-      tags$head(
-        # tags$style(HTML('table.dataTable tr.selected td, table.dataTable td.selected {background-color: pink !important;}')),
-        tags$style("
-        /* This is a single-line comment for a .css */
-        /* You can put css overide code in here */
-        "
-        ),
-        tags$link(
-          rel = "stylesheet",
-          href = "www/scripts/jquery-ui/dialog/jquery-ui.css"
-        )
-        ,
-        tags$script(src = "www/scripts/jquery-ui/dialog/jquery-ui.min.js"),
-        tags$script(src = "www/scripts/panzoom/panzoom.js")
-      )
+      h4("main_pg_neglected")
+      # tags$head(
+      #   # tags$style(HTML('table.dataTable tr.selected td, table.dataTable td.selected {background-color: pink !important;}')),
+      #   tags$style("
+      #   /* This is a single-line comment for a .css */
+      #   /* You can put css overide code in here */
+      #   "
+      #   ),
+      #   tags$link(
+      #     rel = "stylesheet",
+      #     href = "www/scripts/jquery-ui/dialog/jquery-ui.css"
+      #   )
+      #   ,
+      #   tags$script(src = "www/scripts/jquery-ui/dialog/jquery-ui.min.js"),
+      #   tags$script(src = "www/scripts/panzoom/panzoom.js")
+      # )
       # ,
       # shinydashboard::box(
       #   title = HTML("Main Page Title"),

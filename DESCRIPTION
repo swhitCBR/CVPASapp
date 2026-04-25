@@ -10,6 +10,7 @@ License: What license is it under?
 Depends: 
     R (>= 3.5)
 Imports: 
+    bscui,
     config,
     daterangepicker,
     dplyr,
@@ -22,7 +23,8 @@ Imports:
     shinydashboard,
     shinydashboardPlus,
     shinyjs,
-    usethis
+    usethis,
+    xml2
 Suggests: 
     testthat (>= 3.0.0)
 Config/testthat/edition: 3

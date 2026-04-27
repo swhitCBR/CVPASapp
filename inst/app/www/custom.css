@@ -73,7 +73,7 @@ table.dataTable tbody tr:hover, table.dataTable tbody tr:hover td {
 .irs--shiny .irs-from,
 .irs--shiny .irs-to,
 .irs--shiny .irs-single {
-  color: #fff;
+  /* color: #fff; */
   text-shadow: none;
   padding: 1px 3px;
   background-color: #024c63 !important;
@@ -81,16 +81,39 @@ table.dataTable tbody tr:hover, table.dataTable tbody tr:hover td {
 
 /* nope.dropdown-menu */
 .dropdown-item {
-  color: #fff !important;
+  /* color: #fff !important; */
+  color: #444 !important;
   text-shadow: none;
-  padding: 1px 3px;
   /* background-color: #024c63 !important; */
 }
 
+/* .dropdown-menu>li>a:hover {
+    background-color: #1e46be;
+    color: #333
+} */
+
+.dropdown-item:hover {
+  background-color: #024c63 !important; /* Your preferred color */
+  color: white !important;
+}
 
 .dropdown-menu .active {
   color: #fff !important;
   text-shadow: none;
-  padding: 1px 3px;
   background-color: #024c63 !important; 
+}
+
+
+/* airdatepicker input */
+/* Color for dates within the selected range */
+.air-datepicker-cell.-in-range- {
+  background-color: #d1e7dd !important; /* Light green range */
+  color: #000 !important;
+}
+
+/* Color for the start and end dates */
+.air-datepicker-cell.-selected-, 
+.air-datepicker-cell.-selected-.-focus- {
+  background-color: #024c63 !important; /* Dark green selection */
+  color: #fff !important;
 }

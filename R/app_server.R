@@ -8,6 +8,7 @@ app_server <- function(input, output, session) {
   # autoselect specify starting tab
 
   tab_selected <- reactiveVal("main_input")
+  data_source_selected <- reactiveVal("prev_pan")
   shinydashboard::updateTabItems("tabs", session = session, selected = "main_input")
 
   # {DEBUGGING}
@@ -15,6 +16,25 @@ app_server <- function(input, output, session) {
     print(input$tabs)  
     tab_selected(input$tabs)
   })
+
+  # Switching based on data source
+  observeEvent(input$var_source_picker, {  
+    print(input$env_dat_tabpan)
+    if(input$var_source_picker=="Previous year"){
+      data_source_selected("prev_pan")
+      updateTabsetPanel(session=session, inputId="env_dat_tabpan", selected = "prev_pan")
+    } else{ 
+      data_source_selected("up_pan")
+      updateTabsetPanel(session=session, inputId="env_dat_tabpan", selected = "up_pan")}
+  })
+
+  # observeEvent(input$var_source_picker, { 
+
+
+
+  # })
+
+
 
   output$sel_in_ls_text = renderText({ RV_text_fun(heading = "Selected",RVls_in =shiny::reactiveValuesToList(in_selected_RV))})
   output$glob_in_ls_text = renderText({ RV_text_fun(heading = "Global",RVls_in =shiny::reactiveValuesToList(global))})
@@ -94,7 +114,7 @@ app_server <- function(input, output, session) {
       style = "display: inline-flex; align-items: left;margin-top: 10px;",
       div(
         style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
-        shiny::HTML("<h5> <b> Past year: </b>  </h4>")
+        shiny::HTML("<h5> <b> Year: </b>  </h4>")
       ),
       div(
         style = "height=25px"
@@ -104,6 +124,7 @@ app_server <- function(input, output, session) {
       # label="Pick year",
       label=NULL,
       choices = as.character(2011:2024),
+      # selected = NULL,
       selected = init_water_year,
       choicesOpt = list(
         style = paste0("background-color:",WYT_cols[match(ann_HORbar_WYT_data$WYT,names(WYT_cols))],";")
@@ -115,22 +136,71 @@ app_server <- function(input, output, session) {
     })
   
   
+ output$var_source_ui <- renderUI({
+  tagList(
+    div(
+      style = "display: inline-flex; align-items: left;margin-top: 10px;",
+      div(
+        style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
+        shiny::HTML("<h5> <b> Source: </b>  </h4>")
+        # shiny::HTML("<h5> <b> Use data from: </b>  </h4>")
+
+      ),
+      div(
+        style = "height=25px"
+        ,
+    shinyWidgets::pickerInput(
+     "var_source_picker",
+      label=NULL,
+      choices = c("Previous year","Uploaded file (.csv)"),
+      # selected = init_water_year,
+      # choicesOpt = list(
+      #   style = paste0("background-color:",WYT_cols[match(ann_HORbar_WYT_data$WYT,names(WYT_cols))],";")
+      # )
+            )
+      )
+    )
+    )
+    })
+
 
   
   output$input_panel_UI <- renderUI({
     shinydashboardPlus::box(
       id = "input_box2",
       title = shiny::HTML("Inputs"),
-      # solidHeader = TRUE,
-      # status = "primary",
+      solidHeader = TRUE,
+      # status = "warning",
       collapsible = T,
       collapsed = FALSE,
       width = 12,
+      tags$style(HTML("
+      .box {
+        border-top: 1px solid #ddd !important;
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+      }
+      .box-header {
+        border-bottom: 2px solid #ddd !important;
+      }
+        
+    ")),
       column(
   width = 5,
-  # shiny::HTML("<h4> <b> Instructions: </b>  </h4>"),
-          p("Survival and routing estimates are based on individual attributes and daily measures of environmental and operational conditions recorded at various locations in the Delta"),
-          # p("I. Use the dropdown menu below to choose a Starting Location for a hypothetical release group "),
+  shiny::HTML("<h4> <b> Overview: </b>  </h4>"),
+          div(
+          # style="",
+          p("This tool provides predictions of survival and route usage for hypothetical releases of juvenile Steelhead 
+          based on environmental conditions and individual size. Environmental conditions are represented using daily summaries of 
+          field measurements obtained from monitoring stations spread throughout the region. The conditions on the day that fish 
+          arrive at key junction are fed into statistical sub-models that are used to generate route usage and survival probability predictions.")
+          
+          )
+          ,
+          # p("Survival and routing estimates are based on individual attributes and daily measures of environmental and operational conditions measured across the Delta."),
+         br()
+         ,# p("I. Use the dropdown menu below to choose a Starting Location for a hypothetical release group "),
           # HTML('
           # <ul style="list-style-type:none;">
           # <li>item1</li>
@@ -138,69 +208,42 @@ app_server <- function(input, output, session) {
           # <li>item3</li>
           # </ul>
           # '),
+          shiny::HTML("<h4> <b> Instructions: </b>  </h4>"),
           tags$ol(type="I",
-          tags$li("Select a starting location for a hypothetical release group"),
+            tags$li(
+               tags$u(
+                style="font-size: 16px;","Provide source of daily environmental data")),
+              # style="margin-top: 10px; list-style-type: none;",
+              p(style="font-size: 14px;","The user must indicate whether they wish to use hydrologic data from previous year (2011-2024) or provide their own data by uploading a file")
+            ,
+          tags$ol(
+          style="margin-top: 10px; list-style-type: none;",
+          tags$li(
+          shiny::uiOutput("var_source_ui")),
+          uiOutput("year_picker_ui"))
+
+          ,
+          tags$li(
+            tags$u(
+                style="font-size: 16px;","Define a starting location and fork length for a hypothetical release group"))
+            # "Define a starting location and fork length for a hypothetical release group"
+          ,
+           p(style="font-size: 14px;","The user must indicate whether they wish to use hydrologic data from previous year (2011-2024) or provide their own data by uploading a file")
+          ,
             tags$ul(
             style="list-style-type: none;",
             tags$li(shiny::uiOutput("start_loc_ui")))
-            ,
-            tags$li("Select a starting location for a hypothetical release group"),
-            tags$ul(
-            style="list-style-type: none;",
-            tags$li(
-              # shiny::uiOutput("year_picker_ui")
-              p("placeholder")
-          )
-        )
-            ,
-            shinyWidgets::dropdown(
-            label="non-functional_dropdown",
-            # block=TRUE,
-            # size="md",  
-            # size="large", 
-            # shinydashboardPlus::box(
-            column(
-            width=6,
-            shiny::uiOutput("year_picker_ui")
-            )
-            ,
-            column(
-            width=6,
-          tabsetPanel(
-            tabPanel("Import data",
-            DT::dataTableOutput("table_in_WY")
-          )
-        )
-            )
-          # )
-            # , 
-            # DT::dataTableOutput("my_table"),
-            # circle=FALSE,
-            # style = "bordered", icon = icon("table"), 
-            # label = "View Data", width = "600px"
           )
             ,
-          tags$li("Use the box to the right to choose a method for supplying daily environmental and operational variables. You may either:",
-            shiny::HTML(
-            "<ol>  
-            <li> Use values from previous water years </li> 
-            <li> Customize values from past years or upload your own data set </li> 
-            </ol>")
-            )
-          )
-          ,
           br()
           ,
-          # shinyWidgets::dropdownButton(
-          # shinyWidgets::dropdown(
-          # shiny::uiOutput("year_picker_ui")
-          # ,
-          # p("Supply daily environmental and operational variables using one of the following methods:"),
-
-  shiny::uiOutput("schem_start_loc_plt_ui"),
-  # shiny::uiOutput("start_loc_ui"),
+  column(width=6,
+      shiny::uiOutput("schem_start_loc_plt_ui"))
+      ,
+   column(width=6,
+      shiny::uiOutput("flength_sel_ui"))
   # p("Estimate surival from which junction to downstream to Chipp's Island (CHP)"),
-  shiny::uiOutput("flength_sel_ui")
+  
 
 ),
       # 
@@ -208,27 +251,41 @@ app_server <- function(input, output, session) {
       
 column(
   width=7,
-  shinydashboardPlus::box(
-      title = shiny::HTML("Environmental and Operational Variables"),
+  uiOutput("env_panel_ui")
+  #   ,
+  # shinydashboardPlus::box(
+  #     id = "input_box3",
+  #     title = shiny::HTML("Individual Fish Attributes"),
+  #     solidHeader = TRUE,
+  #     status = "primary",
+  #     collapsible = T,
+  #     collapsed = TRUE,
+  #     width = 12,
+  #     h3("temp")
+  #   # shiny::uiOutput("flength_sel_ui") 
+  #   )
+        )
+    ,
+    footer=div(
+      actionButton("inputs_done", "Done"),
+      style="display:inline-block; float:right")
+  )
+  })
+  
+
+  output$env_panel_ui <- renderUI({
+    tagList(
+      switch(
+      data_source_selected(),
+      "prev_pan"=
+      shinydashboardPlus::box(
+      title = shiny::HTML("Environmental and Operational Variables (Previous years)"),
       solidHeader = TRUE,
-      # width=8,
       width=12,
-      # title=h4(strong("Environmental and Operational Variables")),
       status="primary",
-    #   id = "date_pick_box",
-    #   width = 6,
-      collapsible = T,
-        # h4(strong("Environmental and Operational Variables")),
-        # p(
-        #   "Daily values for environmental and operational predictors are supplied to the tool by either:"
-        # ),
-        # shiny::HTML(
-        #   "<ol>  
-        #     <li> Looking up observations from a past water year, </li> 
-        #     <li> Customize values from a past water year, or </li> 
-        #     <li> Uploading a data set containing all the required values </li> 
-        #   </ol>"
-        # ),
+      collapsible = F,
+      # collapsible = T,
+
         shiny::tabsetPanel(
           id="env_dat_tabpan",
           shiny::tabPanel(
@@ -237,9 +294,11 @@ column(
             collapsed = F,
             column(
               width = 6,
-              h5("Select a water year by clicking on a row")
+              # uiOutput("year_picker_ui")
               # ,
-              # uiOutput("table_in_WY_UI")
+              h5("Select a water year by clicking on a row")
+              ,
+              uiOutput("table_in_WY_UI")
             ),
 
             column(width=6,
@@ -256,13 +315,55 @@ column(
                ,
             )
           ),
+          # shiny::tabPanel(
+          #         title = "Single Variable",
+          #         collapsed = F,
+          #         shinyWidgets::radioGroupButtons(
+          #           'radio_metric_view',
+          #           label = "Metric",
+          #           choices = c(
+          #             "log(VNS)" = "VNS",
+          #             "T_msd" = "MSD",
+          #             "T_clc" = "CLC",
+          #             "CVP" = "CVP",
+          #             "SWP" = "SWP"
+          #           )
+          #         ),
+          #         plotOutput("doy_ovr_plt2")
+          #       ),
           shiny::tabPanel(
-            value="cust_pan",
-            title = "Custom",
-            collapsed = F,
-            h5("Customize input"),
-            h6("put your selection here!")
-          ),
+            # value="_pan",
+            title = "Lattice",
+              # p("placeholder")
+              plotOutput('doy_latt_ggpplt')
+        )
+        ,
+        shiny::tabPanel(
+            # value="_pan",
+            title = "Customize Inputs",
+              # p("placeholder")
+              # plotOutput('doy_latt_ggpplt')
+        )
+          # shiny::tabPanel(
+          #   value="cust_pan",
+          #   title = "Custom",
+          #   collapsed = F,
+          #   h5("Customize input"),
+          #   h6("put your selection here!")
+          # ),
+      )
+    )
+    ,
+    "up_pan"=
+      shinydashboardPlus::box(
+      title = shiny::HTML("Environmental and Operational Variables (Upload)"),
+      solidHeader = TRUE,
+      # width=8,
+      width=12,
+      # title=h4(strong("Environmental and Operational Variables")),
+      status="primary",
+              shiny::tabsetPanel(
+          id="up_dat_tabpan",
           shiny::tabPanel(
             value="up_pan",
             title = "Upload Data",
@@ -349,27 +450,25 @@ column(
           #   ))
         )
       )
+
+      )
     )
-  #   ,
-  # shinydashboardPlus::box(
-  #     id = "input_box3",
-  #     title = shiny::HTML("Individual Fish Attributes"),
-  #     solidHeader = TRUE,
-  #     status = "primary",
-  #     collapsible = T,
-  #     collapsed = TRUE,
-  #     width = 12,
-  #     h3("temp")
-  #   # shiny::uiOutput("flength_sel_ui") 
-  #   )
-        )
-    ,
-    footer=div(
-      actionButton("inputs_done", "Done"),
-      style="display:inline-block; float:right")
   )
   })
-  
+
+   # Interactive lattice plot
+  #  output$doy_latt_pltly <-  plotly::renderPlotly({
+  output$doy_latt_ggpplt <- renderPlot({
+
+    ggplot_doy_env_lattice_plt(
+      CVhelp_dat_l_plt = CVhelp_dat_l,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year
+    )
+  })
 
   # rendering annual data table
   output$table_in_WY <- DT::renderDataTable(
@@ -416,9 +515,9 @@ column(
   # update rows
   observeEvent(input$year_picker, {
       in_selected_RV$past_water_year <- as.numeric(input$year_picker)
-      if(in_selected_RV$past_water_year!=input$table_in_WY_rows_selected){
+      # if(in_selected_RV$past_water_year!=input$table_in_WY_rows_selected){
         DT::selectRows(test_proxy, match(as.numeric(input$year_picker),ann_HORbar_WYT_data$Year))
-      }
+      # }
     })
 
 
@@ -652,12 +751,18 @@ column(
       )
     )
   ),
-      column(
-        width = 3,
+    #   column(
+    #     width = 3,
+    #     HTML("<p style ='font-size:80%'>Fork length of juvenile Steelhead used in acoustic telemetry studies (2011-2016). </p>")
+    #   ),
+    #   column(width = 9, 
+    #     shiny::uiOutput("flength_dash_ui"))
+    # )
+        shiny::uiOutput("flength_dash_ui")
+        ,
         HTML("<p style ='font-size:80%'>Fork length of juvenile Steelhead used in acoustic telemetry studies (2011-2016). </p>")
-      ),
-      column(width = 9, shiny::uiOutput("flength_dash_ui"))
-    )
+)
+# )
   })
   
   output$flength_dash_ui <- renderUI({
@@ -730,7 +835,7 @@ column(
       output$input_panel_UI_3 <- renderUI({
     shinydashboardPlus::box(
       id = "input_box4",
-      title = shiny::HTML("nm_input_box4"),
+      title = shiny::HTML("Estimates"),
       solidHeader = TRUE,
       status = "primary",
       collapsible = T,
@@ -754,8 +859,9 @@ output$start_loc_ui <- renderUI({
         ,
       shinyWidgets::pickerInput(
         'start_loc_in',
-        choices = loc_opt,
-            options = list(style = "btn-med")
+        choices = loc_opt
+        # ,
+        #     options = list(style = "btn-med")
       )
       )
     )
@@ -767,7 +873,7 @@ output$start_loc_ui <- renderUI({
      shinydashboardPlus::updateBox("input_box3",action = "toggle")
 
     #  input$env_dat_tabpan=="prev_pan"
-    #  print(input$env_dat_tabpan)
+     print(input$env_dat_tabpan)
      
   })
 

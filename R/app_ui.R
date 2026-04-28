@@ -41,6 +41,21 @@ app_ui <- function(request) {
         tagList(
           h2("CVPAS - Central Valley Steelhead Survival and Routing Predictions"),
           hr(),
+          # column(width=6,
+              # tags$img(
+              #   src = "www/simple_route_image.png",
+              #   style = "width: 400px; height: auto; border: 2px solid #024c63;",
+              #   name = "placeholder text",
+              #   alt = "placeholder text"
+              #   )
+                # ,
+                    #   p("This tool generates survival and routing predictions for juvenile Steelhead orginating from the San Joaquin basin based environmental and operational conditions.")
+                    # )
+          #   ,
+          # column(width=6,
+                      p("This tool generates survival and routing predictions for juvenile Steelhead orginating from the San Joaquin basin based environmental and operational conditions.")
+                    # )
+          ,
           uiOutput("top_of_body_text"),
           shinydashboard::tabItems(
             shinydashboard::tabItem(

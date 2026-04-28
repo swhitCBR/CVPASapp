@@ -18,9 +18,9 @@ app_server <- function(input, output, session) {
   })
 
   # Switching based on data source
-  observeEvent(input$var_source_picker, {  
+  observeEvent(input$data_source_picker, {  
     print(input$env_dat_tabpan)
-    if(input$var_source_picker=="Previous year"){
+    if(input$data_source_picker=="Previous year"){
       data_source_selected("prev_pan")
       updateTabsetPanel(session=session, inputId="env_dat_tabpan", selected = "prev_pan")
     } else{ 
@@ -28,7 +28,7 @@ app_server <- function(input, output, session) {
       updateTabsetPanel(session=session, inputId="env_dat_tabpan", selected = "up_pan")}
   })
 
-  # observeEvent(input$var_source_picker, { 
+  # observeEvent(input$data_source_picker, { 
 
 
 
@@ -120,7 +120,7 @@ app_server <- function(input, output, session) {
         style = "height=25px"
         ,
     shinyWidgets::pickerInput(
-     "year_picker",
+     "year_pickerOLD",
       # label="Pick year",
       label=NULL,
       choices = as.character(2011:2024),
@@ -136,10 +136,33 @@ app_server <- function(input, output, session) {
     })
   
   
- output$var_source_ui <- renderUI({
-  tagList(
+ output$data_source_ui <- renderUI({
+  # # tagList(
+  # #   div(
+  # #     style = "display: inline-flex; align-items: left;margin-top: 10px;",
+  # #     div(
+  # #       style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
+  # #       shiny::HTML("<h5> <b> Source: </b>  </h4>")
+  # #       # shiny::HTML("<h5> <b> Use data from: </b>  </h4>")
+
+  # #     ),
+  # #     div(
+  # #       style = "height=25px"
+  # #       ,
+  #   shinyWidgets::pickerInput(
+  #    "data_source_picker",
+  #     label=NULL,
+  #     choices = c("Previous year","Uploaded file (.csv)")
+  #           )
+  #   #   )
+  #   # )
+  #   # )
+   
+   
+   div(
+    style="text-align: end; margin-left: 10px; margin-top: 10px;",
     div(
-      style = "display: inline-flex; align-items: left;margin-top: 10px;",
+      style = "display: inline-flex; align-items: ;margin-top: 10px;",
       div(
         style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
         shiny::HTML("<h5> <b> Source: </b>  </h4>")
@@ -147,21 +170,43 @@ app_server <- function(input, output, session) {
 
       ),
       div(
-        style = "height=25px"
+        style = "height=15px"
         ,
     shinyWidgets::pickerInput(
-     "var_source_picker",
-      label=NULL,
-      choices = c("Previous year","Uploaded file (.csv)"),
-      # selected = init_water_year,
-      # choicesOpt = list(
-      #   style = paste0("background-color:",WYT_cols[match(ann_HORbar_WYT_data$WYT,names(WYT_cols))],";")
-      # )
+     "data_source_picker",
+      # label="Source",
+      choices = c("Previous year","Uploaded file (.csv)")
             )
       )
     )
+    # ,
+      #   div(
+      # style = "display: inline-flex; align-items: left;", #margin-top: 10px;
+      # div(
+      #   style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
+      #   shiny::HTML("<h5> <b> Year: </b>  </h4>")
+      #   # shiny::HTML("<h5> <b> Use data from: </b>  </h4>")
+
+      # )
+    #   ,
+    #   div(
+    #     style = "height=15px"
+    #     ,
+    # # shinyWidgets::pickerInput(
+    # #  "year_picker",
+    # #   # label="Pick year",
+    # #   label=NULL,
+    # #   choices = as.character(2011:2024),
+    # #   # selected = NULL,
+    # #   selected = init_water_year,
+    # #   choicesOpt = list(
+    # #     style = paste0("background-color:",WYT_cols[match(ann_HORbar_WYT_data$WYT,names(WYT_cols))],";")
+    # #   )
+    # #         )
+    #   )
+    # )
     )
-    })
+ })
 
 
   
@@ -192,53 +237,72 @@ app_server <- function(input, output, session) {
           div(
           # style="",
           p("This tool provides predictions of survival and route usage for hypothetical releases of juvenile Steelhead 
-          based on environmental conditions and individual size. Environmental conditions are represented using daily summaries of 
-          field measurements obtained from monitoring stations spread throughout the region. The conditions on the day that fish 
-          arrive at key junction are fed into statistical sub-models that are used to generate route usage and survival probability predictions.")
+          based on conditions in the evironment and individual size and location. Environmental conditions are represented using 
+          daily summaries of field measurements obtained from monitoring stations spread throughout the region. The conditions on
+          the day that fish arrive at key junction serve as inputs for statistical sub-models that are used to generate route usage
+          and survival probability predictions.")
           
           )
           ,
-          # p("Survival and routing estimates are based on individual attributes and daily measures of environmental and operational conditions measured across the Delta."),
-         br()
-         ,# p("I. Use the dropdown menu below to choose a Starting Location for a hypothetical release group "),
-          # HTML('
-          # <ul style="list-style-type:none;">
-          # <li>item1</li>
-          # <li>item2</li>
-          # <li>item3</li>
-          # </ul>
-          # '),
+          hr(),
           shiny::HTML("<h4> <b> Instructions: </b>  </h4>"),
           tags$ol(type="I",
+           div(
+                style = "display: inline-flex; align-items: left;",#margin-top: 10px;",
             tags$li(
-               tags$u(
-                style="font-size: 16px;","Provide source of daily environmental data")),
-              # style="margin-top: 10px; list-style-type: none;",
-              p(style="font-size: 14px;","The user must indicate whether they wish to use hydrologic data from previous year (2011-2024) or provide their own data by uploading a file")
-            ,
-          tags$ol(
-          style="margin-top: 10px; list-style-type: none;",
-          tags$li(
-          shiny::uiOutput("var_source_ui")),
-          uiOutput("year_picker_ui"))
-
-          ,
-          tags$li(
+              
             tags$u(
-                style="font-size: 16px;","Define a starting location and fork length for a hypothetical release group"))
-            # "Define a starting location and fork length for a hypothetical release group"
-          ,
-           p(style="font-size: 14px;","The user must indicate whether they wish to use hydrologic data from previous year (2011-2024) or provide their own data by uploading a file")
-          ,
+                style="font-size: 16px;","Select a starting location for a hypothetical release")
+                # ,
+                #  p(style="font-size: 14px;","Indicate whether hydrologic data from previous years (2011-2024) or user-provided data should be used")
+                        
+                        ,
             tags$ul(
             style="list-style-type: none;",
-            tags$li(shiny::uiOutput("start_loc_ui")))
-          )
+           
+            tags$li(
+              # shiny::uiOutput("start_loc_ui")
+                              style = "display: inline-flex; align-items: left;margin-left: 20px;  10px;margin-right: 20px;",
+                              div(
+                                style = "align-content: center;",
+    
+
+                        shiny::uiOutput("start_loc_ui")
+                      )
+                        ,
+                    shiny::uiOutput("schem_start_loc_plt_ui")
+          ))
+              ),
+              )
+              ,
+          # shiny::splitLayout(
+              div(
+                style = "display: inline-flex; align-items: left;margin-top: 10px;",
+            tags$li(
+              tags$u(
+                style="font-size: 16px;","Provide source of daily environmental data")
+              ,
+            p(style="font-size: 14px;","Indicate whether hydrologic data from previous years (2011-2024) or user-provided data should be used"),
+
+               )
+               ,
+               shiny::uiOutput("data_source_ui") # both data source and year selection UI
+
+
+              )
+                             ,
+              shiny::uiOutput("time_of_year_ui") 
+              
+
+            )
+              
+
             ,
           br()
           ,
   column(width=6,
-      shiny::uiOutput("schem_start_loc_plt_ui"))
+    p("flength_temp")
+    )
       ,
    column(width=6,
       shiny::uiOutput("flength_sel_ui"))
@@ -272,6 +336,55 @@ column(
   )
   })
   
+output$time_of_year_ui <- renderUI({
+  tagList(
+       div(
+                style = "display: inline-flex; align-items: left;margin-top: 10px;margin-left: 20px;",
+  div(
+                style = "margin-right: 20px;",
+  # h5(strong("Start and End Dates")),
+  # h5(strong("Time of Year")),
+      div(
+      style = "display: inline-flex; align-items: left;", #margin-top: 10px;
+      div(
+        style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
+        shiny::HTML("<h5> <b> Year: </b>  </h4>")
+        # shiny::HTML("<h5> <b> Use data from: </b>  </h4>")
+
+      ),
+      shinyWidgets::pickerInput(
+     "year_picker",
+      # label="Pick year",
+      label=NULL,
+      choices = as.character(2011:2024),
+      # selected = NULL,
+      selected = init_water_year,
+      choicesOpt = list(
+        style = paste0("background-color:",WYT_cols[match(ann_HORbar_WYT_data$WYT,names(WYT_cols))],";")
+      )
+            )
+          )
+            
+,
+
+    p("Provide a date or range of dates representing arrival at the selected junction by entering date(s) or adjusting Day of Year slider")
+  ,
+  shiny::uiOutput("start_date_entry_ui")
+  # ,
+  # hr()
+)
+  ,
+
+
+  div(
+                style = "display: left;margin-top: 10px;",
+                  shiny::uiOutput("DOY_slider_ui"),
+  plotOutput("doy_ref_strt_loc", height = "100px"),
+    shiny::HTML("<p style ='font-size:80%'> Histogram depicts day of year when acoustic-tagged juvenile Steelhead were detected at each location, median day of year is selected by default. </p>")
+  )
+  ))
+})
+
 
   output$env_panel_ui <- renderUI({
     tagList(
@@ -292,28 +405,28 @@ column(
             value="prev_pan",
             title = "Past water year",
             collapsed = F,
-            column(
-              width = 6,
+            # column(
+            #   width = 6,
               # uiOutput("year_picker_ui")
               # ,
               h5("Select a water year by clicking on a row")
               ,
               uiOutput("table_in_WY_UI")
-            ),
+            # ),
 
-            column(width=6,
-             h5(strong("Time of Year")),
+            # column(width=6,
+            #  h5(strong("Time of Year")),
 
-                p("Provide a date or range of dates representing arrival at the selected junction (HOR or TCJ) by entering date(s) or adjusting Day of Year slider")
-              ,
-              shiny::uiOutput("start_date_entry_ui"),
-              hr(),
-              shiny::uiOutput("DOY_slider_ui"),
+            #     p("Provide a date or range of dates representing arrival at the selected junction (HOR or TCJ) by entering date(s) or adjusting Day of Year slider")
+            #   ,
+            #   shiny::uiOutput("start_date_entry_ui"),
+            #   hr(),
+            #   shiny::uiOutput("DOY_slider_ui"),
             
-              plotOutput("doy_ref_strt_loc", height = "100px"),
-               shiny::HTML("<p style ='font-size:80%'> Histogram depicts day of year when acoustic-tagged juvenile Steelhead were detected at each location, median day of year is selected by default. </p>")
-               ,
-            )
+            #   plotOutput("doy_ref_strt_loc", height = "100px"),
+            #    shiny::HTML("<p style ='font-size:80%'> Histogram depicts day of year when acoustic-tagged juvenile Steelhead were detected at each location, median day of year is selected by default. </p>")
+               
+            # )
           ),
           # shiny::tabPanel(
           #         title = "Single Variable",
@@ -482,13 +595,17 @@ column(
       # server=FALSE,
       colnames = c("Year", "Category", "HOR Barrier", "Model"),
       rownames = FALSE, 
+ 
       # server=F,
       options = list(
         keys=TRUE, #related to KeyTable extension
         info=FALSE,
-        dom = '<"<"bottom"ip>',
+        dom = "t",
+        # dom = '<"<"bottom"ip>',
         stripeClasses = list(),
-        lengthMenu = c(13),
+             pageLength=17,
+        # lengthMenu = c(13),
+        # lengthMenu = c(17),
         pagingType = "simple",
         initComplete = DT::JS(
           "function(settings, json) {",
@@ -659,7 +776,7 @@ column(
    tagList(
       shinyWidgets::airDatepickerInput(
       inputId = "Id111",
-      label = "Min & max dates :", 
+      label = "Start and End Dates :", 
       # value = c(as.Date("2011-01-01"),as.Date("2024-12-31")),
       value=c(as.Date(
         paste(in_selected_RV$past_water_year, in_selected_RV$start_day),
@@ -672,7 +789,7 @@ column(
       maxDate = as.Date("2024-12-31"),
       range=TRUE,
       disabledDaysOfWeek=TRUE,
-     width = "40%")
+     width = "80%")
     #  ,
     # daterangepicker::daterangepicker(
     #   inputId = "daterange_sel",
@@ -847,24 +964,29 @@ column(
 
 
 output$start_loc_ui <- renderUI({
-  tagList(
     div(
       style = "display: inline-flex; align-items: left;margin-top: 10px;",
+    # div(
+    #   style = "display: inline-flex; align-items: left;margin-top: 10px;",
+      # div(
+      #   style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
+      #   shiny::HTML("<h5> <b> Starting Location: </b>  </h4>")
+      # ),
       div(
-        style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
-        shiny::HTML("<h5> <b> Starting Location: </b>  </h4>")
-      ),
-      div(
-        style = "height=25px"
+        style = "height=25px; align-self:center"
         ,
       shinyWidgets::pickerInput(
+          # label="Junction:",
+        label="Starting Location:",
         'start_loc_in',
         choices = loc_opt
         # ,
         #     options = list(style = "btn-med")
       )
       )
-    )
+      # ,
+      # shiny::uiOutput("schem_start_loc_plt_ui")
+    # )
     )
     })
 

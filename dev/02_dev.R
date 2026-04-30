@@ -39,6 +39,7 @@ usethis::use_package("dplyr")
 options(rsconnect.packrat = TRUE)
 rsconnect::writeManifest()
 usethis::use_package("shinyWidgets")
+usethis::use_package("xml2")
 library(shinyWidgets)
 
 ################################################################################ #

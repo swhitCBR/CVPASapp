@@ -196,6 +196,57 @@ app_server <- function(input, output, session) {
     )
   })
 
+      output$accord_panel_indiv_attrib_ui <- renderUI({
+      shinydashboardPlus::accordion(
+        id = "accordion2",
+
+        shinydashboardPlus::accordionItem(
+          title = "Set Individual Attributes",
+          collapsed = TRUE,
+          column(
+            width = 6,
+            h5(strong("Fork Length")),
+            tags$ul(
+                      style = "padding-inline-start: 20px;",
+              tags$li(
+                "By default, all predictions are based on the average fork length of juvenile Steelhead used in modeling."
+              )
+            )
+          ),
+          column(width = 6, shiny::uiOutput("flength_sel_ui"))
+        )
+      )
+      })
+
+  
+output$accord_panel_view_in_ui <-renderUI({
+    if(is.na(in_selected_RV$past_water_year)){
+      NULL
+    } else{
+    tagList(
+      switch(
+        data_source_selected(),
+         "None" = NULL,
+        "prev_pan" =
+      shinydashboardPlus::accordion(
+        id = "accordion3",
+        shinydashboardPlus::accordionItem(
+          title = "View Selected",
+                DT::dataTableOutput("table_env_inputs")
+        )
+      ),
+        "up_pan" =
+        shinydashboardPlus::accordion(
+        id="accordz",
+         shinydashboardPlus::accordionItem(
+          title = "View Uploaded"
+        )
+        )
+    )
+    )
+    }
+    })
+
   output$input_panel_UI <- renderUI({
     shinydashboardPlus::box(
       id = "input_box2",
@@ -272,36 +323,30 @@ app_server <- function(input, output, session) {
         )
       ),
 
-      uiOutput("accord_panel_ui")
+      uiOutput("accord_panel_prev_upload_ui")
       ,
-      shinydashboardPlus::accordion(
-        id = "accordion2",
 
-        shinydashboardPlus::accordionItem(
-          title = "Set Individual Attributes",
-          # title = "Fork Length",
-          # status = "danger",
-          collapsed = TRUE,
-          column(
-            width = 6,
-            h5(strong("Fork Length")),
-            tags$ul(
-                      style = "padding-inline-start: 20px;",
-              tags$li(
-                "By default, all predictions are based on the average fork length of juvenile Steelhead used in modeling."
-              )
-            )
-          ),
-          column(width = 6, shiny::uiOutput("flength_sel_ui"))
-        )
-      )
+      uiOutput("accord_panel_indiv_attrib_ui")
 
-          ,
-      footer = 
+    ,
+      uiOutput("accord_panel_view_in_ui")
+      #     ,
+      # footer = 
+
+      # uiOutput("chk_input_ui")
     #  fluidRow(
-      column(
-        width=12,
+    
+      
 
+    )
+  })
+
+
+output$chk_input_ui <- renderUI({
+div(
+column(
+        width=12,
+          style="margin-bottom: 20px",
       br(),
        div(
             # class = "thumbnail-section",
@@ -310,25 +355,34 @@ app_server <- function(input, output, session) {
             p("Verify that selected/uploaded values conform with data used to fit statistical sub-models")
         )
         ,
-        column(width=3,
-            actionButton("check_inputs_butt", "Check Inputs") 
-          ,
-            #  shinyjs::disabled(
-            checkboxInput("inputs_check", label = "Valid")
-             
-            
-            ,
-                    # shinyjs::disabled(
-                      # div(
-                      shinyjs::disabled(
+        column(width=6,
+            # actionButton("check_inputs_butt", "Check Inputs") 
+            div(
+             style="display: inline-flex",
+            actionButton("check_inputs_butt", "Check Inputs",
+            style="color: white; background: #024c63; padding: 10px") ##3c8dbc ; #024c63
+              ,
+            div(
+                style="margin-left: 20px; align-content: flex-end;", # 2nd one for vert align
+       shinyjs::disabled(
         shinyWidgets::prettyCheckbox(
-           inputId = "inputs_check_pretty",
+           inputId = "inputs_check",#"inputs_check_pretty",
            value=FALSE, 
            label = "Valid", 
            icon = icon("check")
-          #  icon = icon("square")
           )
         )
+        )
+      )
+      ,
+      div(
+      style="margin-top: 20px",
+      shinyjs::disabled(
+      actionButton("generate_ests_butt", "Generate Estimates")
+      )
+    )
+          ,
+      hr()
 
       )
       # ,
@@ -336,39 +390,16 @@ app_server <- function(input, output, session) {
     
         ,
           column(width = 3,
-              actionButton("load_butt", "load"),
-              actionButton("reset_butt", "reset"),
+              actionButton("load_butt", "Load"),
+              actionButton("reset_butt", "Reset"),
 
               # checkboxInput("load_check", label = "load"),
-              actionButton("inputs_done", "Done"),
-                      # ,
-      actionButton("generate_ests_butt", "Generate Estimates")
+              actionButton("inputs_done", "Done")
           )
-          ,
-            column(verbatimTextOutput("sel_in_ls_text"), width = 3),
-            column(verbatimTextOutput("glob_in_ls_text"), width = 3)
-        )
-      # )
-      # ,
-      #        fluidRow(
-      #       # h1("page_top")
-      #       column(
-      #         actionButton("load_butt", "load"),
-      #         checkboxInput("load_check", label = "load"),
-      #         actionButton("inputs_done", "Done"),
-      #         width = 2
-      #       ),
-      #       column(verbatimTextOutput("sel_in_ls_text"), width = 5),
-      #       column(verbatimTextOutput("glob_in_ls_text"), width = 5)
-      #     )
-      # ,
-      #   div(
-      #   # actionButton("check_inputs_butt", "Check"),
-      #   style = "display:inline-block; float:right"
-      # )
 
-    )
-  })
+        )
+      )
+    })
 
 observeEvent(input$load_butt,{
   # shinyWidgets::updatePrettyCheckbox(
@@ -376,11 +407,8 @@ observeEvent(input$load_butt,{
     session=session,
     inputId="inputs_check",
     value=TRUE)
-
-  shinyWidgets::updatePrettyCheckbox(
-    session=session,
-    inputId="inputs_check_pretty",
-    value=TRUE)
+  
+  shinyjs::enable("generate_ests_butt")
   # updateinputs_check
 })
 
@@ -392,10 +420,8 @@ observeEvent(input$reset_butt,{
     value=FALSE)
   # updateinputs_check
 
-    shinyWidgets::updatePrettyCheckbox(
-    session=session,
-    inputId="inputs_check_pretty",
-    value=FALSE)
+    shinyjs::disable("generate_ests_butt")
+  
 })
 
 
@@ -422,7 +448,7 @@ observeEvent(input$reset_butt,{
   })
 
 # Test_accord_up
-  output$accord_panel_ui <- renderUI({
+  output$accord_panel_prev_upload_ui <- renderUI({
     tagList(
       switch(
         data_source_selected(),
@@ -968,9 +994,37 @@ shinydashboard::menuItem(
         # )
       # )
       ),
-      "met_ref" = shiny::tagList(fluidRow(
-        h2("new_render_pg_met_ref")
-      )),
+      "met_ref" = shiny::tagList(
+        fluidRow(
+          tagList(
+  #   shinydashboard::box(
+  #     title = HTML("Methods and References"),
+  #     width = 12,
+  #     solidHeader = TRUE,
+  #     status = "primary",
+  #     shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/main/met_and_ref/overview_pt1.md", package = "CVPASapp")))
+  #     ,
+  #     tags$img(
+  #     src = "www/simple_route_image.png",
+  #     style = "width: 400px; height: auto; border: 2px solid #024c63;",
+  #     name = "placeholder text",
+  #     alt = "placeholder text"
+  #     )
+  #     ,
+  #     shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/main/met_and_ref/how_calc_pt2.md", package = "CVPASapp")))
+  #     ,
+  #     bscui::bscuiOutput(outputId = "surv_route_diagram_wtt", width = "50%", height = "100%") # not the absence of ns() function here bc render occurs on server
+  #     ,
+  #     bscui::bscuiOutput(outputId = "my_red_svg", width = "100%", height = "100%")
+  #     ,
+  #     shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/main/met_and_ref/left_col_text.md", package = "CVPASapp")))
+  #     ,
+  #     shiny::includeMarkdown(system.file("app/www/biblio_doc.md", package = "CVPASapp"))
+  #   )
+  )
+      )
+    )
+    ,
       "inputs" = shiny::tagList(
         uiOutput("input_page_UI")
       )
@@ -1192,14 +1246,25 @@ shinydashboard::menuItem(
 
   output$input_panel_UI_3 <- renderUI({
     shinydashboardPlus::box(
-      id = "input_box4",
+      id = "est_box_ui",
       title = shiny::HTML("Estimates"),
       solidHeader = TRUE,
       status = "primary",
       collapsible = T,
       collapsed = TRUE,
       width = 12,
-      h2("stuff here")
+      uiOutput("chk_input_ui")
+      ,
+      shinydashboardPlus::accordion(
+        id = "accordion4",
+
+        shinydashboardPlus::accordionItem(
+          title = "Overall Survival",
+          collapsed = TRUE,
+          p("overall survival")
+        )
+      )
+      # h2("stuff here")
     )
   })
 
@@ -1232,22 +1297,59 @@ shinydashboard::menuItem(
     )
   })
 
-  observeEvent(input$inputs_done, {
-    shinydashboardPlus::updateBox("input_box2", action = "toggle")
-    # shinydashboardPlus::updateBox("input_box3", action = "toggle")
-
-    #  input$env_dat_tabpan=="prev_pan"
+  # observeEvent(input$inputs_done, {
+    
+  observeEvent(input$generate_ests_butt, {
+        if (!input$input_box2$collapsed) {
+          shinydashboardPlus::updateBox("input_box2", action = "toggle") 
+          # shinydashboardPlus::updateBox("input_box2",action = "update",options=list(status=NULL))
+        }
+   if (input$est_box_ui$collapsed) {
+      shinydashboardPlus::updateBox("est_box_ui", action = "toggle")
+   }
     print(input$env_dat_tabpan)
   })
 
   # button at the top
 #   observeEvent(input$inputs_done2, {
 #     if (input$input_box2$collapsed) {
-#       #  shinydashboardPlus::updateBox("input_box3",action = "update",options=list(status="primary"))
+      #  shinydashboardPlus::updateBox("input_box3",action = "update",options=list(status="primary"))
 #       shinydashboardPlus::updateBox("input_box2", action = "toggle") #options=list(status="danger"))
 #     }
 #     if (!input$input_box2$collapsed) {
 #       shinydashboardPlus::updateBox("input_box2", action = "toggle") #options=list(status="danger"))
 #     }
 #   })
+
+
+
+   output$table_env_inputs <- DT::renderDataTable(
+      DT::datatable(
+        CVhelp_dat_w |>  
+          dplyr::filter(Year==in_selected_RV$past_water_year & 
+            DOY >= in_selected_RV$start_day & 
+            DOY < in_selected_RV$end_day
+            ) |> 
+          dplyr::select(date,WYT,VNS,OMT,CVP,SWP,CLC,MSD) |> 
+          dplyr::mutate(dplyr::across(where(is.numeric), round, 1))
+          ,
+          options=list(
+            # dom = "pl",
+            dom='<"<"bottom"ip>',
+            initComplete = DT::JS(
+        "
+        function(settings, json) {",
+        "$(this.api().table().header()).css({'font-size': '75%'});",
+        "$(this.api().table().body()).css({'font-size': '75%'});",
+        "$(this.api().table().caption()).css({'font-size': '75%'});",
+        "}
+        ")
+        ),
+        selection=list(mode = 'none',target="cell",selectable = NULL,selected = NULL),
+        colnames = c("Date","Water Year Type","log(VNS)","OMT","CVP","SWP","CLC","MSD"),#,"HOR Barrier"), #"Year","Day of Year",
+      rownames = FALSE,
+      # caption = 'Table 1: This is a simple caption for the table.'
+      )
+    )
+
 }

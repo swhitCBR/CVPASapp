@@ -33,6 +33,10 @@ app_ui <- function(request) {
         tagList(
           collapsed = FALSE, # Set the sidebar to be collapsed by default
           uiOutput("cbr_dyn_sidebar_ui")
+          ,
+          verbatimTextOutput("sel_in_ls_text")
+          ,
+          verbatimTextOutput("glob_in_ls_text")
         )
       ),
       body = shinydashboard::dashboardBody(

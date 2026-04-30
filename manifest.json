@@ -826,37 +826,6 @@
         "RemoteSha": "7.0.0"
       }
     },
-    "daterangepicker": {
-      "Source": "CRAN",
-      "GithubRepo": null,
-      "GithubUsername": null,
-      "GithubRef": null,
-      "GithubSha1": null,
-      "Repository": "https://cran.rstudio.com",
-      "description": {
-        "Package": "daterangepicker",
-        "Type": "Package",
-        "Title": "Create a Shiny Date-Range Input",
-        "Version": "0.2.0",
-        "Authors@R": "c(\n    person(\"Sebastian\",\"Gatscha\", email = \"sebastian_gatscha@gmx.at\", role = c(\"aut\", \"cre\"))\n    )",
-        "Maintainer": "Sebastian Gatscha <sebastian_gatscha@gmx.at>",
-        "Description": "A Shiny Input for date-ranges, which pops up two calendars for selecting dates, times, or predefined ranges like \"Last 30 Days\". It wraps the JavaScript library 'daterangepicker' which is available at <https://www.daterangepicker.com>.",
-        "License": "MIT + file LICENSE",
-        "Depends": "R (>= 3.2.0)",
-        "Imports": "htmltools, jsonify, utils, shiny",
-        "URL": "https://github.com/trafficonese/daterangepicker/,\nhttps://www.daterangepicker.com,\nhttps://trafficonese.github.io/daterangepicker/",
-        "BugReports": "https://github.com/trafficonese/daterangepicker/issues",
-        "Encoding": "UTF-8",
-        "RoxygenNote": "7.2.0",
-        "Suggests": "testthat (>= 2.1.0), covr",
-        "NeedsCompilation": "no",
-        "Packaged": "2023-05-10 11:37:09 UTC; kona1",
-        "Author": "Sebastian Gatscha [aut, cre]",
-        "Repository": "CRAN",
-        "Date/Publication": "2023-05-10 12:00:06 UTC",
-        "Built": "R 4.5.3; ; 2026-04-14 03:18:22 UTC; windows"
-      }
-    },
     "desc": {
       "Source": "CRAN",
       "GithubRepo": null,
@@ -1769,40 +1738,6 @@
         "Built": "R 4.4.1; ; 2024-08-02 01:28:12 UTC; windows"
       }
     },
-    "jsonify": {
-      "Source": "CRAN",
-      "GithubRepo": null,
-      "GithubUsername": null,
-      "GithubRef": null,
-      "GithubSha1": null,
-      "Repository": "https://cran.rstudio.com",
-      "description": {
-        "Package": "jsonify",
-        "Type": "Package",
-        "Title": "Convert Between 'R' Objects and Javascript Object Notation\n(JSON)",
-        "Version": "1.2.2",
-        "Date": "2022-11-10",
-        "Authors@R": "c(\n    person(\"David\", \"Cooley\", ,\"dcooley@symbolix.com.au\", role = c(\"aut\", \"cre\")),\n    person(\"Chris\", \"Muir\", role = \"ctb\"),\n    person(\"Brendan\", \"Knapp\", role = \"ctb\", comment = c(ORCID = \"0000-0003-3284-4972\"))\n    )",
-        "Description": "Conversions between 'R' objects and Javascript Object Notation (JSON) using \n    the 'rapidjsonr' library <https://CRAN.R-project.org/package=rapidjsonr>. ",
-        "License": "MIT + file LICENSE",
-        "Depends": "R (>= 3.3.0)",
-        "SystemRequirements": "C++11",
-        "Imports": "Rcpp (>= 0.12.18)",
-        "LinkingTo": "rapidjsonr (>= 1.2.0), Rcpp",
-        "RoxygenNote": "7.1.0",
-        "Suggests": "covr, testthat, knitr, rmarkdown",
-        "Encoding": "UTF-8",
-        "VignetteBuilder": "knitr",
-        "NeedsCompilation": "yes",
-        "Packaged": "2022-11-09 21:45:14 UTC; david",
-        "Author": "David Cooley [aut, cre],\n  Chris Muir [ctb],\n  Brendan Knapp [ctb] (<https://orcid.org/0000-0003-3284-4972>)",
-        "Maintainer": "David Cooley <dcooley@symbolix.com.au>",
-        "Repository": "CRAN",
-        "Date/Publication": "2022-11-09 22:20:02 UTC",
-        "Built": "R 4.5.1; x86_64-w64-mingw32; 2025-10-29 01:44:15 UTC; windows",
-        "Archs": "x64"
-      }
-    },
     "jsonlite": {
       "Source": "CRAN",
       "GithubRepo": null,
@@ -2534,41 +2469,6 @@
         "Archs": "x64"
       }
     },
-    "rapidjsonr": {
-      "Source": "CRAN",
-      "GithubRepo": null,
-      "GithubUsername": null,
-      "GithubRef": null,
-      "GithubSha1": null,
-      "Repository": "https://cran.rstudio.com",
-      "description": {
-        "Package": "rapidjsonr",
-        "Type": "Package",
-        "Title": "'Rapidjson' C++ Header Files",
-        "Version": "1.2.1",
-        "Date": "2025-11-23",
-        "Authors@R": "c(\n    person(\"David\", \"Cooley\", ,\"dcooley@symbolix.com.au\", role = c(\"aut\", \"cre\")),\n    person(\"Milo\", \"Yip\", , role = \"ctb\", comment = \"Author of c++ rapidjson library, provided through THL A29 Limited, a Tencent company\"),\n    person(\"Alexander\", \"Chemeris\", role = \"ctb\", comment = \"Author of c++ msinttypes library\")\n    )",
-        "Description": "Provides JSON parsing capability through the 'Rapidjson' 'C++' header-only library. ",
-        "License": "MIT + file LICENSE",
-        "Encoding": "UTF-8",
-        "RoxygenNote": "7.3.1",
-        "SystemRequirements": "GNU make",
-        "NeedsCompilation": "no",
-        "Packaged": "2025-11-23 16:12:43 UTC; david",
-        "Author": "David Cooley [aut, cre],\n  Milo Yip [ctb] (Author of c++ rapidjson library, provided through THL\n    A29 Limited, a Tencent company),\n  Alexander Chemeris [ctb] (Author of c++ msinttypes library)",
-        "Maintainer": "David Cooley <dcooley@symbolix.com.au>",
-        "Repository": "CRAN",
-        "Date/Publication": "2025-11-24 08:50:07 UTC",
-        "Built": "R 4.5.2; ; 2025-12-03 00:54:34 UTC; windows",
-        "RemoteType": "standard",
-        "RemoteRef": "rapidjsonr",
-        "RemotePkgRef": "rapidjsonr",
-        "RemoteRepos": "https://cran.rstudio.com",
-        "RemoteReposName": "CRAN",
-        "RemotePkgPlatform": "x86_64-w64-mingw32",
-        "RemoteSha": "1.2.1"
-      }
-    },
     "rappdirs": {
       "Source": "CRAN",
       "GithubRepo": null,
@@ -2849,6 +2749,37 @@
         "Repository": "CRAN",
         "Date/Publication": "2025-07-03 06:20:02 UTC",
         "Built": "R 4.5.1; ; 2025-07-23 02:12:01 UTC; windows"
+      }
+    },
+    "shinyWidgets": {
+      "Source": "CRAN",
+      "GithubRepo": null,
+      "GithubUsername": null,
+      "GithubRef": null,
+      "GithubSha1": null,
+      "Repository": "https://cran.rstudio.com",
+      "description": {
+        "Package": "shinyWidgets",
+        "Title": "Custom Inputs Widgets for Shiny",
+        "Version": "0.9.0",
+        "Authors@R": "c(\n  person(\"Victor\", \"Perrier\", email = \"victor.perrier@dreamrs.fr\", role = c(\"aut\", \"cre\", \"cph\")),\n  person(\"Fanny\", \"Meyer\", role = \"aut\"),\n  person(\"David\", \"Granjon\", role = \"aut\"),\n  person(\"Ian\", \"Fellows\", role = \"ctb\", comment = \"Methods for mutating vertical tabs & updateMultiInput\"),\n  person(\"Wil\", \"Davis\", role = \"ctb\", comment = \"numericRangeInput function\"),\n  person(\"Spencer\", \"Matthews\", role = \"ctb\", comment = \"autoNumeric methods\"),\n  person(family = \"JavaScript and CSS libraries authors\", role = c(\"ctb\", \"cph\"), comment = \"All authors are listed in LICENSE.md\")\n  )",
+        "Description": "Collection of custom input controls and user interface components for 'Shiny' applications. \n  Give your applications a unique and colorful style !",
+        "URL": "https://github.com/dreamRs/shinyWidgets,\nhttps://dreamrs.github.io/shinyWidgets/",
+        "BugReports": "https://github.com/dreamRs/shinyWidgets/issues",
+        "License": "GPL-3",
+        "Encoding": "UTF-8",
+        "LazyData": "true",
+        "RoxygenNote": "7.3.2",
+        "Depends": "R (>= 3.1.0)",
+        "Imports": "bslib, sass, shiny (>= 1.6.0), htmltools (>= 0.5.1), jsonlite,\ngrDevices, rlang",
+        "Suggests": "testthat, covr, ggplot2, DT, scales, shinydashboard,\nshinydashboardPlus",
+        "NeedsCompilation": "no",
+        "Packaged": "2025-02-21 09:09:48 UTC; perri",
+        "Author": "Victor Perrier [aut, cre, cph],\n  Fanny Meyer [aut],\n  David Granjon [aut],\n  Ian Fellows [ctb] (Methods for mutating vertical tabs &\n    updateMultiInput),\n  Wil Davis [ctb] (numericRangeInput function),\n  Spencer Matthews [ctb] (autoNumeric methods),\n  JavaScript and CSS libraries authors [ctb, cph] (All authors are listed\n    in LICENSE.md)",
+        "Maintainer": "Victor Perrier <victor.perrier@dreamrs.fr>",
+        "Repository": "CRAN",
+        "Date/Publication": "2025-02-21 12:30:02 UTC",
+        "Built": "R 4.4.3; ; 2025-07-21 02:36:44 UTC; windows"
       }
     },
     "shinydashboard": {
@@ -3539,49 +3470,6 @@
         "RemoteSha": "0.57"
       }
     },
-    "xml2": {
-      "Source": "CRAN",
-      "GithubRepo": null,
-      "GithubUsername": null,
-      "GithubRef": null,
-      "GithubSha1": null,
-      "Repository": "https://cran.rstudio.com",
-      "description": {
-        "Package": "xml2",
-        "Title": "Parse XML",
-        "Version": "1.5.2",
-        "Authors@R": "c(\n    person(\"Hadley\", \"Wickham\", role = \"aut\"),\n    person(\"Jim\", \"Hester\", role = \"aut\"),\n    person(\"Jeroen\", \"Ooms\", email = \"jeroenooms@gmail.com\", role = c(\"aut\", \"cre\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")),\n    person(\"R Foundation\", role = \"ctb\",\n           comment = \"Copy of R-project homepage cached as example\")\n  )",
-        "Description": "Bindings to 'libxml2' for working with XML data using a simple, \n    consistent interface based on 'XPath' expressions. Also supports XML schema\n    validation; for 'XSLT' transformations see the 'xslt' package.",
-        "License": "MIT + file LICENSE",
-        "URL": "https://xml2.r-lib.org, https://r-lib.r-universe.dev/xml2",
-        "BugReports": "https://github.com/r-lib/xml2/issues",
-        "Depends": "R (>= 3.6.0)",
-        "Imports": "cli, methods, rlang (>= 1.1.0)",
-        "Suggests": "covr, curl, httr, knitr, mockery, rmarkdown, testthat (>=\n3.2.0), xslt",
-        "VignetteBuilder": "knitr",
-        "Config/Needs/website": "tidyverse/tidytemplate",
-        "Encoding": "UTF-8",
-        "RoxygenNote": "7.3.3",
-        "SystemRequirements": "libxml2: libxml2-dev (deb), libxml2-devel (rpm)",
-        "Collate": "'S4.R' 'as_list.R' 'xml_parse.R' 'as_xml_document.R'\n'classes.R' 'format.R' 'import-standalone-obj-type.R'\n'import-standalone-purrr.R' 'import-standalone-types-check.R'\n'init.R' 'nodeset_apply.R' 'paths.R' 'utils.R' 'xml2-package.R'\n'xml_attr.R' 'xml_children.R' 'xml_document.R' 'xml_find.R'\n'xml_missing.R' 'xml_modify.R' 'xml_name.R' 'xml_namespaces.R'\n'xml_node.R' 'xml_nodeset.R' 'xml_path.R' 'xml_schema.R'\n'xml_serialize.R' 'xml_structure.R' 'xml_text.R' 'xml_type.R'\n'xml_url.R' 'xml_write.R' 'zzz.R'",
-        "Config/testthat/edition": "3",
-        "NeedsCompilation": "yes",
-        "Packaged": "2026-01-17 13:03:05 UTC; jeroen",
-        "Author": "Hadley Wickham [aut],\n  Jim Hester [aut],\n  Jeroen Ooms [aut, cre],\n  Posit Software, PBC [cph, fnd],\n  R Foundation [ctb] (Copy of R-project homepage cached as example)",
-        "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
-        "Repository": "CRAN",
-        "Date/Publication": "2026-01-17 16:10:02 UTC",
-        "Built": "R 4.5.3; x86_64-w64-mingw32; 2026-04-14 02:20:07 UTC; windows",
-        "Archs": "x64",
-        "RemoteType": "standard",
-        "RemoteRef": "xml2",
-        "RemotePkgRef": "xml2",
-        "RemoteRepos": "https://cran.rstudio.com",
-        "RemoteReposName": "CRAN",
-        "RemotePkgPlatform": "x86_64-w64-mingw32",
-        "RemoteSha": "1.5.2"
-      }
-    },
     "xtable": {
       "Source": "CRAN",
       "GithubRepo": null,
@@ -3698,7 +3586,7 @@
       "checksum": "391e855e4a0c20b01fca899fe0444604"
     },
     "DESCRIPTION": {
-      "checksum": "5b3679e9cdc4d91ac9114f9d54749f18"
+      "checksum": "941cb025f0a31e7d8b4d0d9f9793620c"
     },
     "dev/01_start.R": {
       "checksum": "999c179998525d4cf0ef886adfbec1c8"
@@ -3715,11 +3603,17 @@
     "dev/run_dev.R": {
       "checksum": "e16497b4e7787e5fd1495f9e1aa81182"
     },
+    "inst/app/www/about_fig_cap.md": {
+      "checksum": "3dccf2513ff6c7a2e51002467fa6bb54"
+    },
+    "inst/app/www/about_left_col_text.md": {
+      "checksum": "29de13d52de411d3e2204c621651595e"
+    },
     "inst/app/www/cbr_logo_horiz.png": {
       "checksum": "9008fcb8f0bb7469f7b7982211646858"
     },
     "inst/app/www/custom.css": {
-      "checksum": "0f0dbd055ca31a46137636cfd2540744"
+      "checksum": "2e316fc8afd59eaca1c8031b41355df8"
     },
     "inst/app/www/favicon.ico": {
       "checksum": "c31cac31d4a7d7486da4364a57c6f248"
@@ -3743,10 +3637,13 @@
       "checksum": "f39b1d6965eb27072ad9079cbbc113e8"
     },
     "inst/app/www/mds/page.md": {
-      "checksum": "8f3a2b483b4dbdc06b680bd57153d417"
+      "checksum": "52eeb197a82b843c3521eeede9cc0df6"
     },
     "inst/app/www/mds/sidebar.md": {
-      "checksum": "d5d31979a4016792cb07340cf8a124d0"
+      "checksum": "da0e81384261d69ef9b079208c49d9e1"
+    },
+    "inst/app/www/mds/welcome_modal_top - Copy.md": {
+      "checksum": "d41d8cd98f00b204e9800998ecf8427e"
     },
     "inst/app/www/mds/welcome_modal_top.md": {
       "checksum": "636a7801d03fc379fe60645f5c9b0181"
@@ -3754,8 +3651,11 @@
     "inst/app/www/modal/welcome_modal_top.md": {
       "checksum": "636a7801d03fc379fe60645f5c9b0181"
     },
+    "inst/app/www/simple_route_image.png": {
+      "checksum": "6b7fa76eb6da85e096785e75e0fbded7"
+    },
     "inst/global.R": {
-      "checksum": "26034946458b477719e309fc481a147d"
+      "checksum": "abb768a1d3717b36f67dad20df651453"
     },
     "inst/golem-config.yml": {
       "checksum": "abe08f0b0fc3106dffeb21d24badcddd"
@@ -3779,10 +3679,10 @@
       "checksum": "f9449395606b508d0215d74d5441533f"
     },
     "R/app_server.R": {
-      "checksum": "3b9fecb3a47e782bb39a9b94ee7976c0"
+      "checksum": "fa4f294a2ec703dc94504b4d4abfc858"
     },
     "R/app_ui.R": {
-      "checksum": "99e514f6834f706ff8e138ef7ce782af"
+      "checksum": "45fe04acfb5528ec39f0d9f7cc92b7c5"
     },
     "R/data.R": {
       "checksum": "a3b1ac8cf8cc8b264127bb8d17372a9c"
@@ -3794,10 +3694,10 @@
       "checksum": "1694775e681b1a4cf1ce4d2dda7e0316"
     },
     "R/mod_about_page.R": {
-      "checksum": "44d920ffc07a88f65d379a411414ed14"
+      "checksum": "fe79cc314221a417d99d3e32d7b2ddb3"
     },
     "R/mod_main_page.R": {
-      "checksum": "b78ca5158213e842d55a185194f79e8f"
+      "checksum": "adebf9b88ad815e9104a566eb731f3f3"
     },
     "R/run_app.R": {
       "checksum": "5ca384fc23bd323f795fa4fb12dc2921"
@@ -3812,7 +3712,7 @@
       "checksum": "30d08237a5c997eefc230fb3267e640a"
     },
     "R/utils_plotting.R": {
-      "checksum": "5e6e5b7797f41efefd2bc8a573cf9a11"
+      "checksum": "76adb5f0173c632ccc2c30a52859811a"
     },
     "R/utils_prep_datasets.R": {
       "checksum": "404c9098b1f880286976d3f001036392"

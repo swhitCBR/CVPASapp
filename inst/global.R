@@ -114,3 +114,5 @@ ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in
       'Head of Old River (HOR)' = "HOR",
       'Turner Cut Junction (TCJ)' = "TCJ"
     )
+
+    init_data_source <- "Previous year"

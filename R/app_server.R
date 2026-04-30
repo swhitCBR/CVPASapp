@@ -7,12 +7,13 @@
 app_server <- function(input, output, session) {
   # autoselect specify starting tab
 
-  tab_selected <- reactiveVal("main_input")
+  tab_selected <- reactiveVal("inputs")
   data_source_selected <- reactiveVal("prev_pan")
   shinydashboard::updateTabItems(
     "tabs",
     session = session,
-    selected = "main_input"
+    selected = "inputs"
+    # selected = "about"
   )
 
   # {DEBUGGING}
@@ -21,6 +22,12 @@ app_server <- function(input, output, session) {
     tab_selected(input$tabs)
   })
 
+  
+
+    observeEvent(input$goto_inputs_butt, {
+    # print(input$tabs)
+    tab_selected(input$goto_inputs_butt)
+  })
   # Switching based on data source
   observeEvent(input$data_source_picker, {
     print(input$env_dat_tabpan)
@@ -165,9 +172,9 @@ app_server <- function(input, output, session) {
       # choices = c("None", as.character(2011:2024)),
       choices = c(as.character(2011:2024),"None"),
       # selected = NULL,
-            selected = "None",
+            # selected = "None",
 
-      # selected = init_water_year,
+      selected = init_water_year,
       choicesOpt = list(
         style = paste0(
           "background-color:",
@@ -176,57 +183,17 @@ app_server <- function(input, output, session) {
         )
       )
     )
-    # )
-    # tagList(
-    #   div(
-    #     style = "display: inline-flex; align-items: left;margin-top: 10px;",
-    #     div(
-    #       style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
-    #       shiny::HTML("<h5> <b> Year: </b>  </h4>")
-    #     ),
-    #     div(
-    #       style = "height=25px",
-    #       shinyWidgets::pickerInput(
-    #         "year_pickerOLD",
-    #         # label="Pick year",
-    #         label = NULL,
-    #         choices = as.character(2011:2024),
-    #         # selected = NULL,
-    #         selected = init_water_year,
-    #         choicesOpt = list(
-    #           style = paste0(
-    #             "background-color:",
-    #             WYT_cols[match(ann_HORbar_WYT_data$WYT, names(WYT_cols))],
-    #             ";"
-    #           )
-    #         )
-    #       )
-    #     )
-    #   )
-    # )
+    
   })
 
   output$data_source_ui <- renderUI({
-    # div(
-    #   style = "text-align: end; margin-left: 10px; margin-top: 10px;",
-    #   div(
-    #     style = "display: inline-flex; align-items: ;margin-top: 10px;",
-    #     div(
-    #       style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
-    #       shiny::HTML("<h5> <b> Source: </b>  </h4>")
-    #       # shiny::HTML("<h5> <b> Use data from: </b>  </h4>")
-    #     ),
-    #     div(
-    #       style = "height=15px",
+ 
     shinyWidgets::pickerInput(
       "data_source_picker",
-      # label="Source",
       choices = c("Previous year", "Uploaded file (.csv)","None"),
-      selected="None"
+      # selected="None"
+      selected= init_data_source
     )
-    #     )
-    #   )
-    # )
   })
 
   output$input_panel_UI <- renderUI({
@@ -253,8 +220,6 @@ app_server <- function(input, output, session) {
         
     "
       ))
-      # ,
-      #   uiOutput("accord_panel_ui")
     ,
       column(
         width = 7,
@@ -262,7 +227,7 @@ app_server <- function(input, output, session) {
         p(
           "This tool provides predictions of survival and route usage for hypothetical releases of juvenile Steelhead 
           based on conditions in the environment and individual size and location. Environmental conditions are represented using 
-          daily summaries of field measurements obtained from monitoring stations spread throughout the region. The conditions on
+          daily summaries of field measurements obtained from monitoring stations throughout the region. The conditions on
           the day of arrival at key junction serve as inputs for statistical sub-models that are used to generate route usage
           and survival probability predictions."
         ),
@@ -277,7 +242,7 @@ app_server <- function(input, output, session) {
             )
           ),
           tags$li(
-            "Indicate the source of the daily hydrologic data used for generating predictions, whether from (1) a previous year or (2) a user-provided data set",
+            "Indicate the source of the daily hydrologic data used for generating predictions;",br(),"either: (1) a previous year or (2) a user-provided data set",
             tags$ul(
               tags$li(
                 style = "list-style-type: none;",
@@ -286,7 +251,6 @@ app_server <- function(input, output, session) {
                   div(
                     style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
                     shiny::HTML("<h5> <b> Source: </b>  </h4>")
-                    # shiny::HTML("<h5> <b> Use data from: </b>  </h4>")
                   ),
                   div(
                     style = "height=15px",
@@ -317,26 +281,123 @@ app_server <- function(input, output, session) {
           title = "Set Individual Attributes",
           # title = "Fork Length",
           # status = "danger",
-          collapsed = FALSE,
+          collapsed = TRUE,
           column(
             width = 6,
             h5(strong("Fork Length")),
             tags$ul(
+                      style = "padding-inline-start: 20px;",
               tags$li(
-                "By default, all predictions are based on the average fork length of  juvenile Steelhead used in acoustic telemetry studies (2011-2016)."
+                "By default, all predictions are based on the average fork length of juvenile Steelhead used in modeling."
               )
             )
           ),
           column(width = 6, shiny::uiOutput("flength_sel_ui"))
         )
-      ),
-      footer = div(
-        actionButton("check_inputs_butt", "Check"),
-        actionButton("inputs_done", "Done"),
-        style = "display:inline-block; float:right"
       )
+
+          ,
+      footer = 
+    #  fluidRow(
+      column(
+        width=12,
+
+      br(),
+       div(
+            # class = "thumbnail-section",
+            # style = "margin-left: 40px;",
+            h4(strong("Check Inputs")),
+            p("Verify that selected/uploaded values conform with data used to fit statistical sub-models")
+        )
+        ,
+        column(width=3,
+            actionButton("check_inputs_butt", "Check Inputs") 
+          ,
+            #  shinyjs::disabled(
+            checkboxInput("inputs_check", label = "Valid")
+             
+            
+            ,
+                    # shinyjs::disabled(
+                      # div(
+                      shinyjs::disabled(
+        shinyWidgets::prettyCheckbox(
+           inputId = "inputs_check_pretty",
+           value=FALSE, 
+           label = "Valid", 
+           icon = icon("check")
+          #  icon = icon("square")
+          )
+        )
+
+      )
+      # ,
+      # actionButton("generate_ests_butt", "Generate Estimates"
+    
+        ,
+          column(width = 3,
+              actionButton("load_butt", "load"),
+              actionButton("reset_butt", "reset"),
+
+              # checkboxInput("load_check", label = "load"),
+              actionButton("inputs_done", "Done"),
+                      # ,
+      actionButton("generate_ests_butt", "Generate Estimates")
+          )
+          ,
+            column(verbatimTextOutput("sel_in_ls_text"), width = 3),
+            column(verbatimTextOutput("glob_in_ls_text"), width = 3)
+        )
+      # )
+      # ,
+      #        fluidRow(
+      #       # h1("page_top")
+      #       column(
+      #         actionButton("load_butt", "load"),
+      #         checkboxInput("load_check", label = "load"),
+      #         actionButton("inputs_done", "Done"),
+      #         width = 2
+      #       ),
+      #       column(verbatimTextOutput("sel_in_ls_text"), width = 5),
+      #       column(verbatimTextOutput("glob_in_ls_text"), width = 5)
+      #     )
+      # ,
+      #   div(
+      #   # actionButton("check_inputs_butt", "Check"),
+      #   style = "display:inline-block; float:right"
+      # )
+
     )
   })
+
+observeEvent(input$load_butt,{
+  # shinyWidgets::updatePrettyCheckbox(
+  shinyWidgets::updatePrettyCheckbox(
+    session=session,
+    inputId="inputs_check",
+    value=TRUE)
+
+  shinyWidgets::updatePrettyCheckbox(
+    session=session,
+    inputId="inputs_check_pretty",
+    value=TRUE)
+  # updateinputs_check
+})
+
+observeEvent(input$reset_butt,{
+  # shinyWidgets::updatePrettyCheckbox(
+  shinyWidgets::updatePrettyCheckbox(   
+    session=session,
+    inputId="inputs_check",
+    value=FALSE)
+  # updateinputs_check
+
+    shinyWidgets::updatePrettyCheckbox(
+    session=session,
+    inputId="inputs_check_pretty",
+    value=FALSE)
+})
+
 
   output$time_of_year_ui <- renderUI({
     tagList(
@@ -344,13 +405,7 @@ app_server <- function(input, output, session) {
         style = "display: inline-flex; align-items: left;margin-top: 10px;margin-left: 20px;",
         div(
           style = "margin-right: 20px;",
-          # h5(strong("Start and End Dates")),
-          # h5(strong("Time of Year")),
-
-    
           shiny::uiOutput("start_date_entry_ui")
-          # ,
-          # hr()
         )
       ),
 
@@ -378,22 +433,24 @@ app_server <- function(input, output, session) {
         id="accordz",
          shinydashboardPlus::accordionItem(
           title = "Select/Review Daily Environmental Data",
-          collapsed=FALSE,
+          collapsed=TRUE,
+          # collapsed=FALSE,
           # shinydashboardPlus::box(
             # column(width=6,          
               column(
-            width = 4,
+            width = 5,
 
         div(
-                      style = "padding-inline-start: 10px;",
-
       tags$ul(
+        style = "padding-inline-start: 10px;",
         tags$li(
             h5(
               "Select a previous year from the dropdown menu or by clicking on a row in the 'Annual Summary Table' clicking on a row"
             ),
 
             div(
+
+              
               tags$ul(
                 tags$li(
                   style = "list-style-type: none;",
@@ -438,13 +495,13 @@ app_server <- function(input, output, session) {
             shiny::uiOutput("time_of_year_ui")
           )#,
           ,
-          column(width = 8, 
+          column(width = 7, 
           # uiOutput("env_panel_ui"))
         # )
             # column(width=6,)
  
 
-                  shiny::tabsetPanel(
+        shiny::tabsetPanel(
           id = "env_dat_tabpan",
           shiny::tabPanel(
             value = "prev_pan",
@@ -457,23 +514,27 @@ app_server <- function(input, output, session) {
             # uiOutput("year_picker_ui")
             # ,
             # h5("Select a water year by clicking on a row"),
+            column(
+              width = 7,
+              # shinydashboardPlus::box(
+              #   title="ha",
             uiOutput("table_in_WY_UI")
-            # ),
-
-            # column(width=6,
-            #  h5(strong("Time of Year")),
-
-            #     p("Provide a date or range of dates representing arrival at the selected junction (HOR or TCJ) by entering date(s) or adjusting Day of Year slider")
-            #   ,
-            #   shiny::uiOutput("start_date_entry_ui"),
-            #   hr(),
-            #   shiny::uiOutput("DOY_slider_ui"),
-
-            #   plotOutput("doy_ref_strt_loc", height = "100px"),
-            #    shiny::HTML("<p style ='font-size:80%'> Histogram depicts day of year when acoustic-tagged juvenile Steelhead were detected at each location, median day of year is selected by default. </p>")
-
             # )
           ),
+
+            column(width=5,
+            # tags$dl(
+            h4("Fields"),
+            div(
+            style="margin-left: 20px;",
+            HTML('<strong>Year:</strong> Calendar Year</p>'),
+            HTML('<strong>Category:</strong> Water Year Type (SJ)</p>'),
+            HTML('<strong>HOR Barrier:</strong> Barrier at Head of Old River</p>'),
+            HTML('<strong>Model:</strong> Data in year to fit statistical sub-models</p>')
+            )
+        )
+        )
+          ,
           # shiny::tabPanel(
           #         title = "Single Variable",
           #         collapsed = F,
@@ -497,12 +558,12 @@ app_server <- function(input, output, session) {
           #   # p("placeholder")
           #   plotOutput('doy_latt_ggpplt')
           # ),
-          shiny::tabPanel(
-            # value="_pan",
-            title = "Customize Inputs",
-            # p("placeholder")
-            # plotOutput('doy_latt_ggpplt')
-          )
+          # shiny::tabPanel(
+          #   # value="_pan",
+          #   title = "Customize Inputs",
+          #   # p("placeholder")
+          #   # plotOutput('doy_latt_ggpplt')
+          # )
           # shiny::tabPanel(
           #   value="cust_pan",
           #   title = "Custom",
@@ -684,8 +745,8 @@ app_server <- function(input, output, session) {
         mode = 'single',
         extentions = "KeyTable",
         target = "row",
-        # selected = which(ann_HORbar_WYT_data$Year == init_water_year)
-        selected = NULL
+        selected = which(ann_HORbar_WYT_data$Year == init_water_year)
+        # selected = NULL
       ),
       # server=FALSE,
       colnames = c("Year", "Category", "HOR Barrier", "Model"),
@@ -695,21 +756,22 @@ app_server <- function(input, output, session) {
       options = list(
         keys = TRUE, #related to KeyTable extension
         info = FALSE,
-        dom = "t",
-        # dom = '<"<"bottom"ip>',
+        # dom = "t",
+        dom = '<"<"bottom"ip>',
         stripeClasses = list(),
-        pageLength = 17,
-        # lengthMenu = c(13),
+        pageLength = 9,
+        # lengthMenu = c(10),
         # lengthMenu = c(17),
-        pagingType = "simple",
-        initComplete = DT::JS(
-          "function(settings, json) {",
-          "$(this.api().table().header()).css({'font-size': '75%'});",
-          "$(this.api().table().body()).css({'font-size': '75%'});",
-          "$(this.api().table().caption()).css({'font-size': '75%'});",
-          "$(this.api().table().footer()).css({'font-size': '75%'});",
-          "}"
-        )
+        pagingType = "simple"
+        # ,
+        # initComplete = DT::JS(
+        #   "function(settings, json) {",
+        #   "$(this.api().table().header()).css({'font-size': '75%'});",
+        #   "$(this.api().table().body()).css({'font-size': '75%'});",
+        #   "$(this.api().table().caption()).css({'font-size': '75%'});",
+        #   "$(this.api().table().footer()).css({'font-size': '75%'});",
+        #   "}"
+        # )
       )
     ) |>
       DT::formatStyle(
@@ -789,7 +851,9 @@ app_server <- function(input, output, session) {
 
   # update values when water year is selected
   observeEvent(
-    input$load_check == TRUE,
+    input$load_butt
+    # input$load_check == TRUE
+    ,
     {
       global$past_water_year <- ann_HORbar_WYT_data[
         input$table_in_WY_rows_selected,
@@ -797,9 +861,7 @@ app_server <- function(input, output, session) {
       ]
       global$WYT <- ann_HORbar_WYT_data[input$table_in_WY_rows_selected, "WYT"]
       global$BAR <- ann_HORbar_WYT_data[
-        input$table_in_WY_rows_selected,
-        "barrier"
-      ]
+        input$table_in_WY_rows_selected,"barrier"]
       # initializing global day of year variables
       global$start_date <- as.Date(
         paste(global$start_day, global$past_water_year, sep = "-"),
@@ -809,6 +871,7 @@ app_server <- function(input, output, session) {
         paste(global$end_day, global$past_water_year, sep = "-"),
         format = "%j-%Y"
       )
+      global$flength <- in_selected_RV$flength
     }
   )
 
@@ -823,18 +886,29 @@ app_server <- function(input, output, session) {
         icon = icon("house"),
         selected = T
       ),
-      shinydashboard::menuItem(
-        "Main",
-        tabName = "main",
-        icon = icon("book")
-      ),
-      shinydashboard::menuItem(
+      #   shinydashboard::menuItem(
+      #   "Prediction",
+      #    startExpanded = TRUE,
+        
+      #   shinydashboard::menuSubItem(
+      #                   text = "aaa",
+      #                   icon = icon("sliders")
+      #               )
+
+      # ),
+shinydashboard::menuItem(
         "Inputs",
-        tabName = "main_input",
+        tabName = "inputs",
         icon = icon("sliders"),
         startExpanded = T,
         selected = F
       ),
+      shinydashboard::menuItem(
+        "Methods and References",
+        tabName = "met_ref",
+        icon = icon("book")
+      ),
+      
       # shinydashboard::menuItem(
       #   text = "Estimates",
       #   tabName = "estimates",
@@ -863,6 +937,9 @@ app_server <- function(input, output, session) {
     )
   })
 
+#  output$about_page_UI <-  renderUI({})
+
+
   # because this is within a renderUI, changing the input$tab value rewrites the sidebar content
   output$top_of_body_text <- renderUI({
     switch(
@@ -873,22 +950,28 @@ app_server <- function(input, output, session) {
       # "main_input"=shiny::tagList(fluidRow( h2("new_render_pg_main_input")  ))
 
       "about" = shiny::tagList(
+
+        # p("temp_about")
+        # ,
+        mod_about_page_ui("mod_about_page-about_page_ui_1")
+
+        # uiOutput("about_page_UI")
         # fluidRow(
         # h2("new_render_pg_about"),
         #shiny::HTML(
         # wellPanel(
-        shiny::HTML(md_txt_extract(
-          md_addr = "inst/app/www/mds/page.md",
-          # header_ref = paste0("# ", tab_selected()),
-          header_ref = paste0("# ", "about"),
-          asHTML_frag = TRUE
-        ))
-        #  )
+        # shiny::HTML(md_txt_extract(
+        #   md_addr = "inst/app/www/mds/page.md",
+        #   # header_ref = paste0("# ", tab_selected()),
+        #   header_ref = paste0("# ", "about"),
+        #   asHTML_frag = TRUE
+        # )
+      # )
       ),
-      "main" = shiny::tagList(fluidRow(
-        h2("new_render_pg_main")
+      "met_ref" = shiny::tagList(fluidRow(
+        h2("new_render_pg_met_ref")
       )),
-      "main_input" = shiny::tagList(
+      "inputs" = shiny::tagList(
         uiOutput("input_page_UI")
       )
     )
@@ -1151,20 +1234,20 @@ app_server <- function(input, output, session) {
 
   observeEvent(input$inputs_done, {
     shinydashboardPlus::updateBox("input_box2", action = "toggle")
-    shinydashboardPlus::updateBox("input_box3", action = "toggle")
+    # shinydashboardPlus::updateBox("input_box3", action = "toggle")
 
     #  input$env_dat_tabpan=="prev_pan"
     print(input$env_dat_tabpan)
   })
 
   # button at the top
-  observeEvent(input$inputs_done2, {
-    if (input$input_box3$collapsed) {
-      #  shinydashboardPlus::updateBox("input_box3",action = "update",options=list(status="primary"))
-      shinydashboardPlus::updateBox("input_box3", action = "toggle") #options=list(status="danger"))
-    }
-    if (!input$input_box2$collapsed) {
-      shinydashboardPlus::updateBox("input_box2", action = "toggle") #options=list(status="danger"))
-    }
-  })
+#   observeEvent(input$inputs_done2, {
+#     if (input$input_box2$collapsed) {
+#       #  shinydashboardPlus::updateBox("input_box3",action = "update",options=list(status="primary"))
+#       shinydashboardPlus::updateBox("input_box2", action = "toggle") #options=list(status="danger"))
+#     }
+#     if (!input$input_box2$collapsed) {
+#       shinydashboardPlus::updateBox("input_box2", action = "toggle") #options=list(status="danger"))
+#     }
+#   })
 }

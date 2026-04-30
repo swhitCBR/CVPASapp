@@ -13,11 +13,49 @@ mod_about_page_ui <- function(id) {
     
     fluidRow(
       shinydashboard::box(
-        title = HTML("About Title"),
+        title = HTML("About"),
+        # title = HTML("Purpose <small style ='font-size:0.6em; color: white;'>BetaVersion.Nov05</small>"),
         width = 12,
         solidHeader = TRUE,
         status = "primary",
-          shiny::includeMarkdown(system.file("app/www/mds/about_text.md", package = "CVPASalpha"))
+        column(
+          width = 5
+          ,
+          shiny::includeMarkdown(system.file("app/www/about_left_col_text.md", package = "CVPASapp"))
+          ,
+            div(
+            class = "thumbnail-section",
+            actionButton("goto_inputs_butt", "Select Inputs",
+                         class = "btn btn-primary",
+                         style = "font-size: 14px; color: white;
+                  padding: 12px; text-align: center;"
+            ) 
+          )
+
+        )
+        ,
+        column(
+          width = 7,
+          shinydashboard::box(
+            tags$img(
+            src = "www/simple_route_image.png",
+            style = "width: 100%; height: auto;",# border: 2px solid #024c63;",
+            name = "plasceholder text",
+            alt = "plasceholder text"
+            )
+            ),
+          shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/about_fig_cap.md",
+           package = "CVPASapp"))
+          ),
+                    div(
+            class = "thumbnail-section",
+            actionButton("show_modal_1", "Show Welcome Pop-up",
+                         class = "btn btn-primary",
+                         style = "font-size: 14px; color: white;
+                  padding: 8px; text-align: center;"
+            ) 
+          )
+        )
       )
     )
   )

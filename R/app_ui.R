@@ -39,32 +39,19 @@ app_ui <- function(request) {
         # add CSS CBR global theme
         fresh::use_theme(CBRtheme),
         tagList(
-          h2("CVPAS - Central Valley Steelhead Survival and Routing Predictions"),
+          h2("CVPAS - South Delta Central Valley Steelhead Survival and Routing Predictions"),
           hr(),
-          # column(width=6,
-              # tags$img(
-              #   src = "www/simple_route_image.png",
-              #   style = "width: 400px; height: auto; border: 2px solid #024c63;",
-              #   name = "placeholder text",
-              #   alt = "placeholder text"
-              #   )
-                # ,
-                    #   p("This tool generates survival and routing predictions for juvenile Steelhead orginating from the San Joaquin basin based environmental and operational conditions.")
-                    # )
-          #   ,
-          # column(width=6,
-                      p("This tool generates survival and routing predictions for juvenile Steelhead orginating from the San Joaquin basin based environmental and operational conditions.")
-                    # )
-          ,
+          # TOP ROW 
+          # p("This tool generates survival and routing predictions for juvenile Steelhead orginating from the San Joaquin basin based environmental and operational conditions.")
+          # ,
           uiOutput("top_of_body_text"),
           shinydashboard::tabItems(
             shinydashboard::tabItem(
-              "about",
-              mod_about_page_ui("about_page_ui_1")
+              "about"#,
             ),
             shinydashboard::tabItem(
-              "main",
-              mod_main_page_ui("main_page_ui_1")
+              "met_ref",
+              mod_met_ref_page_ui("met_ref_page_ui_1")
               # ,
               # ,
 
@@ -75,18 +62,8 @@ app_ui <- function(request) {
               # )
             )
           )
-          ,
-          fluidPage(
-            # h1("page_top")
-            column(
-              actionButton("load_butt", "load"),
-              checkboxInput("load_check", label = "load"),
-              actionButton("inputs_done2", "Done"),
-              width = 2
-            ),
-            column(verbatimTextOutput("sel_in_ls_text"), width = 5),
-            column(verbatimTextOutput("glob_in_ls_text"), width = 5)
-          )
+          # ,
+ 
           # table_in_WY2
           # shinydashboard::tabItem(
           #   "met_ref",

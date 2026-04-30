@@ -7,13 +7,13 @@
 #' @noRd
 #'
 #' @importFrom shiny NS tagList
-mod_main_page_ui <- function(id) {
+mod_met_ref_page_ui <- function(id) {
   ns <- NS(id)
   tagList(
     
     fluidRow(
 
-      h4("main_pg_neglected")
+      h4("met_ref_pg_neglected")
       # tags$head(
       #   # tags$style(HTML('table.dataTable tr.selected td, table.dataTable td.selected {background-color: pink !important;}')),
       #   tags$style("
@@ -41,10 +41,10 @@ mod_main_page_ui <- function(id) {
   )
 }
 
-#' main_page Server Functions
+#' met_ref_page Server Functions
 #'
 #' @noRd
-mod_main_page_server <- function(id){
+mod_met_ref_page_server <- function(id){
   moduleServer(id, function(input, output, session){
     ns <- session$ns
     
@@ -52,9 +52,9 @@ mod_main_page_server <- function(id){
 }
 
 ## To be copied in the UI
-# mod_main_page_ui("main_page_1")
+# mod_met_ref_page_ui("met_ref_page_1")
 
 ## To be copied in the server
-# mod_main_page_server("main_page_1")
+# mod_met_ref_page_server("met_ref_page_1")
 
 

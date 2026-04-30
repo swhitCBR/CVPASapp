@@ -38,6 +38,8 @@ usethis::use_package("dplyr")
 
 options(rsconnect.packrat = TRUE)
 rsconnect::writeManifest()
+usethis::use_package("shinyWidgets")
+library(shinyWidgets)
 
 ################################################################################ #
 

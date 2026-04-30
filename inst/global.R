@@ -116,3 +116,7 @@ ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in
     )
 
     init_data_source <- "Previous year"
+
+     surv_route_diagram_wtt_xml <- xml2::read_xml(
+    "inst/app/www/surv_route_diagram_wtt.svg"
+  )

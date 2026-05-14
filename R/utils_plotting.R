@@ -13,7 +13,8 @@
 #' @noRd
 ggplt_doy_ref_hist <- function(
     DOY_arvDF_l_in,
-    LOC_in,start_day_in,
+    LOC_in,
+    start_day_in,
     end_day_in,
     doy_hst_xlims=c(0,250)){
   

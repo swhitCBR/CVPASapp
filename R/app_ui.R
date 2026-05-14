@@ -7,24 +7,147 @@
 app_ui <- function(request) {
   tagList(
     shinyjs::useShinyjs(),
+    tags$head(tags$style(HTML("
+    .dropdown-menu span {width: 100%;} 
+    .text-muted {color: black !important; float: right;}
+    .bootstrap-select .dropdown-menu {
+    min-width: 150;")))
+    ,
+    #       tags$head(
+    #             tags$style(HTML("
+    #   /* Make the dropdown open on hover */
+    #   .dropdown:hover .dropdown-menu {
+    #     display: block;
+    #     margin-top: 0;
+    #   }
+    # ")),
+    # # tags$style(HTML("
+    # #   /* Change font size of the input text box */
+    # #   #date_start_sep {font-size: 75%;height: auto;}
+    # #   #date_start_sep-label {font-size: 75%;height: auto;}
+    # #   #date_end_sep {font-size: 75%;height: auto;}
+    # #   #date_end_sep-label {font-size: 75%;height: auto;}"
+    # #    ))
+    #   ),
     # Leave this function for adding external resources
     golem_add_external_resources(),
     shinydashboardPlus::dashboardPage(
+
       header = shinydashboardPlus::dashboardHeader(
-        title = "CVPAS - Steelhead",
-        #{{alt_config 1}--sub argument}
-        # title=NULL,
-        tags$li(
-          class = "dropdown header-img",
-          tags$style(HTML(".header-img {float: right;padding-right: 10px;")),
-          #{{alt_config 1}--uncomment}
-          # span("CVPAS - Steelhead", style = 'background-color: #01394a; color: white; font-weight: bold;transition: width .3s ease-in-out;display: block;float: left;height: 50px;font-size: 20px;line-height: 50px;text-align: left;width: 300px;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;padding: 0 15px;font-weight: 300;overflow: hidden;'),
-          tags$img(
+        leftUi=
+         tagList(
+        # shinyWidgets::dropdownButton(
+        #       circle = TRUE,
+        #       size = "xs",
+        #       status = "primary",
+        #       icon = icon("info", style = "color: white;"),
+        #       width = "300px",
+        #       HTML("<div style='color: black; margin: 10px;'>
+        #         <p>This interactive online tool (Shiny app) provides reach survival estimates for wild spring/summer Chinook Salmon, steelhead, and fall Chinook Salmon
+        #         originating upstream of Lower Granite Dam (Snake River, Pacific Northwest, USA) using a hierarchical Bayesian CJS mark-recapture model based on the method from Gosselin et al. (2021).</p>
+        #         <p>The probability of survival includes direct and carryover effects on wild Snake River Chinook Salmon and Steelhead from juvenile to adult life stages in the hydrosystem.</p>
+        #         <br>
+        #         <p>To assist with navigation, descriptions of the menu items, tabs, and acronyms used in the tool are provided below.</p>
+        #       </div>
+        #       ")
+        #   )
+    #       ,
+        
+    #       shinyWidgets::dropdown(
+    #             icon=icon("info"),
+    #             tags$h3("List of Input"),
+
+    # shinyWidgets::pickerInput(inputId = 'xcol2',
+    #             label = 'X Variable',
+    #             choices = names(iris),
+    #             options = list(`style` = "btn-info"))
+    #       )
+          # ,
+          # shinydashboard::dropdownMenu(
+          # icon=icon("info"),
+          # tags$li(
+          #   p("TEMP")
+          # )
+          # # ,
+          # # shinydashboardPlus::messageItem(from = "Support Team", message = "This is the content of a message.", time = "5 mins")#,
+          # # shinydashboardPlus::messageItem(from = "Support Team", message = "This is the content of another message.", time = "2 hours"),
+          # # shinydashboardPlus::messageItem(from = "New User", message = "Can I get some help?", time = "Today")
+        # )
+        # ,
+        # shinyWidgets::dropdown(
+        #   label = "Controls",
+        #   icon = icon("sliders-h"),
+        #   status = "primary",
+        #   circle = FALSE,
+        #   sliderInput(
+        #     inputId = "dropdown_header",
+        #     label = "Number of observations",
+        #     min = 10, max = 100, value = 30
+        #   )
+        # )
+          # ,
+        actionButton(
+          # tags$style("color:white"),
+          inputId = "top_about_butt",
+          label = "About",
+          icon("house", style = "color: white;"),
+          class = "btn-primary btn-sm",
+          style="color: #fff"
+          # style="color: #fff; background-color: #337ab7; border-color: #2e6da4"
+            )
+            ,
+        actionButton(
+          # tags$style("color:white"),
+          inputId = "top_met_ref_butt",
+          label = "Methods and References",
+          icon("book", style = "color: white;"),
+          class = "btn-primary btn-sm",
+          style="color: #fff"
+          # style="color: #fff; background-color: #337ab7; border-color: #2e6da4"
+            )
+        #     ,
+        # shinyWidgets::dropdownButton(
+        #   label = "Methods and References",
+        #   status = "primary",
+        #   circle = FALSE,
+        #   icon = icon("book", style = "color: white;"),
+        #   width = "300px",
+        #       HTML("<div style='color: black; margin: 10px;'>
+        #         <p>This interactive online tool (Shiny app) provides reach survival estimates for wild spring/summer Chinook Salmon, steelhead, and fall Chinook Salmon
+        #         originating upstream of Lower Granite Dam (Snake River, Pacific Northwest, USA) using a hierarchical Bayesian CJS mark-recapture model based on the method from Gosselin et al. (2021).</p>
+        #         <p>The probability of survival includes direct and carryover effects on wild Snake River Chinook Salmon and Steelhead from juvenile to adult life stages in the hydrosystem.</p>
+        #         <br>
+        #         <p>To assist with navigation, descriptions of the menu items, tabs, and acronyms used in the tool are provided below.</p>
+        #       </div>
+        #       ")
+        # )
+        ,
+        tags$img(
             src = "www/cbr_logo_horiz.png",
-            height = "50px",
+            height = "40px",
             alt = "Image of Columbia Basin Research logo"
           )
         )
+          ,
+
+        title = "CVPAS - Steelhead"
+        # ,
+        # #{{alt_config 1}--sub argument}
+        # # title=NULL,
+        # tags$li(
+        #   class = "dropdown header-img",
+        #   style="display: inline-flex;",
+        #   # tags$style(HTML(".header-img {float: right;padding-right: 10px;")),
+        #   tags$style(HTML(".header-img {float: right;padding-right: 10px;")),
+        #   #{{alt_config 1}--uncomment}
+        #   # span("CVPAS - Steelhead", style = 'background-color: #01394a; color: white; font-weight: bold;transition: width .3s ease-in-out;display: block;float: left;height: 50px;font-size: 20px;line-height: 50px;text-align: left;width: 300px;font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;padding: 0 15px;font-weight: 300;overflow: hidden;'),
+        #   # shinydashboardPlus::userOutput("user"),
+        #   tags$img(
+        #     src = "www/cbr_logo_horiz.png",
+        #     height = "50px",
+        #     alt = "Image of Columbia Basin Research logo"
+        #   )
+        # )
       ),
       ## Sidebar content - used as a navigation menu to each tab
       sidebar = shinydashboard::dashboardSidebar(
@@ -35,8 +158,8 @@ app_ui <- function(request) {
           uiOutput("cbr_dyn_sidebar_ui")
           ,
           verbatimTextOutput("sel_in_ls_text")
-          ,
-          verbatimTextOutput("glob_in_ls_text")
+          # ,
+          # verbatimTextOutput("glob_in_ls_text")
         )
       ),
       body = shinydashboard::dashboardBody(

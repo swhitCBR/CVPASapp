@@ -24,37 +24,44 @@ mod_about_page_ui <- function(id) {
           shiny::includeMarkdown(system.file("app/www/about_left_col_text.md", package = "CVPASapp"))
           ,
             div(
+              style="display:inline-flex; margin-right: 10px",
+              div(
             class = "thumbnail-section",
             actionButton("goto_inputs_butt", "Select Inputs",
                          class = "btn btn-primary",
-                         style = "font-size: 14px; color: white;
-                  padding: 12px; text-align: center;"
+                         style = "font-size: 13px; color: white; padding: 12px; text-align: center;"
             ) 
           )
+          ,
+          div(
+            class = "thumbnail-section",
+            actionButton("goto_met_ref_butt", "Methods and References",
+                         class = "btn btn-primary",
+                         style = "font-size: 13px; color: white;margin-left: 10px;
+                          padding: 12px; text-align: center;"
+            ) 
+          )
+        )
 
         )
         ,
         column(
           width = 7,
-          shinydashboard::box(
+          # shinydashboard::box(
             tags$img(
             src = "www/simple_route_image.png",
-            style = "width: 100%; height: auto;",# border: 2px solid #024c63;",
-            name = "plasceholder text",
-            alt = "plasceholder text"
+            style = "width: 100%; height: 100%;",# border: 2px solid #024c63;",
+            name = "Schematic view of junctions and routes through the south Delta ",
+            alt = "Routes bifurcate at the Head of Old River and with the path along the San Joaquin River splitting again at Turner Cut junction; all paths converge prior to reaching Chipps Island"
             )
-            ),
-          shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/about_fig_cap.md",
+            ,
+            tags$caption(
+                        shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/about_fig_cap.md",
            package = "CVPASapp"))
-          ),
-                    div(
-            class = "thumbnail-section",
-            actionButton("show_modal_1", "Show Welcome Pop-up",
-                         class = "btn btn-primary",
-                         style = "font-size: 14px; color: white;
-                  padding: 8px; text-align: center;"
-            ) 
-          )
+            )
+
+            )
+
         )
       )
     )

@@ -7,3 +7,4 @@ options( "golem.app.prod" = FALSE) # production mode vs development mode
 CVPASapp::run_app()#display.mode = "showcase") # add parameters here (if any)
 
 # , display.mode = "showcase"
+

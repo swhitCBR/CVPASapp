@@ -15,23 +15,23 @@ table.dataTable thead {
     background-color: #B6B6B6 !important;
 }
 
-table.dataTable tbody tr.selected td,
+/* table.dataTable tbody tr.selected td,
 table.dataTable tbody td.selected {
     box-shadow: inset 0 0 0 9999px #024c63 !important;
-}
+} */
 
-table.dataTable tbody tr:active td {
+/* table.dataTable tbody tr:active td {
     background-color: #024c63 !important;
-}
+} */
 
-:root {
+/* :root {
     --dt-row-selected: transparent !important;
-}
+} */
 
-table.dataTable tbody tr:hover, table.dataTable tbody tr:hover td {
+/* table.dataTable tbody tr:hover, table.dataTable tbody tr:hover td {
     background-color: #01394A !important;
     color: #F8F8F8 !important;
-}
+} */
 
 
 /* slider bar color */
@@ -93,27 +93,92 @@ table.dataTable tbody tr:hover, table.dataTable tbody tr:hover td {
 } */
 
 .dropdown-item:hover {
-  background-color: #024c63 !important; /* Your preferred color */
+  /* background-color: #024c63 !important; Your preferred color */
   color: white !important;
 }
 
 .dropdown-menu .active {
   color: #fff !important;
   text-shadow: none;
-  background-color: #024c63 !important; 
+  /* background-color: #024c63 !important;  */
 }
 
 
-/* airdatepicker input */
+/* airdatepicker input
 /* Color for dates within the selected range */
-.air-datepicker-cell.-in-range- {
+/* .air-datepicker-cell.-in-range- {
   background-color: #d1e7dd !important; /* Light green range */
-  color: #000 !important;
-}
+  /* color: #000 !important;
+} */ 
 
 /* Color for the start and end dates */
 .air-datepicker-cell.-selected-, 
 .air-datepicker-cell.-selected-.-focus- {
-  background-color: #024c63 !important; /* Dark green selection */
+  background-color: #024c63 !important; 
   color: #fff !important;
 }
+
+
+table.dataTable {
+  border-collapse: collapse !important;
+}
+
+/* Right justify logo and dropdowns in the leftUI() dashboard object */
+.navbar-custom-menu{
+  float: right !important; 
+}
+
+
+/* Plus and minus symbols */
+summary::before {
+  content: "+ ";
+  /* font-weight: bold; */
+  /* font-size: 18px; */
+}
+
+/* 3. Change to minus when open */
+details[open] summary::before {
+  content: "− ";
+  /* font-size: 18px; */
+}
+
+
+
+summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* padding: 10px 15px; */
+  /* font-weight: bold; */
+}
+
+/* Add a horizontal line between title and content */
+details[open] > summary {
+  border-bottom: 2px solid #fff9f1;}
+
+/* details[open] > summary::after {
+  transform: rotate(-180deg);
+}
+
+summary::-webkit-details-marker {
+  display: none;
+} */
+
+summary {
+  color: #30353b;
+  border-radius: 5px;
+}
+
+details {
+  color: #30353b !important;
+}
+
+/* details[open] summary {border-radius: 5px 5px 0 0;} */
+
+/* details {
+  background: #eeebdc;
+  border-radius: 5px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+} */
+

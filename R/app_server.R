@@ -13,7 +13,6 @@ app_server <- function(input, output, session) {
     "tabs",
     session = session,
     selected = "inputs"
-    # selected = "about"
   )
 
   # {DEBUGGING}
@@ -23,47 +22,40 @@ app_server <- function(input, output, session) {
   })
 
   observeEvent(input$goto_inputs_butt, {
-    # print(input$tabs)
     tab_selected("inputs")
     shinydashboard::updateTabItems(
-    "tabs",
-    session = session,
-    selected = "inputs"
-    # selected = "about"
-  )
+      "tabs",
+      session = session,
+      selected = "inputs"
+    )
   })
 
   observeEvent(input$goto_met_ref_butt, {
     # print(input$tabs)
     tab_selected("met_ref")
-      shinydashboard::updateTabItems(
-    "tabs",
-    session = session,
-    selected = "met_ref"
-    # selected = "about"
-  )
+    shinydashboard::updateTabItems(
+      "tabs",
+      session = session,
+      selected = "met_ref"
+    )
   })
 
   observeEvent(input$top_met_ref_butt, {
-    # print(input$tabs)
     tab_selected("met_ref")
-      shinydashboard::updateTabItems(
-    "tabs",
-    session = session,
-    selected = "met_ref"
-  )
+    shinydashboard::updateTabItems(
+      "tabs",
+      session = session,
+      selected = "met_ref"
+    )
   })
 
-  
-
   observeEvent(input$top_about_butt, {
-    # print(input$tabs)
     tab_selected("about")
-      shinydashboard::updateTabItems(
-    "tabs",
-    session = session,
-    selected = "about"
-  )
+    shinydashboard::updateTabItems(
+      "tabs",
+      session = session,
+      selected = "about"
+    )
   })
 
   # Switching based on data source
@@ -91,10 +83,6 @@ app_server <- function(input, output, session) {
       )
     }
   })
-
-  # observeEvent(input$data_source_picker, {
-
-  # })
 
   output$sel_in_ls_text = renderText({
     RV_text_fun(
@@ -167,28 +155,31 @@ app_server <- function(input, output, session) {
   # for selecting among schematic plots
   output$schem_start_loc_plt_ui <- renderUI({
     tst_val <- paste(in_selected_RV$LOC, in_selected_RV$BAR)
-    shiny::tagList(
-      switch(
-        tst_val,
-        "HOR Out" = bscui::bscuiOutput(
-          outputId = "schm_plt_HOR_CHP",
-          width = "100%",
-          height = "300px"
-        ),
-        "TCJ Out" = bscui::bscuiOutput(
-          outputId = "schm_plt_TCJ_CHP",
-          width = "100%",
-          height = "300px"
-        ),
-        "HOR In" = bscui::bscuiOutput(
-          outputId = "schm_plt_HOR_CHP_bar_in",
-          width = "100%",
-          height = "300px"
-        ),
-        "TCJ In" = bscui::bscuiOutput(
-          outputId = "schm_plt_TCJ_CHP_bar_in",
-          width = "100%",
-          height = "300px"
+    div(
+      title = "Major routes and key junctions in the Delta",
+      shiny::tagList(
+        switch(
+          tst_val,
+          "HOR Out" = bscui::bscuiOutput(
+            outputId = "schm_plt_HOR_CHP",
+            width = "100%",
+            height = "300px"
+          ),
+          "TCJ Out" = bscui::bscuiOutput(
+            outputId = "schm_plt_TCJ_CHP",
+            width = "100%",
+            height = "300px"
+          ),
+          "HOR In" = bscui::bscuiOutput(
+            outputId = "schm_plt_HOR_CHP_bar_in",
+            width = "100%",
+            height = "300px"
+          ),
+          "TCJ In" = bscui::bscuiOutput(
+            outputId = "schm_plt_TCJ_CHP_bar_in",
+            width = "100%",
+            height = "300px"
+          )
         )
       )
     )
@@ -206,23 +197,22 @@ app_server <- function(input, output, session) {
       "year_picker",
       # label="Pick year",
       label = NULL,
-      multiple=FALSE,
+      multiple = FALSE,
       # choices = c("None", as.character(2011:2024)),
       choices = c(as.character(2011:2024), "None"),
       # selected = NULL,
       # selected = "None",
 
-      selected = init_water_year
-      ,
+      selected = init_water_year,
       choicesOpt = list(
         style = paste0(
           "background-color:",
           WYT_cols[match(ann_HORbar_WYT_data$WYT, names(WYT_cols))],
           ";"
         ),
-        subtext=(ann_HORbar_WYT_data$WYT)
+        subtext = (ann_HORbar_WYT_data$WYT)
         # ,
-      #  content = paste("<div style=color:black>",c(as.character(2011:2024), "None"),c(ann_HORbar_WYT_data$WYT,"None"),"</div>")
+        #  content = paste("<div style=color:black>",c(as.character(2011:2024), "None"),c(ann_HORbar_WYT_data$WYT,"None"),"</div>")
       )
     )
   })
@@ -236,161 +226,313 @@ app_server <- function(input, output, session) {
     )
   })
 
-
-  
   output$deet_panel_prev_upload_ui <- renderUI({
     tagList(
       switch(
         data_source_selected(),
         "None" = NULL,
-        #     tagList(
-        # "prev_pan" = shiny::uiOutput("accord_panel_prev_upload_ui"),
-        "prev_pan" =         tags$details(
-          id="my_deet1",
-          style="margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white; ",
-          tags$summary(
-            "Select Daily Environmental Data",#"Select/Review Daily Environmental Data", 
-        style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px; background-color:#ddd"),
-        shiny::uiOutput("prev_yr_ui")
+        "prev_pan" = shiny::uiOutput("details_sel_data_bar"),
+        #   tags$details(
+        #     title="Click to open or close",
+        #     id="my_deet1",
+        #     style="margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white; ",
+        #     tags$summary(
+        #       "Select Daily Environmental Data",#"Select/Review Daily Environmental Data",
+        #   style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px; background-color:#ddd"),
+        #   shiny::uiOutput("prev_yr_ui")
+        # ),
+        # "up_pan" =shiny::uiOutput("details_up_data_bar")
+        "up_pan" = shiny::uiOutput("details_up_data_bar_redo")
+      )
+    )
+  })
+
+  output$details_sel_data_bar <- renderUI({
+    tags$details(
+      title = "Click to open or close",
+      id = "my_deet1",
+      style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white; ",
+      tags$summary(
+        "Select Daily Environmental Data", #"Select/Review Daily Environmental Data",
+        style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px; background-color:#ddd"
       ),
-        "up_pan" =shiny::uiOutput("details_up_data_bar"))
+      shiny::uiOutput("prev_yr_ui")
+    )
+  })
+
+  output$details_up_data_bar_redo <- renderUI({
+    tags$details(
+      title = "Click to open or close",
+      id = "my_deet1",
+      style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white; ",
+      tags$summary(
+        "Load Daily Environmental Data", # "Upload/Review Daily Environmental Data",
+        style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+                  padding-bottom: 2px;background-color:#ddd;"
+      ),
+      tagList(
+        fluidRow(
+          # style = "padding-inline-start: 15px;",
+          style = "padding: 15px;",
+          column(
+            width = 5,
+
+            # div(
+            # tags$ul(
+            #   style = "padding-inline-start: 10px;",
+            #   tags$li(
+            # h5(
+            # "Select a previous year:"
+            # )
+            # ,
+            fileInput(
+              inputId = "file1",
+              label = "Choose CSV File",
+              # buttonLabel="aaa",
+              accept = c(
+                "text/csv",
+                "text/comma-separated-values,text/plain",
+                ".csv"
+              )
+            ),
+            shiny::fluidRow(
+              style = "margin-top:20px",
+              column(
+                width = 4,
+                div(
+                  role = "menuitem",
+                  actionButton(
+                    inputId = "run_button",
+                    label = "Load"
+                  )
+                )
+              ),
+              column(
+                width = 4,
+                div(
+                  role = "menuitem",
+                  actionButton(
+                    inputId = "reset_button",
+                    label = "Reset"
+                  )
+                )
+              ),
+              column(
+                width = 4,
+                downloadButton(
+                  outputId = "download_sample",
+                  label = "Sample CSV",
+                  icon = shiny::icon("download")
+                )
+              )
+            ),
+            # )
+            #   )
+            # )
+            # )
+            div(
+              style = "padding-top: 20px;",
+              role = "menu",
+              shinyWidgets::dropdown(
+                # id = "summ_man_in1",
+                # style="simple",
+                label = "Manual Input",
+                icon = icon("edit"),
+                title = "Click to open or close",
+                size = "sm",
+                width = "600px",
+                # style="margin-top:20px; padding: 0px; color:#337ab7 ; background-color:white",
+                # tags$summary(
+                #   id="summ_man_in1",
+                "Manual Input",
+                # style = "font-size: 14px; font-weight: bold; background-color:#ddd; padding: 5px"
+                # ),
+                # div(
+                #   style = "padding: 10px;",
+                #   role = "menu",
+                #   div(
+                #     title = "aaa",
+                #     role = "menuitem",
+                #     # p("textAreaInput")
+                textAreaInput(
+                  inputId = "manual_input",
+                  label = NULL,
+                  # label = "Manual Input",
+                  placeholder = 'year,date,WYT,barrier,VNS,OMT,T_MSD,T_CLC,CVP,SWP\n2013,"2013-04-29","Out",4130,-623,18.2,20.6,816,2421',
+                  rows = 3
+                )
+              )
+              # )
+            )
+            # tags$details(
+            #   id = "summ_man_in1",
+            #   title = "Click to open or close",
+            #   style="margin-top:20px; padding: 0px; color:#337ab7 ; background-color:white",
+            #   tags$summary(
+            #     id="summ_man_in1",
+            #     "Manual Input",
+            #     style = "font-size: 14px; font-weight: bold; background-color:#ddd; padding: 5px"
+            #   ),
+            #   div(
+            #     style = "padding: 10px;",
+            #     role = "menu",
+            #     div(
+            #       title = "aaa",
+            #       role = "menuitem",
+            #       # p("textAreaInput")
+            #       textAreaInput(
+            #         inputId = "manual_input",
+            #         label = NULL,
+            #         # label = "Manual Input",
+            #         placeholder = 'year,date,WYT,barrier,VNS,OMT,T_MSD,T_CLC,CVP,SWP\n2013,"2013-04-29","Out",4130,-623,18.2,20.6,816,2421',
+            #         rows = 3
+            #       )
+            #     )
+            #   )
+            # )
+          ),
+          column(
+            width = 7,
+            div(
+              tags$ul(
+                style = "padding-inline-start: 10px;",
+                tags$li(
+                  h5(
+                    "[[Datatable placeholder]]"
+                  )
+                )
+              )
+            )
+          )
+        )
+      )
     )
   })
 
   output$details_up_data_bar <- renderUI({
-
-       tags$details(
-          id="my_deet1",
-          style="margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
-          tags$summary(
-            "Upload/Review Daily Environmental Data", 
-                 style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px;background-color:#ddd;"),
-        # shiny::uiOutput("details_up_data_bar")
-        # deet_panel_prev_upload_ui
-
-  # tagList(
-    # hr(),
-  # fluidRow(
-              # shinydashboardPlus::box(
-              # title = shiny::HTML(
-              #   "Environmental and Operational Variables (Upload)"
-              # ),
-              # solidHeader = TRUE,
-              # # width=8,
-              # width = 12,
-              # # title=h4(strong("Environmental and Operational Variables")),
-              # status = "primary",
-              # tagList(
-                # shiny::tabsetPanel(
-                #   id = "up_dat_tabpan",
-                # shiny::tabPanel(
-                #   value = "up_pan",
-                #   title = "Upload Data",
-                wellPanel(
-                                      div(
-                      role = "menuitem",
-                      # p("fileInput")
-                      fileInput(
-                        inputId = "file1",
-                        label = "Choose CSV File",
-                        accept = c(
-                          "text/csv",
-                          "text/comma-separated-values,text/plain",
-                          ".csv"
-                        )
-                      )
-                    )
-                    ,
-                  div(
-                    role = "menu",
-                    div(
-                      role = "menuitem",
-                      # p("textAreaInput")
-                      textAreaInput(
-                        inputId = "manual_input",
-                        label = "Manual Input",
-                        placeholder = 'year,date,WYT,barrier,VNS,OMT,T_MSD,T_CLC,CVP,SWP\n2013,"2013-04-29","Out",4130,-623,18.2,20.6,816,2421',
-                        rows = 3
-                      )
-                    )
-                  )
-                # )
-                ,
-                circle = TRUE,
-                status = "primary",
-                # icon = icon("gear"),
-                width = "250px",
-                # ,
-                # tooltip = shinyWidgets::tooltipOptions(
-                #   title = "Change Data Inputs"
-                # )
-                # br(),
-                shiny::fluidRow(
-                  column(
-                    width = 4,
-                    div(
-                      role = "menuitem",
-                      p("run_button")
-                      # actionButton(
-                      #   inputId = ns("run_button"),
-                      #   label = "Load"
-                      # )
-                      # actionButton(inputId = "run_button", label = "Load")
-                    )
-                  ),
-                  column(
-                    width = 4,
-                    div(
-                      role = "menuitem",
-                      p("reset_button")
-                      # actionButton(
-                      #   inputId = ns("reset_button"),
-                      #   label = "Reset"
-                      # )
-                    )
-                  ),
-                  column(
-                    width = 4,
-                    p("downloadButton")
-                    # downloadButton(
-                    #   outputId = ns("download_sample"),
-                    #   label = "Sample CSV",
-                    #   icon = shiny::icon("download")
-                    # )
-                  )
-                )
-                #   ,
-                #   shiny::tags$script(shiny::HTML(
-                #     "document.addEventListener('DOMContentLoaded', function() {
-                #   const dropdown = document.querySelector('#dropdown-menu-drop' + Object.keys(window.shinyWidgets.dropdownStates)[0]);
-                #   if (dropdown) {
-                #     dropdown.removeAttribute('role');
-                #     dropdown.querySelectorAll('[role=\"menuitem\"]').forEach(el => el.removeAttribute('role'));
-                #   }
-                # });"
-                #   ))
-                # )
-              # )
-            )
-          )
-        })
-
-output$details_indiv_attrib_ui <- renderUI({
-  fluidRow(
-    style="padding-inline-start: 15px;",
-        column(
-          width = 6,
-          h5(strong("Fork Length")),
-          tags$ul(
-            style = "padding-inline-start: 20px;",
-            tags$li(
-              "By default, all predictions are based on the average fork length of juvenile Steelhead used in modeling."
+    tags$details(
+      title = "Click to open or close",
+      id = "my_deet1",
+      style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+      tags$summary(
+        "Load Daily Environmental Data", # "Upload/Review Daily Environmental Data",
+        style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+                  padding-bottom: 2px;background-color:#ddd;"
+      ),
+      wellPanel(
+        # fluidRow(
+        # column(width=6,
+        div(
+          role = "menuitem",
+          title = "aaa",
+          # p("fileInput")
+          fileInput(
+            inputId = "file1",
+            label = "Choose CSV File",
+            # buttonLabel="aaa",
+            accept = c(
+              "text/csv",
+              "text/comma-separated-values,text/plain",
+              ".csv"
             )
           )
         ),
-        column(width = 6, shiny::uiOutput("flength_sel_ui"))
+        shiny::fluidRow(
+          style = "margin-top:20px",
+          column(
+            width = 4,
+            div(
+              role = "menuitem",
+              actionButton(
+                inputId = "run_button",
+                label = "Load"
+              )
+            )
+          ),
+          column(
+            width = 4,
+            div(
+              role = "menuitem",
+              actionButton(
+                inputId = "reset_button",
+                label = "Reset"
+              )
+            )
+          ),
+          column(
+            width = 4,
+            downloadButton(
+              outputId = "download_sample",
+              label = "Sample CSV",
+              icon = shiny::icon("download")
+            )
+          )
+        )
       )
-})
+      # ),
+      # column(width=6,p("hhh"))
+    )
+
+    #               ,
+    #  tags$details(
+    #     id="my_deet2",
+    #     title="Click to open or close",
+    #     # style="margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+    #     tags$summary(
+    #       # "Select Fork Length",
+    #       strong("Manual Input"),
+    #    style = "font-size: 18px; font-size: 18px; padding-left: 14px; padding-top: 2px; padding-bottom: 2px;background-color:#ddd;"),
+    #    div(
+    #               style="padding: 10px;",
+    #               role = "menu",
+    #               div(
+    #                 title="aaa",
+    #                 role = "menuitem",
+    #                 # p("textAreaInput")
+    #                 textAreaInput(
+    #                   inputId = "manual_input",
+    #                   label = NULL,
+    #                   # label = "Manual Input",
+    #                   placeholder = 'year,date,WYT,barrier,VNS,OMT,T_MSD,T_CLC,CVP,SWP\n2013,"2013-04-29","Out",4130,-623,18.2,20.6,816,2421',
+    #                   rows = 3
+    #                 )
+    #               )
+    #             )
+
+    #     )
+
+    #   ,
+    #   shiny::tags$script(shiny::HTML(
+    #     "document.addEventListener('DOMContentLoaded', function() {
+    #   const dropdown = document.querySelector('#dropdown-menu-drop' + Object.keys(window.shinyWidgets.dropdownStates)[0]);
+    #   if (dropdown) {
+    #     dropdown.removeAttribute('role');
+    #     dropdown.querySelectorAll('[role=\"menuitem\"]').forEach(el => el.removeAttribute('role'));
+    #   }
+    # });"
+    #   ))
+    # )
+    # )
+    # )
+    # )
+  })
+
+  output$details_indiv_attrib_ui <- renderUI({
+    fluidRow(
+      style = "padding-inline-start: 15px;",
+      column(
+        width = 6,
+        h5(strong("Fork Length")),
+        tags$ul(
+          style = "padding-inline-start: 20px;",
+          tags$li(
+            "By default, all predictions are based on the average fork length of juvenile Steelhead used in modeling."
+          )
+        )
+      ),
+      column(width = 6, shiny::uiOutput("flength_sel_ui"))
+    )
+  })
 
   # output$accord_panel_indiv_attrib_ui <- renderUI({
   #   shinydashboardPlus::accordion(
@@ -415,12 +557,11 @@ output$details_indiv_attrib_ui <- renderUI({
   #   )
   # })
 
-
-
   output$input_panel_UI <- renderUI({
     shinydashboardPlus::box(
       id = "input_box2",
-      title = shiny::HTML("Inputs"),
+      title = "Inputs",
+      # title = shiny::HTML("Inputs"),
       solidHeader = TRUE,
       # status = "warning",
       status = "primary",
@@ -446,11 +587,12 @@ output$details_indiv_attrib_ui <- renderUI({
         shiny::HTML("<h4> <b> Overview: </b>  </h4>"),
         p(
           "This tool provides predictions of survival and route usage for hypothetical releases of juvenile Steelhead 
-          based on their expected location,conditions in the environment, and individual size.")
-          ,
-          p("Environmental conditions are represented using 
+          based on their expected location,conditions in the environment, and individual size."
+        ),
+        p(
+          "Environmental conditions are represented using 
           daily summaries of field measurements obtained from monitoring stations throughout the region. The conditions on
-          the day of arrival at key junction serve as inputs for statistical sub-models that are used to generate route usage
+          the day of arrival at key junctions serve as inputs for statistical sub-models that are used to generate route usage
           and survival probability predictions."
         ),
         tags$ul(
@@ -495,79 +637,84 @@ output$details_indiv_attrib_ui <- renderUI({
             # div(class = "pull-right",
 
             # shinydashboardPlus::box            ,
-             div(
+            div(
+              title = "click for more information",
+              id = "schem_info_drop_div",
               # class = "pull-right",
-              style="float:right !important;
+              style = "float:right !important;
                       position: relative;
                       z-index: 2;",
               # position:fixed; !important",
               shinyWidgets::dropdownButton(
+                # id="schem_info_drop",
                 right = TRUE,
                 up = FALSE,
                 circle = TRUE,
+                # tooltip=TRUE,
                 size = "xs",
                 status = "primary",
                 icon = icon("info", style = "color: white;"),
                 width = "300px",
-                p("Major routes and key junctions in the Delta ")
-            )
-          )
-          ,
+                # tooltipOptions=shinyWidgets::tooltipOptions( title = "Params", html = FALSE)
+                # tooltipOptions=shinyWidgets::tooltipOptions( title = "Params", html = TRUE)
+                # ,
+                # label=
+                p("Major routes and key junctions in the Delta") #,
+              )
+            ),
             shiny::uiOutput("schem_start_loc_plt_ui")
-          # ,
-          #    div(class = "pull-right",
-          #     shinyWidgets::dropdownButton(
-          #       right = TRUE,
-          #       up = TRUE,
-          #       circle = TRUE,
-          #       size = "xs",
-          #       status = "primary",
-          #       icon = icon("info", style = "color: white;"),
-          #       width = "300px",
-          #       p("Major routes and key junctions in the Delta ")
-          #   )
-          # )
+            # ,
+            #    div(class = "pull-right",
+            #     shinyWidgets::dropdownButton(
+            #       right = TRUE,
+            #       up = TRUE,
+            #       circle = TRUE,
+            #       size = "xs",
+            #       status = "primary",
+            #       icon = icon("info", style = "color: white;"),
+            #       width = "300px",
+            #       p("Major routes and key junctions in the Delta ")
+            #   )
+            # )
           )
         )
       ),
       column(
-        width = 12, #background-color:gray; 
-      #   tags$details(
-      #     id="my_deet1",
-      #     style="margin-top:5px; padding: 5px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:#ddd; ",
-      #     tags$summary(
-      #       "Select/Review Daily Environmental Data", 
-      #   style = "font-size: 18px;"),
-      #   shiny::uiOutput("prev_yr_ui")
-      # )
-      # ,
+        width = 12, #background-color:gray;
+        #   tags$details(
+        #     id="my_deet1",
+        #     style="margin-top:5px; padding: 5px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:#ddd; ",
+        #     tags$summary(
+        #       "Select/Review Daily Environmental Data",
+        #   style = "font-size: 18px;"),
+        #   shiny::uiOutput("prev_yr_ui")
+        # )
+        # ,
         # tags$details(
         #   id="my_deet1",
         #   style="margin-top:5px; padding: 5px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:#ddd",
         #   tags$summary(
-        #     "Upload/Review Daily Environmental Data", 
+        #     "Upload/Review Daily Environmental Data",
         # style = "font-size: 18px; "),
         # shiny::uiOutput("details_up_data_bar")
         # deet_panel_prev_upload_ui
-        shiny::uiOutput("deet_panel_prev_upload_ui")
-      # )
-      
-       ,
-       tags$details(
-          id="my_deet2",
-          style="margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+        shiny::uiOutput("deet_panel_prev_upload_ui"),
+        # )
+
+        tags$details(
+          id = "my_deet2",
+          title = "Click to open or close",
+          style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
           tags$summary(
             # "Select Fork Length",
             "Select Individual Attributes",
-         style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px;background-color:#ddd;"),
-         shiny::uiOutput("details_indiv_attrib_ui")
+            style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px;background-color:#ddd;"
+          ),
+          shiny::uiOutput("details_indiv_attrib_ui")
           #  "This content is inside"
-          )
-
-      )
-      ,
-      hr()
-      ,
+        )
+      ),
+      hr(),
       # uiOutput("input_panel_UI_3"),
       # uiOutput("deet_panel_prev_upload_ui"),
 
@@ -581,7 +728,37 @@ output$details_indiv_attrib_ui <- renderUI({
     )
   })
 
-   output$input_panel_UI_3 <- renderUI({
+  output$deets_overall_ests <- renderUI({
+    # fluidRow(
+    tags$details(
+      id = "my_deet2",
+      title = "Click to open or close",
+      style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+      tags$summary(
+        "Overall Survival", # "Upload/Review Daily Environmental Data",
+        style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+                  padding-bottom: 2px;background-color:#ddd;"
+      ),
+      p("empty_panel")
+    )
+    # )
+
+    #   fluidRow(
+    #   tags$details(
+    #     title = "Click to open or close",
+    #     id = "my_deet1",
+    #     style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+    #     tags$summary(
+    #       "Overall Survival", # "Upload/Review Daily Environmental Data",
+    #       style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+    #                 padding-bottom: 2px;background-color:#ddd;"
+    #     ),
+    #     p("empty_panel")
+    #   )
+    # )
+  })
+
+  output$input_panel_UI_3 <- renderUI({
     shinydashboardPlus::box(
       id = "est_box_ui",
       title = shiny::HTML("Estimates"),
@@ -590,20 +767,29 @@ output$details_indiv_attrib_ui <- renderUI({
       collapsible = T,
       collapsed = FALSE,
       width = 12,
-      uiOutput("chk_input_ui"),
-      shinydashboardPlus::accordion(
-        id = "accordion4",
-
-        shinydashboardPlus::accordionItem(
-          title = "Overall Survival",
-          collapsed = FALSE,
-          plotOutput("doy_surv_ggplt")
-          # p("overall survival")
-        )
+      column(
+        width = 12,
+        # fluidRow(
+        uiOutput("chk_input_ui")
+      ),
+      column(
+        width = 12,
+        uiOutput("deets_overall_ests")
       )
+      # ,
+      # shinydashboardPlus::accordion(
+      #   id = "accordion4",
+
+      #   shinydashboardPlus::accordionItem(
+      #     title = "Overall Survival",
+      #     collapsed = FALSE,
+      #     plotOutput("doy_surv_ggplt")
+      #     # p("overall survival")
+      #   )
+      # )
       # h2("stuff here")
     )
-  })  # output$input_panel_UI_2 <- renderUI({
+  }) # output$input_panel_UI_2 <- renderUI({
   #   shinydashboardPlus::box(
   #     id = "input_box3",
   #     title = shiny::HTML("More Inputs"),
@@ -709,135 +895,248 @@ output$details_indiv_attrib_ui <- renderUI({
 
   output$time_of_year_ui <- renderUI({
     tagList(
-      div(
-        style = "display: inline-flex; align-items: left;margin-top: 10px;margin-left: 20px;",
-        div(
-          style = "margin-right: 20px;",
-          shiny::uiOutput("start_date_entry_sep_ui")
-          # ,
-          # shiny::uiOutput("start_date_entry_ui")
-          
-        )
-      ),
+      # div(
+      #   style = "display: inline-flex; align-items: left;margin-top: 10px;margin-left: 20px;",
+      #   div(
+      #     style = "margin-right: 20px;",
+      #     shiny::uiOutput("start_date_entry_sep_ui")
+      #     # ,
+      #     # shiny::uiOutput("start_date_entry_ui")
+      #   )
+      # ),
 
       div(
-        style = "display: left;margin-top: 10px;",
+        style = "display: left;margin-top: 10px;width: 600px;",
         shiny::uiOutput("DOY_slider_ui"),
         plotOutput("doy_ref_strt_loc", height = "100px"),
         div(
-          style="display: flex;",
-        HTML(paste("<p> Day of arrival at <strong>",(input$start_loc_in),"</strong> junction </p> ")),
-        div(
-          style="margin-left: 10px; z-index: 2",
-              shinyWidgets::dropdownButton(
-                right = FALSE,
-                up = TRUE,
-                circle = TRUE,
-                size = "xs",
-                status = "primary",
-                icon = icon("info", style = "color: white;"),
-                width = "300px",
-                p("Histogram of day of year when acoustic-tagged juvenile Steelhead were detected at each location.")
+          style = "display: flex;",
+          HTML(paste(
+            "<p> Day of arrival at <strong>",
+            (input$start_loc_in),
+            "</strong> junction </p> "
+          )),
+          div(
+            style = "margin-left: 10px; z-index: 2",
+            shinyWidgets::dropdownButton(
+              right = FALSE,
+              up = TRUE,
+              circle = TRUE,
+              size = "xs",
+              # tooltip=TRUE,
+              # tooltipOptions=shinyWidgets::tooltipOptions(title = "..."),
+              status = "primary",
+              icon = icon("info", style = "color: white;"),
+              width = "300px",
+              p(
+                "Histogram of day of year when acoustic-tagged juvenile Steelhead were detected at each location."
+              )
             )
           )
-      )
+        )
       )
       # )
     )
   })
 
-# needs to be dynamic
-output$prev_yr_ui <- renderUI({
-  tagList(
-    fluidRow(
-      style = "padding-inline-start: 15px;",
-              column(
-              width = 5,
+  # needs to be dynamic
+  output$prev_yr_ui <- renderUI({
+    tagList(
+      fluidRow(
+        style = "padding-inline-start: 15px;",
+        column(
+          width = 5,
 
-              div(
-                tags$ul(
-                  style = "padding-inline-start: 10px;",
-                  tags$li(
-                    h5(
-                      "Select a previous year:"
-                    ),
-                    # h5(
-                    #   "Select a previous year from the dropdown menu or by clicking on a row in the 'Annual Summary Table' clicking on a row"
-                    # ),
+          div(
+            tags$ul(
+              style = "padding-inline-start: 10px;",
+              tags$li(
+                h5(
+                  "Select a previous year:"
+                ),
+                # h5(
+                #   "Select a previous year from the dropdown menu or by clicking on a row in the 'Annual Summary Table' clicking on a row"
+                # ),
 
-                    div(
-                      tags$ul(
-                        tags$li(
-                          style = "list-style-type: none;",
-                          div(
-                            style = "display: inline-flex; align-items: ;margin-top: 10px;",
-                            div(
-                              style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
-                              shiny::HTML("<h5> <b> Year: </b>  </h4>")
-                            ),
-                            div(
-                              style = "height=15px",
-                              shiny::uiOutput("year_picker_ui")
-                            )
-                          )
+                div(
+                  tags$ul(
+                    tags$li(
+                      style = "list-style-type: none;",
+                      div(
+                        style = "display: inline-flex; align-items: ;margin-top: 10px;",
+                        div(
+                          style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
+                          shiny::HTML("<h5> <b> Year: </b>  </h4>")
+                        ),
+                        div(
+                          style = "height=15px",
+                          shiny::uiOutput("year_picker_ui")
                         )
-                      ),
+                      )
                     )
                   ),
-                  tags$li(
-
-                            HTML(paste("<h5> Select a date range for arrival at  <strong>",(input$start_loc_in),"</strong> junction by entering dates or adjusting Day of Year slider </h5> "))
-                    # h5(
-                    #   "Select a date range for fish arriving at the selected junction by entering date(s) or adjusting Day of Year slider"
-                    # )
-                  )
                 )
               ),
+              tags$li(
+                HTML(paste(
+                  "<h5> Select a date range for arrival at  <strong>",
+                  (input$start_loc_in),
+                  "</strong> junction by entering dates or adjusting Day of Year slider </h5> "
+                ))
+                # h5(
+                #   "Select a date range for fish arriving at the selected junction by entering date(s) or adjusting Day of Year slider"
+                # )
+              )
+            )
+          ),
+          # div(
+          #   style = "display: inline-flex; align-items: left;margin-top: 10px;margin-left: 20px;",
+          #   div(
+          #     style = "margin-right: 20px;",
 
+    tagList(
+      validate(
+        need(
+          in_selected_RV$past_water_year != "None",
+          label = "past_water_year",
+          message = "Select a previous year"
+        )
+      ),
+      div(
+        style="display: flex; gap:20px; align-items:center",        
+        # style="display: flex; gap:20px; align-items:center;",
+
+          shiny::uiOutput("start_date_entry_sep_ui"),
+          div(
+        style="display: flex; gap:20px;",
+                      shinyWidgets::dropMenu(
+              placement="bottom",              
+              tag=actionButton(
+                inputId = "doy_slider_dropdown",
+                label = HTML('<i class="fas fa-sliders" role="presentation" aria-label="sliders icon"></i> Day of Year Slider'
+                )
+              ),
               shiny::uiOutput("time_of_year_ui")
-            ), #,
-            # "Annual Summary Table",
-            shinydashboardPlus::box(
-              width = 7,
-              title = "Annual Summary Table",
-              dropdownMenu = shinydashboardPlus::boxDropdown(
-                circle = TRUE,
-                # size = "xs",
-                size="md",
-                status = "primary",
-                icon = icon("circle-info", style = "color: #024c63;"),
-                id = "ann_summ_drop",
-                shinydashboardPlus::boxDropdownItem(
-              
-                  tags$dl( # definition list
-                    div(
-                      style = "margin-left: 20px;",
-                      HTML('<strong>Year:</strong> Calendar Year</p>'),
-                      HTML('<strong>Category:</strong> Water Year Type (SJ)</p>'),
-                      HTML('<strong>HOR Barrier:</strong> Barrier at Head of Old River</p>'),
-                      HTML('<strong>Model:</strong> Data in year to fit statistical sub-models</p>')
-                    )
-                  )
-                ),
-                shinydashboardPlus::boxDropdownItem(
-                  tags$dl( # definition list
-                    div(
-                      style = "margin-left: 20px;",
-                      HTML('<strong>Year:</strong> Calendar Year</p>'),
-                      HTML('<strong>Category:</strong> Water Year Type (SJ)</p>'),
-                      HTML('<strong>HOR Barrier:</strong> Barrier at Head of Old River</p>'),
-                      HTML('<strong>Model:</strong> Data in year to fit statistical sub-models</p>')
-                    )
-                  )
-                )
-              ),
-              uiOutput("table_in_WY_UI")
             )
           )
+          # shiny::uiOutput("start_date_slider_ui")
+      )
+    )
+    
+          # ,
+          # shiny::uiOutput("start_date_entry_ui")
+          #   )
+          # )
+
+
+        ), #,
+        column(
+          width = 7,
+          # style="border: solid 2px black; margin:5px;",
+          div(
+            style = "border: solid 2px black; margin:10px;height:525px;",
+            span(
+              style = "display:flex; justify-content: space-between; margin-left:10px; margin-right:10px; align-items:center",
+              title = "attributes of years 2011-2025",
+              h4("Annual Summary Table"),
+              shinyWidgets::dropMenu(
+               shinyWidgets::circleButton(inputId = "btn1", icon = icon("info"),status="primary",size="xs"),
+                tags$dl(
+                  # definition list
+                  div(
+                    style = "margin-left: 20px;",
+                    HTML('<strong>Year:</strong> Calendar Year</p>'),
+                    HTML('<strong>Category:</strong> Water Year Type (SJ)</p>'),
+                    HTML(
+                      '<strong>HOR Barrier:</strong> Barrier at Head of Old River</p>'
+                    ),
+                    HTML(
+                      '<strong>Model:</strong> Used to fit statistical models</p>'
+                    )
+                  )
+                )
+                ,
+                placement="left-start"
+              )
+            ),
+            uiOutput("table_in_WY_UI")
+          )
         )
-})
+        # shinydashboardPlus::box(
+        #   width = 7,
+        #   title = "Annual Summary Table",
+        #   dropdownMenu = shinydashboardPlus::boxDropdown(
+        #     circle = TRUE,
+        #     # size = "xs",
+        #     size = "md",
+        #     status = "primary",
+        #     icon = icon("circle-info", style = "color: #024c63;"),
+        #     id = "ann_summ_drop",
+        #     shinydashboardPlus::boxDropdownItem(
+        #       tags$dl(
+        #         # definition list
+        #         div(
+        #           style = "margin-left: 20px;",
+        #           HTML('<strong>Year:</strong> Calendar Year</p>'),
+        #           HTML('<strong>Category:</strong> Water Year Type (SJ)</p>'),
+        #           HTML(
+        #             '<strong>HOR Barrier:</strong> Barrier at Head of Old River</p>'
+        #           ),
+        #           HTML(
+        #             '<strong>Model:</strong> Data in year to fit statistical sub-models</p>'
+        #           )
+        #         )
+        #       )
+        #     ),
+        #     shinydashboardPlus::boxDropdownItem(
+        #       tags$dl(
+        #         # definition list
+        #         div(
+        #           style = "margin-left: 20px;",
+        #           HTML('<strong>Year:</strong> Calendar Year</p>'),
+        #           HTML('<strong>Category:</strong> Water Year Type (SJ)</p>'),
+        #           HTML(
+        #             '<strong>HOR Barrier:</strong> Barrier at Head of Old River</p>'
+        #           ),
+        #           HTML(
+        #             '<strong>Model:</strong> Data in year to fit statistical sub-models</p>'
+        #           )
+        #         )
+        #       )
+        #     )
+        #   ),
+        #   uiOutput("table_in_WY_UI")
+        # )
+      )
+    )
+  })
 
+          #   output$start_date_slider_ui <- renderUI({
+          #     # tagList(
+          # # div(
+          # #   style="display:inline-flex;align:center;",
 
+          # #   style = "padding-top: 20px;",
+          # #   role = "menu",
+          #   # shinyWidgets::dropdown(
+          #   #   label = "Day of Year Slider",
+          #   #   icon = icon("sliders"),
+          #   #   title = "Click to open or close",
+          #   #   size = "md",
+          #   #   width = "600px",
+          #   #   shiny::uiOutput("time_of_year_ui")
+          #   # )
+          #   shinyWidgets::dropMenu(
+          #     placement="bottom",              
+          #     tag=actionButton(
+          #       inputId = "doy_slider_dropdown",
+          #       label = HTML('<i class="fas fa-sliders" role="presentation" aria-label="sliders icon"></i> Day of Year Slider'
+          #       )
+          #     ),
+          #     shiny::uiOutput("time_of_year_ui")
+          #   )
+          # # )
+          # })
 
 
   output$env_panel_ui <- renderUI({
@@ -887,19 +1186,22 @@ output$prev_yr_ui <- renderUI({
       rownames = FALSE,
       options = list(
         info = FALSE,
-        dom = '<"<"bottom"ip>', # only the bottom
+        dom = "t",
+        # dom = '<"<"bottom"ip>', # only the bottom
         stripeClasses = list(),
-        pageLength = 9,
+        # pageLength = 9,
+        pageLength = 14,
+
         pagingType = "simple"
-        # ,
-        # initComplete = DT::JS(
-        #   "function(settings, json) {",
-        #   "$(this.api().table().header()).css({'font-size': '75%'});",
-        #   "$(this.api().table().body()).css({'font-size': '75%'});",
-        #   "$(this.api().table().caption()).css({'font-size': '75%'});",
-        #   "$(this.api().table().footer()).css({'font-size': '75%'});",
-        #   "}"
-        # )
+        ,
+        initComplete = DT::JS(
+          "function(settings, json) {",
+          "$(this.api().table().header()).css({'font-size': '70%'});",
+          "$(this.api().table().body()).css({'font-size': '70%'});",
+          "$(this.api().table().caption()).css({'font-size': '70%'});",
+          "$(this.api().table().footer()).css({'font-size': '70%'});",
+          "}"
+        )
       )
     ) |>
       DT::formatStyle(
@@ -912,44 +1214,76 @@ output$prev_yr_ui <- renderUI({
         # ,
         # backgroundColor = DT::styleEqual(c("Yes", "No"), c("white", "#B3B3B3"))
       ) |>
-        # only works for background color
+      # only works for background color
       DT::formatStyle(
-        columns = c('Year','WYT','barrier','Model'),
+        columns = c('Year', 'WYT', 'barrier', 'Model'),
         target = "row",
-        backgroundColor = DT::styleEqual(in_selected_RV$past_water_year, c("#61bce6"))
-      )
-        |>
-        DT::formatStyle(
+        backgroundColor = DT::styleEqual(
+          input$year_picker,
+          c("#61bce6")
+        )
+      ) |>
+      DT::formatStyle(
         'Year',
         # border = rep("4px solid #024c63",14)
-        borderTop = DT::styleEqual(in_selected_RV$past_water_year, c("4px solid #024c63")),
-        borderBottom = DT::styleEqual(in_selected_RV$past_water_year, c("4px solid #024c63")),
-        borderLeft = DT::styleEqual(in_selected_RV$past_water_year, c("4px solid #024c63"))
+        borderTop = DT::styleEqual(
+          input$year_picker,
+          c("4px solid #024c63")
+        ),
+        borderBottom = DT::styleEqual(
+          input$year_picker,
+          c("4px solid #024c63")
+        ),
+        borderLeft = DT::styleEqual(
+          input$year_picker,
+          c("4px solid #024c63")
+        )
+      ) |>
+      DT::formatStyle(
+        'barrier',
+        'Year',
+        borderTop = DT::styleEqual(
+          input$year_picker,
+          c("4px solid #024c63")
+        ),
+        borderBottom = DT::styleEqual(
+          input$year_picker,
+          c("4px solid #024c63")
+        )
+      ) |>
+      DT::formatStyle(
+        'WYT',
+        'Year',
+        borderTop = DT::styleEqual(
+          input$year_picker,
+          c("4px solid #024c63")
+        ),
+        borderBottom = DT::styleEqual(
+          input$year_picker,
+          c("4px solid #024c63")
+        )
+      ) |>
+      DT::formatStyle(
+        'Model',
+        'Year',
+        borderTop = DT::styleEqual(
+          input$year_picker,
+          c("4px solid #024c63")
+        ),
+        borderBottom = DT::styleEqual(
+          input$year_picker,
+          c("4px solid #024c63")
+        ),
+        borderRight = DT::styleEqual(
+          input$year_picker,
+          c("4px solid #024c63")
+        )
       )
-      |>
-        DT::formatStyle(
-        'barrier','Year',
-        borderTop = DT::styleEqual(in_selected_RV$past_water_year, c("4px solid #024c63")),
-        borderBottom = DT::styleEqual(in_selected_RV$past_water_year, c("4px solid #024c63"))
-      )
-      |>
-        DT::formatStyle(
-        'WYT','Year',
-        borderTop = DT::styleEqual(in_selected_RV$past_water_year, c("4px solid #024c63")),
-        borderBottom = DT::styleEqual(in_selected_RV$past_water_year, c("4px solid #024c63"))
-      )
-      |>
-        DT::formatStyle(
-        'Model','Year',
-        borderTop = DT::styleEqual(in_selected_RV$past_water_year, c("4px solid #024c63")),
-        borderBottom = DT::styleEqual(in_selected_RV$past_water_year, c("4px solid #024c63")),
-        borderRight = DT::styleEqual(in_selected_RV$past_water_year, c("4px solid #024c63"))
-      )
-      #         |>
-      #   DT::formatStyle(
-      #   'barrier',
-      #   border = ifelse(ann_HORbar_WYT_data$Year==in_selected_RV$past_water_year,"1px solid black",NA)
-      # )
+    #         |>
+    #   DT::formatStyle(
+    #   'barrier',
+    #   border = ifelse(ann_HORbar_WYT_data$Year==in_selected_RV$past_water_year,"1px solid black",NA)
+    # )
   )
 
   test_proxy <- DT::dataTableProxy("table_in_WY")
@@ -1071,21 +1405,19 @@ output$prev_yr_ui <- renderUI({
         icon = icon("sliders"),
         startExpanded = T,
         selected = F
-      )
+      ),
       # ,
       # shinydashboard::menuItem(
       #   "Methods and References",
       #   tabName = "met_ref",
       #   icon = icon("book")
       # )
-      ,
       shinydashboard::menuItem(
         text = "Estimates",
         tabName = "estimates",
         icon = icon("chart-line"),
         startExpanded = T #,
-      )
-      ,
+      ),
       br(),
       tags$div(
         id = "newsidebox",
@@ -1145,16 +1477,19 @@ output$prev_yr_ui <- renderUI({
               width = 12,
               solidHeader = TRUE,
               status = "primary",
+            # div(
+            
               shiny::withMathJax(shiny::includeMarkdown(system.file(
                 "app/www/main/met_and_ref/overview_pt1.md",
                 package = "CVPASapp"
-              ))),
+              )))
+            ,
               # SVG plot with embedded tooltips
               bscui::bscuiOutput(
                 outputId = "surv_route_diagram_wtt",
                 width = "70%",
                 height = "100%"
-              ), 
+              ),
 
               shiny::withMathJax(shiny::includeMarkdown(system.file(
                 "app/www/main/met_and_ref/how_calc_pt2.md",
@@ -1169,11 +1504,32 @@ output$prev_yr_ui <- renderUI({
               shiny::withMathJax(shiny::includeMarkdown(system.file(
                 "app/www/main/met_and_ref/left_col_text.md",
                 package = "CVPASapp"
-              ))),
-              shiny::includeMarkdown(system.file(
-                "app/www/biblio_doc.md",
-                package = "CVPASapp"
-              ))
+              )))
+            ,
+            tags$img(
+            # src = "www/simple_route_image.png",
+            # style=width="500px",
+            src = "https://onlinelibrary.wiley.com/cms/asset/25dec1bb-e0e1-40ea-95e2-f7762044473f/nafm11005-fig-0001-m.jpg",
+            style = "width: 30%; height: 30%;"
+            # style = "width: 100%; height: 100%;"#,# border: 2px solid #024c63;",
+            # name = "Schematic view of junctions and routes through the south Delta ",
+            # alt = "Routes bifurcate at the Head of Old River and with the path along the San Joaquin River splitting again at Turner Cut junction; all paths converge prior to reaching Chipps Island"
+            )
+            ,
+            tags$img(
+            # src = "www/simple_route_image.png",
+            # style=width="500px",
+            src = "https://cdnsciencepub.com/cms/10.1139/cjfas-2020-0467/asset/images/large/cjfas-2020-0467f1.jpeg",
+            style = "width: 30%; height: 30%;"
+            # style = "width: 100%; height: 100%;"#,# border: 2px solid #024c63;",
+            # name = "Schematic view of junctions and routes through the south Delta ",
+            # alt = "Routes bifurcate at the Head of Old River and with the path along the San Joaquin River splitting again at Turner Cut junction; all paths converge prior to reaching Chipps Island"
+            )
+            ,
+            shiny::includeMarkdown(system.file(
+              "app/www/biblio_doc.md",
+              package = "CVPASapp"
+            ))
             )
           )
         )
@@ -1187,69 +1543,78 @@ output$prev_yr_ui <- renderUI({
     # )
   })
 
-output$start_date_entry_sep_ui <- renderUI({
-  tagList(
-  validate(
-    need(in_selected_RV$past_water_year!="None",label="past_water_year",message="Select a previous year")
-    # ,
-    # need(input$my_date[2] >= input$my_date[1],"End date must be after start date.")
-  )
-  ,
-  fluidRow(
-    column(width=6,
-  shinyWidgets::airDatepickerInput(
-        inputId = "date_start_sep",
-        label = "Start Date :",
-        addon="none", # remove calendar icon,
-        # style="font-size:5px",
-        value = c(
-          as.Date(
-            paste(in_selected_RV$past_water_year, in_selected_RV$start_day),
-            "%Y %j"
+  output$start_date_entry_sep_ui <- renderUI({
+    # tagList(
+      # validate(
+      #   need(
+      #     in_selected_RV$past_water_year != "None",
+      #     label = "past_water_year",
+      #     message = "Select a previous year"
+      #   )
+      # ),
+      div(
+        style="display: flex; gap:20px;",
+        # column(
+        #   width = 6,
+          shinyWidgets::airDatepickerInput(
+            inputId = "date_start_sep",
+            label = "Start Date :",
+            addon = "none",
+            width="100px",
+            # style="width:200px;",
+            # style="font-size:5px",
+            value = c(
+              as.Date(
+                paste(in_selected_RV$past_water_year, in_selected_RV$start_day),
+                "%Y %j"
+              )
+              # ,
+              # as.Date(
+              #   paste(in_selected_RV$past_water_year, in_selected_RV$end_day),
+              #   "%Y %j"
+              # )
+            ),
+            minDate = as.Date("2011-01-01"),
+            maxDate = as.Date("2024-12-31"),
+            range = FALSE,
+            # inline=TRUE,
+            disabledDaysOfWeek = TRUE
+            # ,
+            # width = "80%"
+          )
+        # )
+        ,
+        # column(
+        #   width = 6,
+          shinyWidgets::airDatepickerInput(
+            inputId = "date_end_sep",
+            label = "End Date :",
+            addon = "none",
+            width="100px",
+            value = c(
+              # as.Date(
+              #   paste(in_selected_RV$past_water_year, in_selected_RV$start_day),
+              #   "%Y %j"
+              # )
+              # # ,
+              as.Date(
+                paste(in_selected_RV$past_water_year, in_selected_RV$end_day),
+                "%Y %j"
+              )
+            )
           )
           # ,
-          # as.Date(
-          #   paste(in_selected_RV$past_water_year, in_selected_RV$end_day),
-          #   "%Y %j"
-          # )
-        ),
-        minDate = as.Date("2011-01-01"),
-        maxDate = as.Date("2024-12-31"),
-        range = FALSE,
-        # inline=TRUE,
-        disabledDaysOfWeek = TRUE
-        # ,
-        # width = "80%"
-      ))
-  ,
-  column(width=6,
-  shinyWidgets::airDatepickerInput(
-  inputId = "date_end_sep",
-  label = "End Date :",
-  addon="none",
-  value = c(
-    # as.Date(
-    #   paste(in_selected_RV$past_water_year, in_selected_RV$start_day),
-    #   "%Y %j"
-    # )
-    # # ,
-    as.Date(
-      paste(in_selected_RV$past_water_year, in_selected_RV$end_day),
-      "%Y %j"
+          # minDate = as.Date("2011-01-01"),
+          # maxDate = as.Date("2024-12-31"),
+          # range = FALSE,
+          # # inline=TRUE,
+          # disabledDaysOfWeek = TRUE
+          # ,
+          # width = "80%"
+        # )
+    #   )
     )
-  )
-  ),
-  minDate = as.Date("2011-01-01"),
-  maxDate = as.Date("2024-12-31"),
-  range = FALSE,
-  # inline=TRUE,
-  disabledDaysOfWeek = TRUE
-  # ,
-  # width = "80%"
-)
-)
-  )
-})
+  })
 
   # output$start_date_entry_ui <- renderUI({
   #   tagList(
@@ -1311,11 +1676,11 @@ output$start_date_entry_sep_ui <- renderUI({
   })
 
   observeEvent(input$date_start_sep, {
-    in_selected_RV$start_day <- as.numeric(format(input$date_start_sep,"%j"))
+    in_selected_RV$start_day <- as.numeric(format(input$date_start_sep, "%j"))
   })
 
   observeEvent(input$date_end_sep, {
-    in_selected_RV$end_day <- as.numeric(format(input$date_end_sep,"%j"))
+    in_selected_RV$end_day <- as.numeric(format(input$date_end_sep, "%j"))
   })
 
   observeEvent(input$DOYslider_rng, {
@@ -1354,38 +1719,37 @@ output$start_date_entry_sep_ui <- renderUI({
         div(
           style = "margin-left: 20px;",
           shiny::uiOutput("flength_dash_ui"),
-                div(
-        style = "display: left;margin-top: 10px;",
-        div(
-          style="display: flex;",
+          div(
+            style = "display: left;margin-top: 10px;",
+            div(
+              style = "display: flex;",
 
-             
-
-        HTML(paste("<p> Fork length of juvenile Steelhead </p> "))
-        # HTML(paste("<p> Fork lenght of <strong>",(input$start_loc_in),"</strong> junction </p> "))
-        # shiny::HTML(
-        #   "<p style ='font-size:80%'> Histogram of day of year when acoustic-tagged juvenile Steelhead were detected at each location. </p>"
-        # )
-        ,
-        div(
-          style="margin-left: 10px; z-index: 2",
-              # class = "pull-right",
-              # style="float:right !important;
-              #         position: relative;
-              #         z-index: 2;",
-              shinyWidgets::dropdownButton(
-                right = FALSE,
-                up = TRUE,
-                circle = TRUE,
-                size = "xs",
-                status = "primary",
-                icon = icon("info", style = "color: white;"),
-                width = "300px",
-                p("Lengths of fish relased during acoustic telemetry studies (2011-2016). Overall mean fork length selected by default.")
+              HTML(paste("<p> Fork length of juvenile Steelhead </p> ")),
+              # HTML(paste("<p> Fork lenght of <strong>",(input$start_loc_in),"</strong> junction </p> "))
+              # shiny::HTML(
+              #   "<p style ='font-size:80%'> Histogram of day of year when acoustic-tagged juvenile Steelhead were detected at each location. </p>"
+              # )
+              div(
+                style = "margin-left: 10px; z-index: 2",
+                # class = "pull-right",
+                # style="float:right !important;
+                #         position: relative;
+                #         z-index: 2;",
+                shinyWidgets::dropdownButton(
+                  right = FALSE,
+                  up = TRUE,
+                  circle = TRUE,
+                  size = "xs",
+                  status = "primary",
+                  icon = icon("info", style = "color: white;"),
+                  width = "300px",
+                  p(
+                    "Lengths of fish relased during acoustic telemetry studies (2011-2016). Overall mean fork length selected by default."
+                  )
+                )
+              )
             )
           )
-      )
-      )
           # HTML(
           #   "<p style ='font-size:80%'>Fork length of juvenile Steelhead used in acoustic telemetry studies (2011-2016). </p>"
           #   # "<p style ='font-size:80%'>Fork length (mm). </p>"
@@ -1472,9 +1836,6 @@ output$start_date_entry_sep_ui <- renderUI({
       )
   })
 
-
-
-
   output$start_loc_ui <- renderUI({
     div(
       style = "display: inline-flex; align-items: left;margin-top: 10px;",
@@ -1487,7 +1848,15 @@ output$start_date_entry_sep_ui <- renderUI({
           inline = T,
           width = "fit",
           'start_loc_in',
-          choices = loc_opt
+          choices = loc_opt,
+          ,
+          choicesOpt = list(
+            style = paste0(
+              "background-color:",
+              c("#67AB9F", "#FF3399"),
+              ";"
+            )
+          )
         )
       )
     )

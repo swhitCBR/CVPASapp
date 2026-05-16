@@ -1,1 +1,1 @@
-<em> Simplified map of paths that juvenile Steelhead may travel along during their downstream journey from the San Joaquin River to the Pacific Ocean, with names and abbreviations for routes and key junctions provided.</em>
+<em> Major routes, junctions, and landmarks that juvenile Steelhead encounter while migrating from the San Joaquin River to the Pacific Ocean.</em>

@@ -11,16 +11,24 @@ app_ui <- function(request) {
     .dropdown-menu span {width: 100%;} 
     .text-muted {color: black !important; float: right;}
     .bootstrap-select .dropdown-menu {
-    min-width: 150;")))
-    ,
-    #       tags$head(
-    #             tags$style(HTML("
+    min-width: 150;
+    #schem_info_drop_div .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+      }
+        
+    #date_end_sep { background-color: #f4f4f4 !important;}
+
+    "))
+    # ,
+    # tags$style(HTML("
     #   /* Make the dropdown open on hover */
     #   .dropdown:hover .dropdown-menu {
     #     display: block;
     #     margin-top: 0;
     #   }
-    # ")),
+    # "))
+    ),
     # # tags$style(HTML("
     # #   /* Change font size of the input text box */
     # #   #date_start_sep {font-size: 75%;height: auto;}
@@ -34,6 +42,7 @@ app_ui <- function(request) {
     shinydashboardPlus::dashboardPage(
 
       header = shinydashboardPlus::dashboardHeader(
+        # tags$style="height: 60px;",
         leftUi=
          tagList(
         # shinyWidgets::dropdownButton(
@@ -122,15 +131,24 @@ app_ui <- function(request) {
         #       ")
         # )
         ,
+        tags$a(
+          href = "https://www.cbr.washington.edu/", 
+          target="_blank",
+          style = "padding-top: 0px; padding-bottom: 0px;",
+          # tags$style="padding-top: 0px; padding-bottom: 0px;"
         tags$img(
             src = "www/cbr_logo_horiz.png",
             height = "40px",
-            alt = "Image of Columbia Basin Research logo"
+            title = "Image of Columbia Basin Research logo"
           )
         )
+        )
           ,
-
+        # HTML('<span class="logo">CVPAS - Steelhead</span>'),
+        # tags$li("CVPAS - Steelhead"),
         title = "CVPAS - Steelhead"
+        # title = HTML("<h4 style=height: 60px> CVPAS - Steelhead </h4>")
+        # tags$style="height: 60px;"
         # ,
         # #{{alt_config 1}--sub argument}
         # # title=NULL,
@@ -156,8 +174,8 @@ app_ui <- function(request) {
         tagList(
           collapsed = FALSE, # Set the sidebar to be collapsed by default
           uiOutput("cbr_dyn_sidebar_ui")
-          ,
-          verbatimTextOutput("sel_in_ls_text")
+          # ,
+          # verbatimTextOutput("sel_in_ls_text")
           # ,
           # verbatimTextOutput("glob_in_ls_text")
         )

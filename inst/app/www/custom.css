@@ -103,13 +103,15 @@ table.dataTable tbody td.selected {
   /* background-color: #024c63 !important;  */
 }
 
+#date_start_sep {
+  background-color: #f4f4f4 !important;
+  margin-bottom: 0px;
+}
 
-/* airdatepicker input
-/* Color for dates within the selected range */
-/* .air-datepicker-cell.-in-range- {
-  background-color: #d1e7dd !important; /* Light green range */
-  /* color: #000 !important;
-} */ 
+#date_end_sep {
+  background-color: #f4f4f4 !important;
+}
+
 
 /* Color for the start and end dates */
 .air-datepicker-cell.-selected-, 
@@ -167,7 +169,7 @@ summary::-webkit-details-marker {
 
 summary {
   color: #30353b;
-  border-radius: 5px;
+  border-radius: 0px;
 }
 
 details {

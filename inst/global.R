@@ -8,11 +8,11 @@
   
   
 # Water Year Type Labels and selections 
-  WYT_cols <- c("#3399FF", "#99EEFF", "#FFFFCC", "#FFCC66", "#FF5500")
+  WYT_cols <- c("#3399FF",  "#99EEFF", "#FFFFCC","#FFCC66", "#FF5500")
   names(WYT_cols) <- c(
       "Wet",
-      "Below Normal",
       "Above Normal",
+      "Below Normal",
       "Dry",
       "Critical") # new addition
 

@@ -551,13 +551,15 @@ app_server <- function(input, output, session) {
       column(
         width = 12,
         # fluidRow(
-        uiOutput("chk_input_ui")
+        uiOutput("chk_input_ui")#,
+             
+
       ),
-      plotOutput("doy_surv_ggpplt", height = "500px")
-      ,
       column(
         width = 12,
-        uiOutput("deets_overall_ests")
+        h5("All years overall survival (debug)"),
+         plotOutput("doy_surv_ggpplt", height = "500px")
+        # uiOutput("deets_overall_ests")
       )
     )
   })

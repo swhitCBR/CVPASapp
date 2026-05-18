@@ -13,7 +13,7 @@ CBRtheme<- fresh::create_theme(
     blue = "#024c63"
   ),
   fresh::adminlte_sidebar(
-    width = "250px",
+    width = "270px",
     dark_bg = "#F8F8F8",
     dark_color = "black",
     dark_hover_bg = "lightgrey", #none of the colors seem to do anything other than bg//switch to css option for more piecemeal customization

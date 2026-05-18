@@ -23,7 +23,8 @@
       "Dry" = "Dry",
       "Critical" = "Critical")
 
-  RV_text_fun <- function(heading="replace_me",RVls_in){
+  RV_text_fun <- function(heading="replace_me",RVls_in,sep_in="\n   "){
+    if(heading!="none"){
     paste(
       heading,
       paste0(
@@ -32,10 +33,6 @@
         " - ",
         RVls_in[["end_day"]] #global_reactive$end_day
       ),
-      # paste0("start_date: ", RVls_in[["start_date"]]),
-      # paste0("end_date: ", RVls_in[["end_date"]]),
-      # paste0("data_type : ", RVls_in[["data_type"]]),
-      # paste0("date_entry : ", RVls_in[["date_entry"]]),
       paste0("flength : ", RVls_in[["flength"]]),
       paste0(
         "past_water_year : ",
@@ -44,13 +41,29 @@
       paste0("WYT : ", RVls_in[["WYT"]]),
       paste0("BAR : ", RVls_in[["BAR"]]),
       paste0("LOC : ", RVls_in[["LOC"]]),
-      sep = "\n\t"
+      sep = sep_in
+    )
+  } else{
+     paste(
+      paste0(
+        "start_day - end_day : ",
+        RVls_in[["start_day"]], #global_reactive$start_day,
+        " - ",
+        RVls_in[["end_day"]] #global_reactive$end_day
+      ),
+      paste0("flength : ", RVls_in[["flength"]]),
+      paste0(
+        "past_water_year : ",
+        RVls_in[["past_water_year"]]
+      ),
+      paste0("WYT : ", RVls_in[["WYT"]]),
+      paste0("BAR : ", RVls_in[["BAR"]]),
+      paste0("LOC : ", RVls_in[["LOC"]]),
+      sep = "\n"
     )
   }
 
-# examp_RVls <- list("WYT"="Wet","BAR"="Out","LOC"="TCJ","flength"=244,"start_day"=40,"end_day"=99)
-# cat(RV_text_fun(RVls_in=examp_RVls))
-# parse(RV_text_fun(RVls_in=examp_RVls))
+}
 
   in_selected_RV <- reactiveValues(
     # past water year should be NA to start otherwise app flickers

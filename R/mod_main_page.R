@@ -10,30 +10,7 @@
 mod_met_ref_page_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    #     shinydashboard::box(
-    #   title = HTML("Methods and References"),
-    #   width = 12,
-    #   solidHeader = TRUE,
-    #   status = "primary",
-    #   shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/main/met_and_ref/overview_pt1.md", package = "CVPASapp")))
-    #   ,
-    #   tags$img(
-    #   src = "www/simple_route_image.png",
-    #   style = "width: 400px; height: auto; border: 2px solid #024c63;",
-    #   name = "placeholder text",
-    #   alt = "placeholder text"
-    #   )
-    #   ,
-    #   shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/main/met_and_ref/how_calc_pt2.md", package = "CVPASapp")))
-    #   ,
-    #   bscui::bscuiOutput(outputId = "surv_route_diagram_wtt", width = "50%", height = "100%") # not the absence of ns() function here bc render occurs on server
-    #   ,
-    #   bscui::bscuiOutput(outputId = "my_red_svg", width = "100%", height = "100%")
-    #   ,
-    #   shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/main/met_and_ref/left_col_text.md", package = "CVPASapp")))
-    #   ,
-    #   shiny::includeMarkdown(system.file("app/www/biblio_doc.md", package = "CVPASapp"))
-    # )
+
   )
     # fluidRow(
 

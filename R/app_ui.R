@@ -174,8 +174,8 @@ app_ui <- function(request) {
         tagList(
           collapsed = FALSE, # Set the sidebar to be collapsed by default
           uiOutput("cbr_dyn_sidebar_ui")
-          # ,
-          # verbatimTextOutput("sel_in_ls_text")
+          ,
+          verbatimTextOutput("sel_in_ls_text")
           # ,
           # verbatimTextOutput("glob_in_ls_text")
         )
@@ -193,19 +193,20 @@ app_ui <- function(request) {
           shinydashboard::tabItems(
             shinydashboard::tabItem(
               "about"#,
-            ),
-            shinydashboard::tabItem(
-              "met_ref",
-              mod_met_ref_page_ui("met_ref_page_ui_1")
-              # ,
-              # ,
-
-              # uiOutput("input_panel_UI")
-              # ,
-              # uiOutput("input_page_UI")
-
-              # )
             )
+            # ,
+            # shinydashboard::tabItem(
+            #   "met_ref",
+            #   mod_met_ref_page_ui("met_ref_page_ui_1")
+            #   # ,
+            #   # ,
+
+            #   # uiOutput("input_panel_UI")
+            #   # ,
+            #   # uiOutput("input_page_UI")
+
+            #   # )
+            # )
           )
           # ,
  

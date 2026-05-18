@@ -557,9 +557,7 @@ app_server <- function(input, output, session) {
       ,
       column(
         width = 12,
-        h3("Annual estimate (debug)")
-           plotOutput("doy_surv_ggpplt", height = "500px")
-        # uiOutput("deets_overall_ests")
+        uiOutput("deets_overall_ests")
       )
     )
   })

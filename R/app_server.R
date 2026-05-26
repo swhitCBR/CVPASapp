@@ -8,22 +8,23 @@ app_server <- function(input, output, session) {
   # autoselect specify starting tab
   # session$onSessionEnded(stopApp)
 
-  tab_selected <- reactiveVal("inputs")
+  # Retrieve specific argument
+  start_tab_passed <- golem::get_golem_options("start_tab")
+  inputs_panel_collapse <- golem::get_golem_options("inputs_panel_collapse")
+
+  # at startup ----
+  # inputs_selected by default
+  tab_selected <- reactiveVal(start_tab_passed)
+  shinydashboard::updateTabItems("tabs",session = session, selected = start_tab_passed)
+  # probably better as a reactiveValues (list format)
   data_source_selected <- reactiveVal("prev_pan")
-  shinydashboard::updateTabItems(
-    "tabs",
-    session = session,
-    selected = "inputs"
-  )
 
-  # {DEBUGGING}
-  observeEvent(input$tabs, {
-    print(input$tabs)
-    tab_selected(input$tabs)
-  })
-
+  ### debugging print  ----
+  observeEvent(input$tabs, {tab_selected(input$tabs); print(input$tabs)})
+  observeEvent(input$data_source_picker, {data_source_selected(input$data_source_picker)})
+  
   observeEvent(input$goto_inputs_butt, {
-    tab_selected("inputs")
+    tab_selected("inputs") # this is a reactiveVal
     shinydashboard::updateTabItems(
       "tabs",
       session = session,
@@ -58,32 +59,7 @@ app_server <- function(input, output, session) {
     )
   })
 
-  # Switching based on data source
-  observeEvent(input$data_source_picker, {
-    print(input$env_dat_tabpan)
-    if (input$data_source_picker == "None") {
-      data_source_selected("none")
-    }
-
-    if (input$data_source_picker == "Previous year") {
-      data_source_selected("prev_pan")
-      updateTabsetPanel(
-        session = session,
-        inputId = "env_dat_tabpan",
-        selected = "prev_pan"
-      )
-    }
-
-    if (input$data_source_picker == "Uploaded file (.csv)") {
-      data_source_selected("up_pan")
-      updateTabsetPanel(
-        session = session,
-        inputId = "env_dat_tabpan",
-        selected = "up_pan"
-      )
-    }
-  })
-
+  # debugging and printing
   output$sel_in_ls_text = renderText({
     RV_text_fun(
       heading = "Selected",
@@ -91,20 +67,12 @@ app_server <- function(input, output, session) {
     )
   })
 
+  # print global (i.e., locked-in values)
   output$glob_in_ls_text = renderText({
-    RV_text_fun(
-      heading = "none",
-      RVls_in = shiny::reactiveValuesToList(global)
-    )
+    RV_text_fun(heading = "none",
+    RVls_in = shiny::reactiveValuesToList(global))
   })
-
-  # top of page
-  output$glob_in_ls_text_top = renderText({
-    RV_text_fun(
-      heading = "Selections:",
-      RVls_in = shiny::reactiveValuesToList(global)
-    )
-  })
+  
 
   observeEvent(input$start_loc_in, {
     in_selected_RV$LOC <- input$start_loc_in
@@ -112,134 +80,40 @@ app_server <- function(input, output, session) {
     #   cat("Starting location is:", global$LOC, "\n")
     # }
   })
+  
+  output$start_loc_heading = renderText({
+    paste(in_selected_RV$start_loc_in)
+  })
+  
 
-  # rendering schematic vector plots (svgs)
-  output$schm_plt_HOR_CHP <- bscui::renderBscui({
-    bscui::bscui(HOR_CHP_xml) |>
-      bscui::set_bscui_options(
-        clip = TRUE,
-        show_menu = FALSE,
-        zoom_min = 1.0,
-        zoom_max = 1.0
-      )
-  })
-  output$schm_plt_HOR_CHP_bar_in <- bscui::renderBscui({
-    bscui::bscui(HOR_CHP_bar_in_xml) |>
-      bscui::set_bscui_options(
-        clip = TRUE,
-        show_menu = FALSE,
-        zoom_min = 1.0,
-        zoom_max = 1.0
-      )
-  })
-  output$schm_plt_TCJ_CHP <- bscui::renderBscui({
-    bscui::bscui(TCJ_CHP_xml) |>
-      bscui::set_bscui_options(
-        clip = TRUE,
-        show_menu = FALSE,
-        zoom_min = 1.0,
-        zoom_max = 1.0
-      )
-  })
-
-  output$schm_plt_TCJ_CHP_bar_in <- bscui::renderBscui({
-    bscui::bscui(TCJ_CHP_bar_in_xml) |>
-      bscui::set_bscui_options(
-        clip = TRUE,
-        show_menu = FALSE,
-        zoom_min = 1.0,
-        zoom_max = 1.0
-      )
-  })
-
+  ### change display based on reactive values ----
   # for selecting among schematic plots
+  # swaps out .svg images depending on the values of two reactiveValues
   output$schem_start_loc_plt_ui <- renderUI({
-    tst_val <- paste(in_selected_RV$LOC, in_selected_RV$BAR)
-    div(
-      title = "Major routes and key junctions in the Delta",
-      shiny::tagList(
-        switch(
-          tst_val,
-          "HOR Out" = bscui::bscuiOutput(
-            outputId = "schm_plt_HOR_CHP",
-            width = "100%",
-            height = "300px"
-          ),
-          "TCJ Out" = bscui::bscuiOutput(
-            outputId = "schm_plt_TCJ_CHP",
-            width = "100%",
-            height = "300px"
-          ),
-          "HOR In" = bscui::bscuiOutput(
-            outputId = "schm_plt_HOR_CHP_bar_in",
-            width = "100%",
-            height = "300px"
-          ),
-          "TCJ In" = bscui::bscuiOutput(
-            outputId = "schm_plt_TCJ_CHP_bar_in",
-            width = "100%",
-            height = "300px"
-          )
-        )
-      )
-    )
+    tst_val <- paste(in_selected_RV$LOC, in_selected_RV$BAR, sep = "_")
+    tags$img(src = paste0("www/images/svg/basic route schematic/", tst_val, ".svg"),width = "100%")
   })
 
-  # output$year_picker_ui <- renderUI({
-  #   # div(
-  #   # style = "display: inline-flex; align-items: left;", #margin-top: 10px;
-  #   # div(
-  #   #   style = "margin-top: 0px; margin-right: 5px;font-weight:bold",
-  #   #   shiny::HTML("<h5> <b> Year: </b>  </h4>")
-  #   #   # shiny::HTML("<h5> <b> Use data from: </b>  </h4>")
-  #   # ),
-  #   shinyWidgets::pickerInput(
-  #     "year_picker",
-  #     label = NULL,
-  #     multiple = FALSE,
-
-  #     choices = c(as.character(2011:2024), "None"),
-  #     selected = in_selected_RV$past_water_year,
-
-  #     choicesOpt = list(
-  #       style = paste0(
-  #         "background-color:",
-  #         WYT_cols[match(ann_HORbar_WYT_data$WYT, names(WYT_cols))],
-  #         ";"
-  #       ),
-  #       subtext = (ann_HORbar_WYT_data$WYT)
-  #       # ,
-  #       #  content = paste("<div style=color:black>",c(as.character(2011:2024), "None"),c(ann_HORbar_WYT_data$WYT,"None"),"</div>")
-  #     )
-  #   )
-  # })
-
+  # could just be in ui
   output$data_source_ui <- renderUI({
-    shinyWidgets::pickerInput(
-      "data_source_picker",
-      choices = c("Previous year", "Uploaded file (.csv)", "None"),
-      # selected="None"
-      selected = init_data_source
-    )
+    shinyWidgets::pickerInput(inputId="data_source_picker",choices = c("Previous year", "Uploaded file (.csv)", "None"),selected = init_data_source)
+  })
+
+
+  ### change major display change based on reactive values ----
+  # for selecting among schematic plots
+  output$data_source_selected_txt <- renderText({
+    data_source_selected()
   })
 
   output$deet_panel_prev_upload_ui <- renderUI({
     tagList(
+      # shiny::verbatimTextOutput("data_source_selected_txt"),
       switch(
         data_source_selected(),
         "None" = NULL,
-        "prev_pan" = shiny::uiOutput("details_sel_data_bar"),
-        #   tags$details(
-        #     title="Click to open or close",
-        #     id="my_deet1",
-        #     style="margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white; ",
-        #     tags$summary(
-        #       "Select Daily Environmental Data",#"Select/Review Daily Environmental Data",
-        #   style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px; background-color:#ddd"),
-        #   shiny::uiOutput("prev_yr_ui")
-        # ),
-        # "up_pan" =shiny::uiOutput("details_up_data_bar")
-        "up_pan" = shiny::uiOutput("details_up_data_bar_redo")
+        "Previous year" = shiny::uiOutput("details_sel_data_bar"),
+        "Uploaded file (.csv)" = shiny::uiOutput("details_up_data_bar")
       )
     )
   })
@@ -247,174 +121,65 @@ app_server <- function(input, output, session) {
   output$details_sel_data_bar <- renderUI({
     tags$details(
       id = "details_prev_yr",
-      open=ifelse(input$data_source_picker=="Previous year",TRUE,NULL),
+      open = TRUE, #ifelse(input$data_source_picker == "Previous year", TRUE, NULL),
       style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white; ",
       tags$summary(
         title = "Click to open or close",
-        "Select Daily Environmental Data", #"Select/Review Daily Environmental Data",
+        "Select Daily Environmental Data", 
         style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px; background-color:#ddd"
       ),
       shiny::uiOutput("prev_yr_ui")
     )
   })
 
-  output$details_up_data_bar_redo <- renderUI({
-    tags$details(
-      id = "details_up",
-      open=ifelse(input$data_source_picker=="Uploaded file (.csv)",TRUE,NULL),
-      style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white; ",
-      tags$summary(
-        title = "Click to open or close",
-        "Load Daily Environmental Data", # "Upload/Review Daily Environmental Data",
-        style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
-                  padding-bottom: 2px;background-color:#ddd;"
-      ),
+  output$details_up_data_bar <- renderUI({ draw_details_up() })
+
+  output$details_indiv_attrib_ui <- renderUI({
+    # tagList(
+    ifelse(
+      data_source_selected() == "None",
+      tagList(NULL),
       tagList(
-        fluidRow(
-          # style = "padding-inline-start: 15px;",
-          style = "padding: 15px;",
-          column(
-            width = 5,
-
-            # div(
-            # tags$ul(
-            #   style = "padding-inline-start: 10px;",
-            #   tags$li(
-            # h5(
-            # "Select a previous year:"
-            # )
-            # ,
-            fileInput(
-              inputId = "file1",
-              label = "Choose CSV File",
-              # buttonLabel="aaa",
-              accept = c(
-                "text/csv",
-                "text/comma-separated-values,text/plain",
-                ".csv"
-              )
-            ),
-            shiny::fluidRow(
-              style = "margin-top:20px",
-              column(
-                width = 4,
-                div(
-                  role = "menuitem",
-                  actionButton(
-                    inputId = "run_button",
-                    label = "Load"
-                  )
-                )
-              ),
-              column(
-                width = 4,
-                div(
-                  role = "menuitem",
-                  actionButton(
-                    inputId = "reset_button",
-                    label = "Reset"
-                  )
-                )
-              ),
-              column(
-                width = 4,
-                downloadButton(
-                  outputId = "download_sample",
-                  label = "Sample CSV",
-                  icon = shiny::icon("download")
-                )
-              )
-            ),
-            # )
-            #   )
-            # )
-            # )
-            div(
-              style = "padding-top: 20px;",
-              role = "menu",
-              shinyWidgets::dropdown(
-                # id = "summ_man_in1",
-                # style="simple",
-                label = "Manual Input",
-                icon = icon("edit"),
-                # title = "Click to open or close",
-                size = "sm",
-                width = "600px",
-                # style="margin-top:20px; padding: 0px; color:#337ab7 ; background-color:white",
-                # tags$summary(
-                #   id="summ_man_in1",
-                "Manual Input",
-                # style = "font-size: 14px; font-weight: bold; background-color:#ddd; padding: 5px"
-                # ),
-                # div(
-                #   style = "padding: 10px;",
-                #   role = "menu",
-                #   div(
-                #     title = "aaa",
-                #     role = "menuitem",
-                #     # p("textAreaInput")
-                textAreaInput(
-                  inputId = "manual_input",
-                  label = NULL,
-                  # label = "Manual Input",
-                  placeholder = 'year,date,WYT,barrier,VNS,OMT,T_MSD,T_CLC,CVP,SWP\n2013,"2013-04-29","Out",4130,-623,18.2,20.6,816,2421',
-                  rows = 3
-                )
-              )
-              # )
-            )
-
+        tags$details(
+          id = "details_indiv",
+          style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px;",# ; background-color:white",
+          tags$summary(
+            title = "Click to open or close",
+            "Select Individual Attributes",
+            style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px;background-color:#ddd;"
           ),
-          column(
-            width = 7,
-            div(
+          fluidRow(
+            style = "padding-inline-start: 15px;",
+            column(
+              width = 6,
+              h5(strong("Fork Length")),
               tags$ul(
-                style = "padding-inline-start: 10px;",
+                style = "padding-inline-start: 20px;",
                 tags$li(
-                  h5(
-                    "[[Datatable placeholder]]"
-                  )
+                  "By default, all predictions are based on the average fork length of juvenile Steelhead used in modeling."
                 )
               )
-            )
+            ),
+            column(width = 6, shiny::uiOutput("flength_sel_ui"))
           )
         )
       )
     )
+    # )
   })
-
-
-
-  output$details_indiv_attrib_ui <- renderUI({
-    fluidRow(
-      style = "padding-inline-start: 15px;",
-      column(
-        width = 6,
-        h5(strong("Fork Length")),
-        tags$ul(
-          style = "padding-inline-start: 20px;",
-          tags$li(
-            "By default, all predictions are based on the average fork length of juvenile Steelhead used in modeling."
-          )
-        )
-      ),
-      column(width = 6, shiny::uiOutput("flength_sel_ui"))
-    )
-  })
-
 
   # })
 
-  output$input_panel_UI <- renderUI({
+  output$inputs_panel_UI <- renderUI({
     shinydashboardPlus::box(
       id = "input_box2",
       title = "Inputs",
-      # title = shiny::HTML("Inputs"),
       solidHeader = TRUE,
-      # status = "warning",
       status = "primary",
       collapsible = T,
-      collapsed = FALSE,
+      # collapsed = TRUE,
+      collapsed = inputs_panel_collapse,
+      # collapsed = golem::get_golem_options("inputs_panel_collapse"),
       width = 12,
       tags$style(HTML(
         "
@@ -475,24 +240,16 @@ app_server <- function(input, output, session) {
         tagList(
           div(
             style = "margin-left: 10px; margin-right: 10px;;margin-top: 10px;;margin-bottom: 10px;",
-            # p("test",style="text-align: right;"),
-            # div(class = "pull-right",
-
-            # shinydashboardPlus::box            ,
             div(
               title = "click for more information",
               id = "schem_info_drop_div",
-              # class = "pull-right",
               style = "float:right !important;
                       position: relative;
                       z-index: 2;",
-              # position:fixed; !important",
               shinyWidgets::dropdownButton(
-                # id="schem_info_drop",
                 right = TRUE,
                 up = FALSE,
                 circle = TRUE,
-                # tooltip=TRUE,
                 size = "xs",
                 status = "primary",
                 icon = icon("info", style = "color: white;"),
@@ -505,41 +262,21 @@ app_server <- function(input, output, session) {
         )
       ),
       column(
-        width = 12, 
-        style="margin:10px;",
-        shiny::uiOutput("deet_panel_prev_upload_ui"),
-        tags$details(
-          id = "details_indiv",
-          open=TRUE,
-          style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
-          tags$summary(
-            title = "Click to open or close",
-            "Select Individual Attributes",
-            style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px;background-color:#ddd;"
-          ),
+        width = 12,
+        style = "margin:10px;",
+        tagList(
+          shiny::uiOutput("deet_panel_prev_upload_ui"),
           shiny::uiOutput("details_indiv_attrib_ui")
         )
-      ),
-      hr(),
-      uiOutput("accord_panel_view_in_ui")
+      )
+      ,
+      footer=uiOutput("chk_input_ui")
     )
   })
 
-  output$deets_overall_ests <- renderUI({
-    tags$details(
-      id = "my_deet2",
-      style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
-      tags$summary(
-        title = "Click to open or close",
-        "Overall Survival", # "Upload/Review Daily Environmental Data",
-        style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
-                  padding-bottom: 2px;background-color:#ddd;"
-      ),
-      p("empty_panel")
-    )
-  })
 
-  output$input_panel_UI_3 <- renderUI({
+
+  output$estimates_panel_ui <- renderUI({
     shinydashboardPlus::box(
       id = "est_box_ui",
       title = shiny::HTML("Estimates"),
@@ -550,36 +287,201 @@ app_server <- function(input, output, session) {
       width = 12,
       column(
         width = 12,
-        # fluidRow(
-        uiOutput("chk_input_ui")#,
-             
-
-      ),
-      column(
-        width = 12,
-        h5("All years overall survival (debug)"),
-         plotOutput("doy_surv_ggpplt", height = "500px")
-        # uiOutput("deets_overall_ests")
+        h4(strong(paste0("Overall Survival (HOR-CHP)"))),
+        div(
+          style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;",#border-bottom: solid 1px gray; align-items:center",
+          # style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px;border-bottom: solid 1px gray; align-items:center",
+          # title = "attributes of years 2011-2024",
+          # h4(strong(paste0("Overall Survival (",in_selected_RV$start_loc_in,")"))),
+         
+          # textOutput("start_loc_heading"),
+          # shinyWidgets::dropMenu(
+          #   shinyWidgets::circleButton(
+          #     inputId = "btn4",
+          #     icon = icon("info"),
+          #     status = "primary",
+          #     size = "xs"
+          #   ),
+          #   p("How well user input data is assessed by comparing selections to the range of observed value in the Six-Year Study")#,
+          #   # placement = "left-start"
+          # )
+        
+        # ,
+        column(width=7,
+               p("more text here")
+        ,
+               plotOutput("ovrl_mods_pred_ggpplt2", height = "400px")
+               ),
+        column(width=5,
+               div(
+                 # for resizing table height
+                 style = "border: solid 1px black; margin:10px;",
+                 # style = "border: solid 2px black; margin:10px;height:525px;",
+                 span(
+                   style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px; align-items:center; border-bottom: solid 1px black;",
+                   title = "attributes of years 2011-2024",
+                   h5(em("Route-Specific Survival")),
+                   shinyWidgets::dropMenu(
+                     shinyWidgets::circleButton(
+                       inputId = "btn1",
+                       icon = icon("info"),
+                       status = "primary",
+                       size = "xs"
+                     ),
+                     tags$dl(
+                       # definition list
+                       div(
+                         style = "margin-left: 20px;",
+                         HTML('<strong>Year:</strong> Calendar Year</p>'),
+                         HTML('<strong>Category:</strong> Water Year Type (SJ)</p>'),
+                         HTML(
+                           '<strong>HOR Barrier:</strong> Barrier at Head of Old River</p>'
+                         ),
+                         HTML(
+                           '<strong>Model:</strong> Used to fit statistical models</p>'
+                         )
+                       )
+                     )
+                   ),
+                   placement = "left-start"
+                 ),
+                 # ),
+                 plotOutput("submods_pred_ggpplt2", height = "400px")
+               )
+               # div(style="display:flex;",
+                   
+                   # ,
+                   # plotOutput("doy_ins_ggpplt2", height = "400px")
+               # )
+        )
+        # tags$details(
+        #   id = "overall_surv_deet",
+        #   open = TRUE,
+        #   style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+        #   tags$summary(
+        #     title = "Click to open or close",
+        #     "Route Usage",
+        #     # "Overall Survival", # "Upload/Review Daily Environmental Data",
+        #     style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+        #           padding-bottom: 2px;background-color:#ddd;"
+        #   )
+        #   ,
+        #   div(style="display:flex;",
+        #       plotOutput("submods_pred_ggpplt2", height = "400px")
+        #       # ,
+        #       # plotOutput("doy_ins_ggpplt2", height = "400px")
+        #   )
+        #   # ,
+        #   # plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
+        #   # ,
+        #   # plotOutput("doy_surv_ggpplt", height = "400px")
+        #   
+        #   # ,
+        #   # p("empty_panel")
+        # )
+        )
+        ,
+        # column(width=7,
+        tags$details(
+          id = "hor_chp_surv_deet",
+          open = TRUE,
+          style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+          tags$summary(
+            title = "Click to open or close",
+            "Sub-Model Estimates", # "Upload/Review Daily Environmental Data",
+            style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+                  padding-bottom: 2px;background-color:#ddd;"
+          )
+          ,
+          h4("HOR-TCJ Survival",style="margin-left:20px;"),
+          # span(style="padding-left:20px;",
+          #      h4(em("hh")),),
+          div(style="display:flex;",
+              plotOutput("doy_ins_ggpplt", height = "400px")
+              ,
+              plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
+          )
+          # ,
+          # plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
+          # ,
+          # plotOutput("doy_surv_ggpplt", height = "400px")
+          
+          # ,
+          # p("empty_panel")
+        )
+      # )
+        # ,
+        # column(width=5,
+        # tags$details(
+        #   id = "route_usage_deet",
+        #   open = TRUE,
+        #   style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+        #   tags$summary(
+        #     title = "Click to open or close",
+        #     "Reach-Specific Survival", # "Upload/Review Daily Environmental Data",
+        #     style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+        #           padding-bottom: 2px;background-color:#ddd;"
+        #   )
+        #   ,
+        #   div(style="display:flex;",
+        #       p("fill-in")
+        #       # plotOutput("doy_ins_ggpplt", height = "400px")
+        #       # ,
+        #       # plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
+        #   )
+        # )
+        # )
       )
     )
   })
-  
+
+  # shinyWidgets::radioGroupButtons(
+  #   'submodule_env_data_view_1-radio_metric_view',
+  #   label = "Metric",
+  #   choices = c(
+  #     "log(VNS)" = "VNS",
+  #     "T_msd" = "MSD",
+  #     "T_clc" = "CLC",
+  #     "CVP" = "CVP",
+  #     "SWP" = "SWP"
+  #   )
+  # )
+  # ,                  plotOutput("submodule_env_data_view_1-doy_ovr_plt2")
+
   output$chk_input_ui <- renderUI({
     div(
       column(
         width = 12,
         style = "margin-bottom: 20px",
         br(),
-        div(
-          # class = "thumbnail-section",
-          # style = "margin-left: 40px;",
-          h4(strong("Check Inputs"))
-        ),
+        # div(
+        #   # class = "thumbnail-section",
+        #   # style = "margin-left: 40px;",
+        #   h4(strong("Check Inputs"))
+        # ),
+        span(
+              style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px;    border-bottom: solid 1px gray; align-items:center",
+              # title = "attributes of years 2011-2024",
+              h4(strong("Check Inputs")),
+              shinyWidgets::dropMenu(
+                shinyWidgets::circleButton(
+                  inputId = "btn3",
+                  icon = icon("info"),
+                  status = "primary",
+                  size = "xs"
+                ),
+                p("How well user input data is assessed by comparing selections to the range of observed value in the Six-Year Study"),
+                placement = "left-start"
+              )
+            )
+            ,
         column(
+          style="margin-top:10px;",
           width = 6,
           # actionButton("check_inputs_butt", "Check Inputs")
-          div(p(
-            "Verify that selected/uploaded values conform with data used to fit statistical sub-models"
+          div(
+            p(
+            "Verify that specified values conform with data used to fit statistical sub-models"
           )),
           div(
             style = "display: inline-flex",
@@ -614,6 +516,7 @@ app_server <- function(input, output, session) {
         ),
 
         column(
+                    style="margin-top:10px;",
           width = 6,
           actionButton("load_butt", "Load"),
           actionButton("reset_butt", "Reset"),
@@ -654,12 +557,18 @@ app_server <- function(input, output, session) {
     shinyjs::disable("generate_ests_butt")
   })
 
-
   output$time_of_year_ui <- renderUI({
     tagList(
       div(
         style = "display: left;margin-top: 10px;width: 600px;",
-        shiny::uiOutput("DOY_slider_ui"),
+        sliderInput(
+          "DOYslider_rng",
+          label = NULL,
+          min = 0,
+          max = 250,
+          value = c(in_selected_RV$start_day, in_selected_RV$end_day),
+          width = '99%'
+        ),
         plotOutput("doy_ref_strt_loc", height = "100px"),
         div(
           style = "display: flex;",
@@ -690,7 +599,7 @@ app_server <- function(input, output, session) {
 
   # needs to be dynamic
   output$prev_yr_ui <- renderUI({
-    tagList(
+    fluidPage(
       fluidRow(
         style = "padding-inline-start: 15px;",
         column(
@@ -731,13 +640,15 @@ app_server <- function(input, output, session) {
                                   names(WYT_cols)
                                 )],
                                 ";"
-                              ),
-                              subtext = (ann_HORbar_WYT_data$WYT)
+                              )
+                              # ,
+                              # subtext = (ann_HORbar_WYT_data$WYT)
                               # ,
                               #  content = paste("<div style=color:black>",c(as.character(2011:2024), "None"),c(ann_HORbar_WYT_data$WYT,"None"),"</div>")
                             )
-                          ),
-                          shiny::uiOutput("year_picker_ui")
+                          )
+                          # ,
+                          # shiny::uiOutput("year_picker_ui")
                         )
                       )
                     )
@@ -757,11 +668,11 @@ app_server <- function(input, output, session) {
             )
           ),
           tagList(
-            div(
-              style = "display: flex; gap:20px; align-items:center",
-              shiny::uiOutput("start_date_entry_sep_ui"),
               div(
-                style = "display: flex; gap:20px;",
+                # style = "display: flex; gap:20px; align-items:center",
+                shiny::uiOutput("start_date_entry_sep_ui"),
+              div(
+                # style = "display: flex; gap:20px;",
                 shinyWidgets::dropMenu(
                   placement = "bottom",
                   tag = actionButton(
@@ -779,14 +690,16 @@ app_server <- function(input, output, session) {
         column(
           width = 7,
           div(
-            style = "border: solid 2px black; margin:10px;height:525px;",
+            # for resizing table height
+            style = "border: solid 1px black; margin:10px;",
+            # style = "border: solid 2px black; margin:10px;height:525px;",
             span(
-              style = "display:flex; justify-content: space-between; margin-left:10px; margin-right:10px; align-items:center",
-              title = "attributes of years 2011-2025",
-              h4("Annual Summary Table"),
+              style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px; align-items:center; border-bottom: solid 1px black;",
+              title = "attributes of years 2011-2024",
+              h5(em("Annual Summary Table")),
               shinyWidgets::dropMenu(
                 shinyWidgets::circleButton(
-                  inputId = "btn1",
+                  inputId = "ann_summ_tab_ibttn",
                   icon = icon("info"),
                   status = "primary",
                   size = "xs"
@@ -804,18 +717,56 @@ app_server <- function(input, output, session) {
                       '<strong>Model:</strong> Used to fit statistical models</p>'
                     )
                   )
+                  )
                 ),
                 placement = "left-start"
-              )
-            ),
+              ),
+            # ),
             uiOutput("table_in_WY_UI")
           )
         )
+      )
+      ,
+      column(
+        width = 12,
+            div(
+            style = "border: solid 1px black;margin-bottom:10px;",# margin:10px;",
+                    span(
+              style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px;    border-bottom: solid 1px gray; align-items:center",
+              title = "Plots of selected or uploaded data in the context of observations from 2011-2024",
+              h5(em("View Daily Values")),
+              info_drop_fun(inputId_in="daily_var_def_info_bttn1")
+            )
+        ,
+          div(
+            style = "margin-left:20px;margin-top:20px",
+          shinyWidgets::pickerInput(
+              'radio_metric_view',
+              label = "Variable",
+              choices = c(
+                "log(VNS)" = "VNS",
+                "OUT" = "OUT",
+                "MID" = "MID",
+                "ORB" = "ORB",
+                "OMT" = "OMT",
+                "CVP" = "CVP",
+                "SWP" = "SWP",
+                "EXPORTS" = "EXPORTS",
+                "CLC" = "CLC",
+                "MSD" = "MSD"),
+                width="200px",
+                choicesOpt = list(
+                subtext=c("Inflow","Outlflow","Interior flow","Interior flow","Interior flow","Exports","Exports","Exports","Temperature","Temperature")
+              )
+            )
+          )
+        ,
+        plotOutput("doy_var_ggpplt", height = "400px")
 
+      )
       )
     )
   })
-
 
   # Interactive lattice plot
   #  output$doy_latt_pltly <-  plotly::renderPlotly({
@@ -830,158 +781,87 @@ app_server <- function(input, output, session) {
     )
   })
 
-  # rendering annual data table
-  output$table_in_WY <- DT::renderDataTable(
-    DT::datatable(
-      ann_HORbar_WYT_data_TAB(),
-      selection = "none",
-      colnames = c("Year", "Category", "HOR Barrier", "Model"),
-      rownames = FALSE,
-      options = list(
-        info = FALSE,
-        dom = "t",
-        # dom = '<"<"bottom"ip>', # only the bottom
-        stripeClasses = list(),
-        pageLength = 14,
+  output$doy_var_ggpplt <- renderPlot({
+    ggplot_doy_env__plt(
+      CVhelp_dat_l_plt = CVhelp_dat_l,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year,
+      sub_var_in = input$radio_metric_view
+      # log_trans
+    )
+  })
+  
+  
+  output$doy_ins_ggpplt <- renderPlot({
+    ggplot_doy_ins_plt(
+      CVhelp_dat_l_plt = CVhelp_dat_l,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year,
+      sub_var_in = input$radio_metric_view
+      # log_trans
+    )
+  })
+  # duplicated
+  output$doy_ins_ggpplt2 <- renderPlot({
+    ggplot_doy_ins_plt(
+      CVhelp_dat_l_plt = CVhelp_dat_l,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year,
+      sub_var_in = input$radio_metric_view
+      # log_trans
+    )
+  })
 
-        pagingType = "simple",
-        initComplete = DT::JS(
-          "function(settings, json) {",
-          "$(this.api().table().header()).css({'font-size': '70%'});",
-          "$(this.api().table().body()).css({'font-size': '70%'});",
-          "$(this.api().table().caption()).css({'font-size': '70%'});",
-          "$(this.api().table().footer()).css({'font-size': '70%'});",
-          "}"
-        )
-      )
-    ) |>
-      DT::formatStyle(
-        'WYT',
-        backgroundColor = DT::styleEqual(wyt_type_opt, WYT_cols)
-      ) |>
-      DT::formatStyle(
-        'Model',
-        color = DT::styleEqual(c("Yes", "No"), c("#035a00", "#690202"))
-      ) |>
-      # only works for background color and not border
-      DT::formatStyle(
-        columns = c('Year', 'WYT', 'barrier', 'Model'),
-        target = "row",
-        backgroundColor = DT::styleEqual(
-          input$year_picker,
-          c("#61bce6")
-        )
-      ) |>
-      DT::formatStyle(
-        'Year',
-        borderTop = DT::styleEqual(
-          input$year_picker,
-          c("4px solid #024c63")
-        ),
-        borderBottom = DT::styleEqual(
-          input$year_picker,
-          c("4px solid #024c63")
-        ),
-        borderLeft = DT::styleEqual(
-          input$year_picker,
-          c("4px solid #024c63")
-        )
-      ) |>
-      DT::formatStyle(
-        'barrier',
-        'Year',
-        borderTop = DT::styleEqual(
-          input$year_picker,
-          c("4px solid #024c63")
-        ),
-        borderBottom = DT::styleEqual(
-          input$year_picker,
-          c("4px solid #024c63")
-        )
-      ) |>
-      DT::formatStyle(
-        'WYT',
-        'Year',
-        borderTop = DT::styleEqual(
-          input$year_picker,
-          c("4px solid #024c63")
-        ),
-        borderBottom = DT::styleEqual(
-          input$year_picker,
-          c("4px solid #024c63")
-        )
-      ) |>
-      DT::formatStyle(
-        'Model',
-        'Year',
-        borderTop = DT::styleEqual(
-          input$year_picker,
-          c("4px solid #024c63")
-        ),
-        borderBottom = DT::styleEqual(
-          input$year_picker,
-          c("4px solid #024c63")
-        ),
-        borderRight = DT::styleEqual(
-          input$year_picker,
-          c("4px solid #024c63")
-        )
-      )
-  )
+  output$yr_var_ggpplt <- renderPlot({
+    ggplot_yr_env_lattice_plt(
+      CVhelp_dat_l_plt = CVhelp_dat_l,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year,
+      sub_var_in = input$radio_metric_view
+    )
+  })
 
-  # test_proxy <- DT::dataTableProxy("table_in_WY")
-  # # update rows
-  # observeEvent(input$year_picker, {
-  #   in_selected_RV$past_water_year <- as.numeric(input$year_picker)
-  #   DT::selectRows(
-  #     test_proxy,
-  #     match(as.numeric(input$year_picker), ann_HORbar_WYT_data$Year)
-  #   )
-  # })
+
+  output$table_in_WY <-  DT::renderDataTable(draw_ann_summ_tab(input_year=in_selected_RV$past_water_year))
+
+  observeEvent(input$year_picker, {
+    in_selected_RV$BAR <- ann_HORbar_WYT_data[
+      which(ann_HORbar_WYT_data_TAB()$Year == input$year_picker),
+      "barrier"
+    ]
+  })
 
   # update the selected row in the table
-  observeEvent(
-    input$year_picker,
-    {
-      in_selected_RV$past_water_year <- input$year_picker
-    }
-  )
+  observeEvent( input$year_picker,{in_selected_RV$past_water_year <- input$year_picker})
 
-  # update the selected row in the table
+  # update selected reactive values
   observeEvent(
-    input$table_in_WY_rows_selected,
-    {
-      # year_picker
-      in_selected_RV$past_water_year <- ann_HORbar_WYT_data[
-        input$table_in_WY_rows_selected,
-        "Year"
-      ]
-      in_selected_RV$WYT <- ann_HORbar_WYT_data[
-        input$table_in_WY_rows_selected,
-        "WYT"
-      ]
-      in_selected_RV$BAR <- ann_HORbar_WYT_data[
-        input$table_in_WY_rows_selected,
-        "barrier"
-      ]
+    input$table_in_WY_rows_selected,{      # year_picker
+      in_selected_RV$past_water_year <- ann_HORbar_WYT_data[input$table_in_WY_rows_selected,"Year"]
+      in_selected_RV$WYT <- ann_HORbar_WYT_data[input$table_in_WY_rows_selected,"WYT"]
+      in_selected_RV$BAR <- ann_HORbar_WYT_data[input$table_in_WY_rows_selected,"barrier"]
       # initializing global day of year variables
       in_selected_RV$start_date <- as.Date(
         paste(
           in_selected_RV$start_day,
           in_selected_RV$past_water_year,
-          sep = "-"
-        ),
-        format = "%j-%Y"
-      )
+          sep = "-"),format = "%j-%Y")
       in_selected_RV$end_date <- as.Date(
         paste(
           in_selected_RV$end_day,
           in_selected_RV$past_water_year,
-          sep = "-"
-        ),
-        format = "%j-%Y"
-      )
-
+          sep = "-"),format = "%j-%Y")
       shinyWidgets::updatePickerInput(
         session = session,
         inputId = "year_picker",
@@ -994,61 +874,29 @@ app_server <- function(input, output, session) {
   output$table_in_WY_UI <- renderUI({
     DT::dataTableOutput("table_in_WY")
   })
-
+  
   # update values when water year is selected
   observeEvent(
     input$load_butt,
     {
       global$past_water_year <- in_selected_RV$past_water_year
-      
       global$WYT <- in_selected_RV$WYT
       global$WYT <- in_selected_RV$WYT
       global$BAR <- in_selected_RV$BAR
+      global$start_day <- in_selected_RV$start_day
+      global$end_day <- in_selected_RV$end_day
       global$start_date <- in_selected_RV$start_date
       global$end_date <- in_selected_RV$end_date
       global$flength <- in_selected_RV$flength
     }
   )
 
-  # Your application server logic
-  # SIDE BAR UI
-  output$cbr_dyn_sidebar_ui = shinydashboard::renderMenu({
-    shinydashboard::sidebarMenu(
-      id = "tabs",
-      shinydashboard::menuItem(
-        "About",
-        tabName = "about",
-        icon = icon("house"),
-        selected = T
-      ),
-      shinydashboard::menuItem(
-        "Inputs",
-        tabName = "inputs",
-        icon = icon("sliders"),
-        startExpanded = T,
-        selected = F
-      ),
-      shinydashboard::menuItem(
-        text = "Estimates",
-        tabName = "estimates",
-        icon = icon("chart-line"),
-        startExpanded = T #,
-      ),
-      br(),
-      tags$div(
-        id = "newsidebox",
-        wellPanel(
-          uiOutput("sidebar_text") # Placeholder for dynamic text
-        )
-      )
-    )
-  })
 
   # because this is within a renderUI, changing the input$tab value rewrites the sidebar content
   output$sidebar_text <- renderUI({
     shiny::HTML(
       md_txt_extract(
-        md_addr = "inst/app/www/mds/sidebar.md",
+        md_addr = "inst/app/www/sidebar/sidebar.md",
         header_ref = paste0("# ", tab_selected()),
         asHTML_frag = TRUE
       )
@@ -1056,65 +904,20 @@ app_server <- function(input, output, session) {
   })
 
   output$top_of_body_text <- renderUI({
-      # because this is within a renderUI, changing the input$tab value rewrites the sidebar content
+    # because this is within a renderUI, changing the input$tab value rewrites the sidebar content
     switch(
       tab_selected(),
       "about" = shiny::tagList(
-        mod_about_page_ui("mod_about_page-about_page_ui_1")
-      ),
-      "met_ref" = shiny::tagList(
-        fluidRow(
-          tagList(
-            shinydashboard::box(
-              title = HTML("Methods and References"),
-              width = 12,
-              solidHeader = TRUE,
-              status = "primary",
-              shiny::withMathJax(shiny::includeMarkdown(system.file(
-                "app/www/main/met_and_ref/overview_pt1.md",
-                package = "CVPASapp"
-              ))),
-              # SVG plot with embedded tooltips
-              bscui::bscuiOutput(
-                outputId = "surv_route_diagram_wtt",
-                width = "70%",
-                height = "100%"
-              ),
-              shiny::withMathJax(shiny::includeMarkdown(system.file(
-                "app/www/main/met_and_ref/how_calc_pt2.md",
-                package = "CVPASapp"
-              ))),
-              bscui::bscuiOutput(
-                outputId = "my_red_svg",
-                width = "100%",
-                height = "100%"
-              ),
-              shiny::withMathJax(shiny::includeMarkdown(system.file(
-                "app/www/main/met_and_ref/how_env_comp.md",
-                package = "CVPASapp"
-              ))),
-              # plots from manuscripts
-              tags$img(
-                src = "https://onlinelibrary.wiley.com/cms/asset/25dec1bb-e0e1-40ea-95e2-f7762044473f/nafm11005-fig-0001-m.jpg",
-                style = "width: 30%; height: 30%;"
-              ),
-              tags$img(
-                src = "https://cdnsciencepub.com/cms/10.1139/cjfas-2020-0467/asset/images/large/cjfas-2020-0467f1.jpeg",
-                style = "width: 30%; height: 30%;"
-              ),
-              shiny::includeMarkdown(system.file(
-                "app/www/biblio_doc.md",
-                package = "CVPASapp"
-              ))
-            )
-          )
-        )
-      ),
+        mod_about_page_ui("mod_about_page-about_page_ui_1")),
+      "met_ref" =shiny::tagList(
+        uiOutput("met_ref_page_ui")) ,
       "inputs" = shiny::tagList(
-        uiOutput("input_page_UI")
-      )
+        uiOutput("input_page_UI"))
     )
   })
+
+  # if remaining static move to ui.R script
+  output$met_ref_page_ui<- renderUI({ draw_met_ref_page_ui()})
 
   output$start_date_entry_sep_ui <- renderUI({
     div(
@@ -1150,18 +953,18 @@ app_server <- function(input, output, session) {
     )
   })
 
-    output$DOY_slider_ui <- renderUI({
-    tagList(
-      sliderInput(
-        "DOYslider_rng",
-        label = NULL,
-        min = 0,
-        max = 250,
-        value = c(in_selected_RV$start_day, in_selected_RV$end_day),
-        width = '99%'
-      )
-    )
-  })
+  # output$DOY_slider_ui <- renderUI({
+  #   tagList(
+  #     sliderInput(
+  #       "DOYslider_rng",
+  #       label = NULL,
+  #       min = 0,
+  #       max = 250,
+  #       value = c(in_selected_RV$start_day, in_selected_RV$end_day),
+  #       width = '99%'
+  #     )
+  #   )
+  # })
 
   observeEvent(input$date_start_sep, {
     in_selected_RV$start_day <- as.numeric(format(input$date_start_sep, "%j"))
@@ -1202,29 +1005,43 @@ app_server <- function(input, output, session) {
   output$flength_sel_ui <- renderUI({
     shiny::tagList(
       div(
-        style = "display: inline-flex; align-items: center;",
-        shiny::uiOutput("flength_num_in"),
+        style = "display: inline-flex; align-items: center;gap:20px;",
+          textOutput("flength_inval_txt"),
+          numericInput(
+          "flength_num_in_dash",
+          # label = NULL,
+          label = "Fork Length (mm)",
+          step = 10,
+          value = in_selected_RV$flength, #init_flength
+          width = "80px",
+          min = 100,
+          max = 400
+        ),
         div(
-          style = "margin-left: 20px;",
-          shiny::uiOutput("flength_dash_ui"),
+          style = "margin-left: 20px; display:flex",
+          # shiny::uiOutput("flength_dash_ui"),
+          plotOutput("flength_ref_hist", height = "100px"),
           div(
-            style = "display: left;margin-top: 10px;",
+            style = "display: left;margin-top: 10px;margin-right: 10px;",
             div(
-              style = "display: flex;",
-              HTML(paste("<p> Fork length of juvenile Steelhead </p> ")),
+              # style = "display: flex;",
+              div(
+                HTML(paste("<p> Fork length of juvenile Steelhead from Six-Year Study </p> "))),
               div(
                 style = "margin-left: 10px; z-index: 2",
                 class = "pull-right",
-               shinyWidgets::dropMenu(
-                shinyWidgets::circleButton(
-                  inputId = "flength_ibutt",
-                  icon = icon("info"),
-                  status = "primary",
-                  size = "xs"
-                ),
-                p("Lengths of fish relased during acoustic telemetry studies (2011-2016). Overall mean fork length selected by default."),
-                placement = "left-start"
-              )
+                shinyWidgets::dropMenu(
+                  shinyWidgets::circleButton(
+                    inputId = "flength_ibutt",
+                    icon = icon("info"),
+                    status = "primary",
+                    size = "xs"
+                  ),
+                  p(
+                    "Lengths of fish relased during acoustic telemetry studies (2011-2016). Overall mean fork length selected by default."
+                  ),
+                  placement = "left-start"
+                )
               )
             )
           )
@@ -1233,11 +1050,17 @@ app_server <- function(input, output, session) {
     )
   })
 
-  output$flength_dash_ui <- renderUI({
-    shiny::tagList(
-      plotOutput("flength_ref_hist", height = "100px")
-    )
-  })
+  # textOutput("flength_inval_txt")
+  # observeEvent(input$flength_num_in_dash >400{
+  #     shiny::showNotification(paste("Only fork lengths between 100 and 400 mm are permitted")
+  #     ,closeButtonF, duration = 5)
+  # })
+
+  # output$flength_dash_ui <- renderUI({
+  #   shiny::tagList(
+  #     plotOutput("flength_ref_hist", height = "100px")
+  #   )
+  # })
 
   # Reference forklength histogram
   output$flength_ref_hist <- renderPlot(
@@ -1262,31 +1085,33 @@ app_server <- function(input, output, session) {
 
   output$input_page_UI <- renderUI({
     tagList(
-      uiOutput("input_panel_UI"),
-      uiOutput("input_panel_UI_3")
+      uiOutput("inputs_panel_UI"),
+      uiOutput("estimates_panel_ui")
     )
   })
 
+  # message for invalid flength entries
+  output$flength_inval_txt <- renderText({
+    validate(
+      need(input$flength_num_in_dash <= 400 & input$flength_num_in_dash >= 100,
+         "Only values between 100 and 400 mm are permitted")
+    )
+    NULL
+  })
+  
   # observe flength numeric input with debounce
-  flength_mod <- reactive(input$flength_num_in_dash)
-  flength_d <- debounce(flength_mod, 500) # prevents endless looping
-  observeEvent(flength_d(), {
-    in_selected_RV$flength <- flength_d()
+  flength_mod <- reactive({
+       validate(
+        need(input$flength_num_in_dash < 400, "Only values between 100 and 400 mm are permitted"),
+        need(input$flength_num_in_dash > 100, "Only values between 100 and 400 mm are permitted"))
+    input$flength_num_in_dash  }) |> debounce(1000)
+
+
+  observeEvent(flength_mod(), {
+    in_selected_RV$flength <- flength_mod()
   })
 
-  output$flength_num_in <- renderUI({
-    numericInput(
-      "flength_num_in_dash",
-      # label = NULL,
-      label = "Fork Length (mm)",
-      step = 10,
-      value = in_selected_RV$flength, #init_flength
-      width = "80px",
-      min = 100,
-      max = 400
-    )
-  })
-
+  # version with tooltips
   output$surv_route_diagram_wtt <- bscui::renderBscui({
     bscui::bscui(surv_route_diagram_wtt_xml) |>
       bscui::set_bscui_options(
@@ -1300,7 +1125,6 @@ app_server <- function(input, output, session) {
   output$start_loc_ui <- renderUI({
     div(
       style = "display: inline-flex; align-items: left;margin-top: 10px;",
-
       div(
         style = "height=25px; align-self:center",
         shinyWidgets::pickerInput(
@@ -1373,117 +1197,107 @@ app_server <- function(input, output, session) {
         "SWP",
         "CLC",
         "MSD"
-      )
-      ,
+      ),
       rownames = FALSE
       #, caption = 'Table 1: This is a simple caption for the table.'
     )
   )
 
+
   output$doy_surv_ggpplt <- renderPlot({
-    CVhelp_dat_l$site <- CVhelp_dat_l$variable
-    CVhelp_dat_l$var <- CVhelp_dat_l$variable
-    CVhelp_dat_l$year <- CVhelp_dat_l$Year
-
-    doy_rng_in <- c(
-      global$start_day,
-      global$end_day
+      ggplot_doy_surv_plt(
+          CVhelp_dat_w_plt=CVhelp_dat_w,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year
     )
 
-    doy_int1 <- doy_rng_in[1]
-    doy_int2 <- doy_rng_in[2]
-    CVhelp_dat_l$doy_int1 <- doy_int1
-    CVhelp_dat_l$doy_int2 <- doy_int2
-    CVhelp_dat_l$SELECTED <- CVhelp_dat_l$DOY >= doy_int1 &
-      CVhelp_dat_l$DOY <= doy_int2
-    # dat_w_subb <- subset(CVhelp_dat_w,DOY >= doy_int1 & CVhelp_dat_w$DOY <= doy_int2 )
 
-    dat_w_subb <- CVhelp_dat_w
-
-    dat_w_subb$est_day <- 0.02 +
-      ((dat_w_subb$VNS - 8.010345) / 1.5) +
-      0.6 * ((dat_w_subb$CVP - 1657) / 1500) +
-      +((dat_w_subb$OMT - 1200) / 5000) #+  #fix in a bit
-    dat_w_subb$est_S <- plogis(dat_w_subb$est_day)
-    dat_w_subb$SELECTED <- CVhelp_dat_w$DOY >= doy_int1 &
-      CVhelp_dat_w$DOY <= doy_int2
-
-    surv_plt_wrap <- ggplot2::ggplot(
-      data = dat_w_subb,
-      ggplot2::aes(
-        y = est_S,
-        x = DOY,
-        fill = SELECTED,
-        color = SELECTED,
-        group = Year,
-        xmin = doy_int1,
-        xmax = doy_int1
-      )
-    ) +
-      ggplot2::geom_line(linewidth = 0.25) +
-      ggplot2::geom_point(shape = 21, size = 1) +
-      ggplot2::scale_fill_manual(values = c("darkgray", "#428BCA")) +
-      ggplot2::scale_color_manual(values = c("gray40", "#28547A")) +
-      ggplot2::geom_vline(xintercept = doy_int1) +
-      ggplot2::geom_vline(xintercept = doy_int2) +
-      ggplot2::labs(x = "Day of Year") +
-      ggplot2::theme(legend.position = "none") +
-      ggplot2::facet_wrap(~Year)
-
-    surv_plt_wrap
+    
   })
 
-  output$doy_pred_ggpplt <- renderPlot({
-    CVhelp_dat_l$site <- CVhelp_dat_l$variable
-    CVhelp_dat_l$var <- CVhelp_dat_l$variable
-    CVhelp_dat_l$year <- CVhelp_dat_l$Year
+  
+  
+  
+  
 
-    doy_rng_in <- c(
-      global$start_day,
-      global$end_day
+  
+  
+  output$HOR_TCJ_pred_ggpplt <- renderPlot({
+
+    # reading from previously ran version of the data
+    HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    
+    # from scratch version
+    # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix 
+    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+    #                                      flength_in=in_selected_RV$flength)
+
+     ggplot_doy_pred_plt(
+      HOR_TCJ_pred_tab_plt=HOR_TCJ_pred_tab,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year
     )
-
-    doy_int1 <- doy_rng_in[1]
-    doy_int2 <- doy_rng_in[2]
-    CVhelp_dat_l$doy_int1 <- doy_int1
-    CVhelp_dat_l$doy_int2 <- doy_int2
-    CVhelp_dat_l$SELECTED <- CVhelp_dat_l$DOY >= doy_int1 &
-      CVhelp_dat_l$DOY <= doy_int2
-
-    dat_w_subb <- CVhelp_dat_w
-    dat_w_subb$est_day <- 0.02 +
-      ((dat_w_subb$VNS - 8.010345) / 1.5) +
-      0.6 * ((dat_w_subb$CVP - 1657) / 1500) +
-      ((dat_w_subb$OMT - 1200) / 5000) +
-      global$flength #0.5*(global$flength-244)/30  #fix in a bit
-    dat_w_subb$est_S <- plogis(dat_w_subb$est_day)
-    dat_w_subb$SELECTED <- CVhelp_dat_w$DOY >= doy_int1 &
-      CVhelp_dat_w$DOY <= doy_int2
-    new_predDFests$EST_lp <- new_predDFests$EST_lp +
-      0.05 * (global$flength - 244) / 30
-    new_predDFests$EST <- plogis(new_predDFests$EST_lp)
-
-    # selected values fill
-    ggplot2::ggplot() +
-      # ggplot2::geom_ribbon(data=new_predDFests,ggplot2::aes(y=EST,x=date,ymin=pLCL,ymax=pUCL),fill="gray60") +
-      ggplot2::geom_ribbon(
-        data = new_predDFests %>%
-          dplyr::filter(DOY > doy_int1 & DOY < doy_int2),
-        ggplot2::aes(y = EST, x = DOY, ymin = LCL, ymax = UCL),
-        fill = "gray30"
-      ) +
-      # ggplot2::geom_line(data=predDFcomb_modsub,ggplot2::aes(y=EST,x=date,color=factor(id))) +
-      # ggplot2::geom_ribbon(data=predDFcomb_modsub,ggplot2::aes(y=EST,x=date,color=factor(id),ymin=LCL,ymax=UCL),fill=NA) +
-      ggplot2::geom_point(
-        data = new_predDFests,
-        ggplot2::aes(y = EST, x = DOY, ymin = LCL, ymax = UCL)
-      ) +
-      ggplot2::facet_wrap(~Year, scale = "free_x") +
-      ggplot2::theme(legend.position = "none") +
-      ggplot2::geom_vline(xintercept = doy_int1) +
-      ggplot2::geom_vline(xintercept = doy_int2) +
-      ggplot2::scale_fill_manual(values = c("darkgray", "#428BCA")) +
-      ggplot2::scale_color_manual(values = c("gray40", "#28547A")) #+
-    # labs("S_TCJ-CHP")
+    
   })
+  
+
+  output$submods_pred_ggpplt2 <- renderPlot({
+    
+    # reading from previously ran version of the data
+    HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    
+    # from scratch version
+    # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix 
+    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+    #                                      flength_in=in_selected_RV$flength)
+    
+    ggplot_doy_pred_plt_mult(
+      HOR_TCJ_pred_tab_plt=HOR_TCJ_pred_tab,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year+1
+    )
+    
+  })
+  
+  
+  output$ovrl_mods_pred_ggpplt2 <- renderPlot({
+    
+    # reading from previously ran version of the data
+    HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    
+    # from scratch version
+    # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix 
+    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+    #                                      flength_in=in_selected_RV$flength)
+    
+    ggplot_doy_pred_plt_ovrl(
+      HOR_TCJ_pred_tab_plt=HOR_TCJ_pred_tab,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year+1
+    )
+    
+  })
+  
+  
+  
+  
+  
 }
+
+
+

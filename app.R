@@ -4,7 +4,6 @@
 
 pkgload::load_all(export_all = FALSE,helpers = FALSE,attach_testthat = FALSE)
 options( "golem.app.prod" = FALSE) # production mode vs development mode
-CVPASapp::run_app()#display.mode = "showcase") # add parameters here (if any)
+CVPASapp::run_app(start_tab = "about",inputs_panel_collapse=F) #display.mode = "showcase") # add parameters here (if any)
 
 # , display.mode = "showcase"
-

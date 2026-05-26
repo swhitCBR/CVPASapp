@@ -12,6 +12,8 @@ run_app <- function(
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",
+  start_tab = "about",
+  inputs_panel_collapse = FALSE,
   ...
 ) {
   
@@ -27,7 +29,7 @@ run_app <- function(
       enableBookmarking = enableBookmarking,
       uiPattern = uiPattern
     ),
-    golem_opts = list(...)
+    golem_opts = list(start_tab=start_tab,inputs_panel_collapse=inputs_panel_collapse,...)
   )
 
   

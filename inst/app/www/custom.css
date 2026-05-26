@@ -134,14 +134,11 @@ table.dataTable {
 /* Plus and minus symbols */
 summary::before {
   content: "+ ";
-  /* font-weight: bold; */
-  /* font-size: 18px; */
 }
 
 /* 3. Change to minus when open */
 details[open] summary::before {
   content: "− ";
-  /* font-size: 18px; */
 }
 
 

@@ -34,6 +34,10 @@ usethis::use_package("markdown")
 devtools::document()
 usethis::use_package("dplyr")
 
+
+usethis::use_package("glmmTMB")
+
+
 ################################################################################ #
 
 options(rsconnect.packrat = TRUE)

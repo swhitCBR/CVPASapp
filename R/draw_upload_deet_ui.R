@@ -1,4 +1,10 @@
-draw_details_up <- function(){
+#' Title
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+draw_upload_deet_ui <- function(){
   tags$details(
     id = "details_up",
     # open=ifelse(
@@ -90,7 +96,7 @@ draw_details_up <- function(){
               )
             )
             # ,
-            # info_drop_fun(inputID_in="daily_var_def_info_bttn2")
+            # draw_info_bttn_dropdown_ui(inputID_in="daily_var_def_info_bttn2")
           )
         )
       )

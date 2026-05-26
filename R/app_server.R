@@ -15,14 +15,23 @@ app_server <- function(input, output, session) {
   # at startup ----
   # inputs_selected by default
   tab_selected <- reactiveVal(start_tab_passed)
-  shinydashboard::updateTabItems("tabs",session = session, selected = start_tab_passed)
+  shinydashboard::updateTabItems(
+    "tabs",
+    session = session,
+    selected = start_tab_passed
+  )
   # probably better as a reactiveValues (list format)
   data_source_selected <- reactiveVal("prev_pan")
 
   ### debugging print  ----
-  observeEvent(input$tabs, {tab_selected(input$tabs); print(input$tabs)})
-  observeEvent(input$data_source_picker, {data_source_selected(input$data_source_picker)})
-  
+  observeEvent(input$tabs, {
+    tab_selected(input$tabs)
+    print(input$tabs)
+  })
+  observeEvent(input$data_source_picker, {
+    data_source_selected(input$data_source_picker)
+  })
+
   observeEvent(input$goto_inputs_butt, {
     tab_selected("inputs") # this is a reactiveVal
     shinydashboard::updateTabItems(
@@ -69,36 +78,37 @@ app_server <- function(input, output, session) {
 
   # print global (i.e., locked-in values)
   output$glob_in_ls_text = renderText({
-    RV_text_fun(heading = "none",
-    RVls_in = shiny::reactiveValuesToList(global))
+    RV_text_fun(heading = "none", RVls_in = shiny::reactiveValuesToList(global))
   })
-  
 
   observeEvent(input$start_loc_in, {
     in_selected_RV$LOC <- input$start_loc_in
-    # if (!SILENT) {
-    #   cat("Starting location is:", global$LOC, "\n")
-    # }
   })
-  
+
+  # Starting location name to be inserted into UI downstream
   output$start_loc_heading = renderText({
     paste(in_selected_RV$start_loc_in)
   })
-  
 
   ### change display based on reactive values ----
   # for selecting among schematic plots
   # swaps out .svg images depending on the values of two reactiveValues
   output$schem_start_loc_plt_ui <- renderUI({
     tst_val <- paste(in_selected_RV$LOC, in_selected_RV$BAR, sep = "_")
-    tags$img(src = paste0("www/images/svg/basic route schematic/", tst_val, ".svg"),width = "100%")
+    tags$img(
+      src = paste0("www/images/svg/basic route schematic/", tst_val, ".svg"),
+      width = "100%"
+    )
   })
 
   # could just be in ui
   output$data_source_ui <- renderUI({
-    shinyWidgets::pickerInput(inputId="data_source_picker",choices = c("Previous year", "Uploaded file (.csv)", "None"),selected = init_data_source)
+    shinyWidgets::pickerInput(
+      inputId = "data_source_picker",
+      choices = c("Previous year", "Uploaded file (.csv)", "None"),
+      selected = init_data_source
+    )
   })
-
 
   ### change major display change based on reactive values ----
   # for selecting among schematic plots
@@ -113,7 +123,7 @@ app_server <- function(input, output, session) {
         data_source_selected(),
         "None" = NULL,
         "Previous year" = shiny::uiOutput("details_sel_data_bar"),
-        "Uploaded file (.csv)" = shiny::uiOutput("details_up_data_bar")
+        "Uploaded file (.csv)" = shiny::uiOutput("upload_deet_ui")
       )
     )
   })
@@ -125,14 +135,16 @@ app_server <- function(input, output, session) {
       style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white; ",
       tags$summary(
         title = "Click to open or close",
-        "Select Daily Environmental Data", 
+        "Select Daily Environmental Data",
         style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px; padding-bottom: 2px; background-color:#ddd"
       ),
       shiny::uiOutput("prev_yr_ui")
     )
   })
 
-  output$details_up_data_bar <- renderUI({ draw_details_up() })
+  output$upload_deet_ui <- renderUI({
+    draw_upload_deet_ui()
+  })
 
   output$details_indiv_attrib_ui <- renderUI({
     # tagList(
@@ -142,7 +154,7 @@ app_server <- function(input, output, session) {
       tagList(
         tags$details(
           id = "details_indiv",
-          style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px;",# ; background-color:white",
+          style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px;", # ; background-color:white",
           tags$summary(
             title = "Click to open or close",
             "Select Individual Attributes",
@@ -227,7 +239,15 @@ app_server <- function(input, output, session) {
                   ),
                   div(
                     style = "height=15px",
-                    shiny::uiOutput("data_source_ui")
+                    shinyWidgets::pickerInput(
+                      inputId = "data_source_picker",
+                      choices = c(
+                        "Previous year",
+                        "Uploaded file (.csv)",
+                        "None"
+                      ),
+                      selected = init_data_source
+                    )
                   )
                 )
               )
@@ -268,13 +288,10 @@ app_server <- function(input, output, session) {
           shiny::uiOutput("deet_panel_prev_upload_ui"),
           shiny::uiOutput("details_indiv_attrib_ui")
         )
-      )
-      ,
-      footer=uiOutput("chk_input_ui")
+      ),
+      footer = uiOutput("chk_input_ui")
     )
   })
-
-
 
   output$estimates_panel_ui <- renderUI({
     shinydashboardPlus::box(
@@ -287,150 +304,164 @@ app_server <- function(input, output, session) {
       width = 12,
       column(
         width = 12,
-        h4(strong(paste0("Overall Survival (HOR-CHP)"))),
+        h4(strong(
+          paste0("Overall Survival Probability"),
+          style = "color:crimson;text-decoration: underline;"
+        )), #,strong(paste0("Head of Old River to Chipps Island (HOR-CHP)"))),
+        h4(
+          strong(paste0("Head of Old River to Chipps Island (HOR-CHP)")),
+          style = "padding-left:10px;"
+        ),
+        fluidRow(
+          div(
+            style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;",
+            div(
+              tags$ul(
+                style = "padding-left:15px;",
+                tags$li(
+                  "Survival from the head of Head of Old River to Chipps Island across all major routes (San Joaquin R.,Middle R.,Old R.)",
+                  style = "margin-left:25px;"
+                )
+              )
+            ),
+            plotOutput("HOR_TCJ_pred_ggpplt_dup1a", height = "400px")
+          ),
+          h4(
+            strong(paste0(
+              "Head of Old River to Turner Cut Junction (HOR-TRN)"
+            )),
+            style = "padding-left:10px;"
+          ),
+          div(
+            style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;",
+            div(
+              tags$ul(
+                style = "padding-left:15px;",
+                tags$li(
+                  "Survival from the head of Head of Old River to Chipps Island across all major routes (San Joaquin R.,Middle R.,Old R.)",
+                  style = "margin-left:25px;"
+                )
+              )
+            ),
+            plotOutput("HOR_TCJ_pred_ggpplt_dup1b", height = "400px")
+          ),
+          h4(
+            strong(paste0(
+              "Head of Old River to Turner Cut Junction (HOR-TRN)"
+            )),
+            style = "padding-left:10px;"
+          ),
+          div(
+            style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;",
+            div(
+              tags$ul(
+                style = "padding-left:15px;",
+                tags$li(
+                  "Survival from the head of Head of Old River to Chipps Island across all major routes (San Joaquin R.,Middle R.,Old R.)",
+                  style = "margin-left:25px;"
+                )
+              )
+            ),
+            plotOutput("HOR_TCJ_pred_ggpplt_dup1c", height = "400px")
+          ),
+          div(
+            style = "padding-left: 10px;",
+            h4(strong(
+              paste0("Route Usage Probability"),
+              style = "color:green;text-decoration: underline;"
+            )), #,strong(paste0("Head of Old River to Chipps Island (HOR-CHP)"))),
+            column(
+              width = 6,
+              h4(
+                strong(paste0("San Joaquin River vs. Old River ")),
+                style = "padding-left:10px;"
+              )
+            ),
+            column(
+              width = 6,
+              h4(
+                strong(paste0("San Joaquin River vs. Turner Cut")),
+                style = "padding-left:10px;"
+              ),
+            )
+            # Blue: #4E79A7 (Steel Blue)Orange: #F28E2B (Burnt Orange)
+          )
+        )
+      ),
+      footer = div(
+        #p("hdfsl")
+        # footer(
         div(
-          style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;",#border-bottom: solid 1px gray; align-items:center",
-          # style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px;border-bottom: solid 1px gray; align-items:center",
-          # title = "attributes of years 2011-2024",
-          # h4(strong(paste0("Overall Survival (",in_selected_RV$start_loc_in,")"))),
-         
-          # textOutput("start_loc_heading"),
-          # shinyWidgets::dropMenu(
-          #   shinyWidgets::circleButton(
-          #     inputId = "btn4",
-          #     icon = icon("info"),
-          #     status = "primary",
-          #     size = "xs"
-          #   ),
-          #   p("How well user input data is assessed by comparing selections to the range of observed value in the Six-Year Study")#,
-          #   # placement = "left-start"
-          # )
-        
-        # ,
-        column(width=7,
-               p("more text here")
-        ,
-               plotOutput("ovrl_mods_pred_ggpplt2", height = "400px")
-               ),
-        column(width=5,
-               div(
-                 # for resizing table height
-                 style = "border: solid 1px black; margin:10px;",
-                 # style = "border: solid 2px black; margin:10px;height:525px;",
-                 span(
-                   style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px; align-items:center; border-bottom: solid 1px black;",
-                   title = "attributes of years 2011-2024",
-                   h5(em("Route-Specific Survival")),
-                   shinyWidgets::dropMenu(
-                     shinyWidgets::circleButton(
-                       inputId = "btn1",
-                       icon = icon("info"),
-                       status = "primary",
-                       size = "xs"
-                     ),
-                     tags$dl(
-                       # definition list
-                       div(
-                         style = "margin-left: 20px;",
-                         HTML('<strong>Year:</strong> Calendar Year</p>'),
-                         HTML('<strong>Category:</strong> Water Year Type (SJ)</p>'),
-                         HTML(
-                           '<strong>HOR Barrier:</strong> Barrier at Head of Old River</p>'
-                         ),
-                         HTML(
-                           '<strong>Model:</strong> Used to fit statistical models</p>'
-                         )
-                       )
-                     )
-                   ),
-                   placement = "left-start"
-                 ),
-                 # ),
-                 plotOutput("submods_pred_ggpplt2", height = "400px")
-               )
-               # div(style="display:flex;",
-                   
-                   # ,
-                   # plotOutput("doy_ins_ggpplt2", height = "400px")
-               # )
-        )
-        # tags$details(
-        #   id = "overall_surv_deet",
-        #   open = TRUE,
-        #   style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
-        #   tags$summary(
-        #     title = "Click to open or close",
-        #     "Route Usage",
-        #     # "Overall Survival", # "Upload/Review Daily Environmental Data",
-        #     style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
-        #           padding-bottom: 2px;background-color:#ddd;"
-        #   )
-        #   ,
-        #   div(style="display:flex;",
-        #       plotOutput("submods_pred_ggpplt2", height = "400px")
-        #       # ,
-        #       # plotOutput("doy_ins_ggpplt2", height = "400px")
-        #   )
-        #   # ,
-        #   # plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
-        #   # ,
-        #   # plotOutput("doy_surv_ggpplt", height = "400px")
-        #   
-        #   # ,
-        #   # p("empty_panel")
-        # )
-        )
-        ,
-        # column(width=7,
-        tags$details(
-          id = "hor_chp_surv_deet",
-          open = TRUE,
-          style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
-          tags$summary(
-            title = "Click to open or close",
-            "Sub-Model Estimates", # "Upload/Review Daily Environmental Data",
-            style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+          style = "padding-left: 10px;",
+          h4(strong(
+            paste0("More Information"),
+            style = "color:black;text-decoration: underline;"
+          )), #,strong(paste0("Head of Old River to Chipps Island (HOR-CHP)"))),
+        ),
+        div(
+          style = "padding-left: 10px;",
+          tags$details(
+            id = "hor_tcj_surv_deet",
+            open = NULL,
+            style = "margin-top:15px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+            tags$summary(
+              title = "Click to open or close",
+              "Route-Specific Survival",
+              style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
                   padding-bottom: 2px;background-color:#ddd;"
-          )
-          ,
-          h4("HOR-TCJ Survival",style="margin-left:20px;"),
-          # span(style="padding-left:20px;",
-          #      h4(em("hh")),),
-          div(style="display:flex;",
-              plotOutput("doy_ins_ggpplt", height = "400px")
-              ,
+            ),
+            # h4("HOR-TCJ via SJL",style="margin-left:20px;"),
+            h4(
+              "Head of Old River to Turner Cut via the San Joaquin River",
+              style = "margin-left:20px;"
+            ),
+            # p("Head of Old River to Turner Cut",style="margin-left:25px;"),
+            div(
+              style = "display:flex;",
+              plotOutput("doy_ins_ggpplt", height = "400px"),
               plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
+            ),
+            h4(
+              "Turner Cut Chipps Island via the San Joaquin River",
+              style = "margin-left:20px;"
+            ),
+            # p("Head of Old River to Turner Cut",style="margin-left:25px;"),
+            div(
+              style = "display:flex;",
+              plotOutput("doy_ins_ggpplt_dup1", height = "400px"),
+              plotOutput("HOR_TCJ_pred_ggpplt_dup3", height = "400px")
+            ),
+            h4(
+              "Head of Old River to Chipps Island via the Old and Middle rivers",
+              style = "margin-left:20px;"
+            ),
+            # p("Head of Old River to Turner Cut",style="margin-left:25px;"),
+            div(
+              style = "display:flex;",
+              plotOutput("doy_ins_ggpplt_dup2", height = "400px"),
+              plotOutput("HOR_TCJ_pred_ggpplt_dup1", height = "400px")
+            )
+          ),
+          tags$details(
+            id = "hor_chp_ore_surv_deets",
+            open = NULL,
+            style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+            tags$summary(
+              title = "Click to open or close",
+              "Model Details",
+              style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+                  padding-bottom: 2px;background-color:#ddd;"
+            ),
+            h4("HOR-TCJ Survival", style = "margin-left:20px;"),
+            div(
+              style = "display:flex;",
+              p("placeholder")
+              # plotOutput("doy_ins_ggpplt_dup3", height = "400px")
+              # ,
+              # plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
+            )
           )
-          # ,
-          # plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
-          # ,
-          # plotOutput("doy_surv_ggpplt", height = "400px")
-          
-          # ,
-          # p("empty_panel")
         )
-      # )
-        # ,
-        # column(width=5,
-        # tags$details(
-        #   id = "route_usage_deet",
-        #   open = TRUE,
-        #   style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
-        #   tags$summary(
-        #     title = "Click to open or close",
-        #     "Reach-Specific Survival", # "Upload/Review Daily Environmental Data",
-        #     style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
-        #           padding-bottom: 2px;background-color:#ddd;"
-        #   )
-        #   ,
-        #   div(style="display:flex;",
-        #       p("fill-in")
-        #       # plotOutput("doy_ins_ggpplt", height = "400px")
-        #       # ,
-        #       # plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
-        #   )
-        # )
-        # )
       )
     )
   })
@@ -460,29 +491,31 @@ app_server <- function(input, output, session) {
         #   h4(strong("Check Inputs"))
         # ),
         span(
-              style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px;    border-bottom: solid 1px gray; align-items:center",
-              # title = "attributes of years 2011-2024",
-              h4(strong("Check Inputs")),
-              shinyWidgets::dropMenu(
-                shinyWidgets::circleButton(
-                  inputId = "btn3",
-                  icon = icon("info"),
-                  status = "primary",
-                  size = "xs"
-                ),
-                p("How well user input data is assessed by comparing selections to the range of observed value in the Six-Year Study"),
-                placement = "left-start"
-              )
-            )
-            ,
+          style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px;    border-bottom: solid 1px gray; align-items:center",
+          # title = "attributes of years 2011-2024",
+          h4(strong("Check Inputs")),
+          shinyWidgets::dropMenu(
+            shinyWidgets::circleButton(
+              inputId = "btn3",
+              icon = icon("info"),
+              status = "primary",
+              size = "xs"
+            ),
+            p(
+              "How well user input data is assessed by comparing selections to the range of observed value in the Six-Year Study"
+            ),
+            placement = "left-start"
+          )
+        ),
         column(
-          style="margin-top:10px;",
+          style = "margin-top:10px;",
           width = 6,
           # actionButton("check_inputs_butt", "Check Inputs")
           div(
             p(
-            "Verify that specified values conform with data used to fit statistical sub-models"
-          )),
+              "Verify that specified values conform with data used to fit statistical sub-models"
+            )
+          ),
           div(
             style = "display: inline-flex",
 
@@ -516,9 +549,9 @@ app_server <- function(input, output, session) {
         ),
 
         column(
-                    style="margin-top:10px;",
+          style = "margin-top:10px;",
           width = 6,
-          actionButton("load_butt", "Load"),
+          # actionButton("load_butt", "Load"),
           actionButton("reset_butt", "Reset"),
           div(
             style = "display:block;margin-top:10px;",
@@ -668,9 +701,9 @@ app_server <- function(input, output, session) {
             )
           ),
           tagList(
-              div(
-                # style = "display: flex; gap:20px; align-items:center",
-                shiny::uiOutput("start_date_entry_sep_ui"),
+            div(
+              # style = "display: flex; gap:20px; align-items:center",
+              shiny::uiOutput("start_date_entry_sep_ui"),
               div(
                 # style = "display: flex; gap:20px;",
                 shinyWidgets::dropMenu(
@@ -717,30 +750,28 @@ app_server <- function(input, output, session) {
                       '<strong>Model:</strong> Used to fit statistical models</p>'
                     )
                   )
-                  )
-                ),
-                placement = "left-start"
+                )
               ),
+              placement = "left-start"
+            ),
             # ),
             uiOutput("table_in_WY_UI")
           )
         )
-      )
-      ,
+      ),
       column(
         width = 12,
-            div(
-            style = "border: solid 1px black;margin-bottom:10px;",# margin:10px;",
-                    span(
-              style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px;    border-bottom: solid 1px gray; align-items:center",
-              title = "Plots of selected or uploaded data in the context of observations from 2011-2024",
-              h5(em("View Daily Values")),
-              info_drop_fun(inputId_in="daily_var_def_info_bttn1")
-            )
-        ,
+        div(
+          style = "border: solid 1px black;margin-bottom:10px;", # margin:10px;",
+          span(
+            style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px;    border-bottom: solid 1px gray; align-items:center",
+            title = "Plots of selected or uploaded data in the context of observations from 2011-2024",
+            h5(em("View Daily Values")),
+            draw_info_bttn_dropdown_ui(inputId_in = "daily_var_def_info_bttn1")
+          ),
           div(
             style = "margin-left:20px;margin-top:20px",
-          shinyWidgets::pickerInput(
+            shinyWidgets::pickerInput(
               'radio_metric_view',
               label = "Variable",
               choices = c(
@@ -753,17 +784,27 @@ app_server <- function(input, output, session) {
                 "SWP" = "SWP",
                 "EXPORTS" = "EXPORTS",
                 "CLC" = "CLC",
-                "MSD" = "MSD"),
-                width="200px",
-                choicesOpt = list(
-                subtext=c("Inflow","Outlflow","Interior flow","Interior flow","Interior flow","Exports","Exports","Exports","Temperature","Temperature")
+                "MSD" = "MSD"
+              ),
+              width = "200px",
+              choicesOpt = list(
+                subtext = c(
+                  "Inflow",
+                  "Outlflow",
+                  "Interior flow",
+                  "Interior flow",
+                  "Interior flow",
+                  "Exports",
+                  "Exports",
+                  "Exports",
+                  "Temperature",
+                  "Temperature"
+                )
               )
             )
-          )
-        ,
-        plotOutput("doy_var_ggpplt", height = "400px")
-
-      )
+          ),
+          plotOutput("doy_var_ggpplt", height = "400px")
+        )
       )
     )
   })
@@ -793,8 +834,7 @@ app_server <- function(input, output, session) {
       # log_trans
     )
   })
-  
-  
+
   output$doy_ins_ggpplt <- renderPlot({
     ggplot_doy_ins_plt(
       CVhelp_dat_l_plt = CVhelp_dat_l,
@@ -821,19 +861,60 @@ app_server <- function(input, output, session) {
     )
   })
 
+  output$doy_ins_ggpplt2_dup1 <- renderPlot({
+    ggplot_doy_ins_plt(
+      CVhelp_dat_l_plt = CVhelp_dat_l,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year,
+      sub_var_in = input$radio_metric_view
+      # log_trans
+    )
+  })
+
+  output$doy_ins_ggpplt2_dup2 <- renderPlot({
+    ggplot_doy_ins_plt(
+      CVhelp_dat_l_plt = CVhelp_dat_l,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year,
+      sub_var_in = input$radio_metric_view
+      # log_trans
+    )
+  })
+
+  output$doy_ins_ggpplt2_dup3 <- renderPlot({
+    ggplot_doy_ins_plt(
+      CVhelp_dat_l_plt = CVhelp_dat_l,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year,
+      sub_var_in = input$radio_metric_view
+      # log_trans
+    )
+  })
+
   output$yr_var_ggpplt <- renderPlot({
     ggplot_yr_env_lattice_plt(
       CVhelp_dat_l_plt = CVhelp_dat_l,
       doy_rng_in = c(
         in_selected_RV$start_day,
-        in_selected_RV$end_day),
+        in_selected_RV$end_day
+      ),
       pst_year_in = in_selected_RV$past_water_year,
       sub_var_in = input$radio_metric_view
     )
   })
 
-
-  output$table_in_WY <-  DT::renderDataTable(draw_ann_summ_tab(input_year=in_selected_RV$past_water_year))
+  output$table_in_WY <- DT::renderDataTable(draw_ann_summ_tab(
+    input_year = in_selected_RV$past_water_year
+  ))
 
   observeEvent(input$year_picker, {
     in_selected_RV$BAR <- ann_HORbar_WYT_data[
@@ -843,25 +924,44 @@ app_server <- function(input, output, session) {
   })
 
   # update the selected row in the table
-  observeEvent( input$year_picker,{in_selected_RV$past_water_year <- input$year_picker})
+  observeEvent(input$year_picker, {
+    in_selected_RV$past_water_year <- input$year_picker
+  })
 
   # update selected reactive values
   observeEvent(
-    input$table_in_WY_rows_selected,{      # year_picker
-      in_selected_RV$past_water_year <- ann_HORbar_WYT_data[input$table_in_WY_rows_selected,"Year"]
-      in_selected_RV$WYT <- ann_HORbar_WYT_data[input$table_in_WY_rows_selected,"WYT"]
-      in_selected_RV$BAR <- ann_HORbar_WYT_data[input$table_in_WY_rows_selected,"barrier"]
+    input$table_in_WY_rows_selected,
+    {
+      # year_picker
+      in_selected_RV$past_water_year <- ann_HORbar_WYT_data[
+        input$table_in_WY_rows_selected,
+        "Year"
+      ]
+      in_selected_RV$WYT <- ann_HORbar_WYT_data[
+        input$table_in_WY_rows_selected,
+        "WYT"
+      ]
+      in_selected_RV$BAR <- ann_HORbar_WYT_data[
+        input$table_in_WY_rows_selected,
+        "barrier"
+      ]
       # initializing global day of year variables
       in_selected_RV$start_date <- as.Date(
         paste(
           in_selected_RV$start_day,
           in_selected_RV$past_water_year,
-          sep = "-"),format = "%j-%Y")
+          sep = "-"
+        ),
+        format = "%j-%Y"
+      )
       in_selected_RV$end_date <- as.Date(
         paste(
           in_selected_RV$end_day,
           in_selected_RV$past_water_year,
-          sep = "-"),format = "%j-%Y")
+          sep = "-"
+        ),
+        format = "%j-%Y"
+      )
       shinyWidgets::updatePickerInput(
         session = session,
         inputId = "year_picker",
@@ -874,7 +974,7 @@ app_server <- function(input, output, session) {
   output$table_in_WY_UI <- renderUI({
     DT::dataTableOutput("table_in_WY")
   })
-  
+
   # update values when water year is selected
   observeEvent(
     input$load_butt,
@@ -890,7 +990,6 @@ app_server <- function(input, output, session) {
       global$flength <- in_selected_RV$flength
     }
   )
-
 
   # because this is within a renderUI, changing the input$tab value rewrites the sidebar content
   output$sidebar_text <- renderUI({
@@ -908,16 +1007,24 @@ app_server <- function(input, output, session) {
     switch(
       tab_selected(),
       "about" = shiny::tagList(
-        mod_about_page_ui("mod_about_page-about_page_ui_1")),
-      "met_ref" =shiny::tagList(
-        uiOutput("met_ref_page_ui")) ,
+        mod_about_page_ui("mod_about_page-about_page_ui_1")
+      ),
+      "met_ref" = shiny::tagList(
+        uiOutput("met_ref_page_ui")
+      ),
       "inputs" = shiny::tagList(
-        uiOutput("input_page_UI"))
+        uiOutput("input_page_UI")
+      ),
+      "estimates" = shiny::tagList(
+        uiOutput("input_page_UI")
+      )
     )
   })
 
   # if remaining static move to ui.R script
-  output$met_ref_page_ui<- renderUI({ draw_met_ref_page_ui()})
+  output$met_ref_page_ui <- renderUI({
+    draw_met_ref_page_ui()
+  })
 
   output$start_date_entry_sep_ui <- renderUI({
     div(
@@ -1006,8 +1113,8 @@ app_server <- function(input, output, session) {
     shiny::tagList(
       div(
         style = "display: inline-flex; align-items: center;gap:20px;",
-          textOutput("flength_inval_txt"),
-          numericInput(
+        textOutput("flength_inval_txt"),
+        numericInput(
           "flength_num_in_dash",
           # label = NULL,
           label = "Fork Length (mm)",
@@ -1026,7 +1133,28 @@ app_server <- function(input, output, session) {
             div(
               # style = "display: flex;",
               div(
-                HTML(paste("<p> Fork length of juvenile Steelhead from Six-Year Study </p> "))),
+                HTML(paste(
+                  "<p> Fork length of juvenile Steelhead from Six-Year Study </p> "
+                ))
+              ),
+              #                 p(
+              #   "This is a paragraph of text. To trigger an event, please ",
+              #   # actionLink("link_id", "click this link"),
+              #                     shinyWidgets::dropMenu(
+              #                 shiny::actionLink(
+              #                   inputId = "six_year_ibutt",
+              #                   # icon = icon("info"),
+              #                   label="Six-Year Study",
+              #                   status = "primary",
+              #                   size = "xs"
+              #                 ),
+              #                 p("Lengths of fish relased during acoustic telemetry studies (2011-2016). Overall mean fork length selected by default."),
+              #                 placement = "left-start"
+              #               ),
+              #   " to continue reading."
+              # ),
+
+              # ,
               div(
                 style = "margin-left: 10px; z-index: 2",
                 class = "pull-right",
@@ -1066,7 +1194,7 @@ app_server <- function(input, output, session) {
   output$flength_ref_hist <- renderPlot(
     {
       input$flength_num_in_dash
-      ggplot_flength_ref_hist(
+      ggplot_input_flength_ref_hist(
         flength_in = in_selected_RV$flength,
         flength_hst_xlims_in = c(100, 400)
       )
@@ -1075,7 +1203,7 @@ app_server <- function(input, output, session) {
   )
 
   output$doy_ref_strt_loc <- renderPlot({
-    ggplt_doy_ref_hist(
+    ggplt_day_input_ref_hist(
       DOY_arvDF_l_in = DOY_arvDF_l,
       LOC_in = in_selected_RV$LOC,
       start_day_in = in_selected_RV$start_day,
@@ -1093,19 +1221,29 @@ app_server <- function(input, output, session) {
   # message for invalid flength entries
   output$flength_inval_txt <- renderText({
     validate(
-      need(input$flength_num_in_dash <= 400 & input$flength_num_in_dash >= 100,
-         "Only values between 100 and 400 mm are permitted")
+      need(
+        input$flength_num_in_dash <= 400 & input$flength_num_in_dash >= 100,
+        "Only values between 100 and 400 mm are permitted"
+      )
     )
     NULL
   })
-  
+
   # observe flength numeric input with debounce
   flength_mod <- reactive({
-       validate(
-        need(input$flength_num_in_dash < 400, "Only values between 100 and 400 mm are permitted"),
-        need(input$flength_num_in_dash > 100, "Only values between 100 and 400 mm are permitted"))
-    input$flength_num_in_dash  }) |> debounce(1000)
-
+    validate(
+      need(
+        input$flength_num_in_dash < 400,
+        "Only values between 100 and 400 mm are permitted"
+      ),
+      need(
+        input$flength_num_in_dash > 100,
+        "Only values between 100 and 400 mm are permitted"
+      )
+    )
+    input$flength_num_in_dash
+  }) |>
+    debounce(1000)
 
   observeEvent(flength_mod(), {
     in_selected_RV$flength <- flength_mod()
@@ -1149,15 +1287,43 @@ app_server <- function(input, output, session) {
 
   # observeEvent(input$inputs_done, {
 
-  observeEvent(input$generate_ests_butt, {
-    if (!input$input_box2$collapsed) {
-      shinydashboardPlus::updateBox("input_box2", action = "toggle")
+  # observeEvent(input$generate_ests_butt, {
+  #   if (!input$input_box2$collapsed) {
+  #     shinydashboardPlus::updateBox("input_box2", action = "toggle")
+  #   }
+  #   if (input$est_box_ui$collapsed) {
+  #     shinydashboardPlus::updateBox("est_box_ui", action = "toggle")
+  #   }
+  #   print(input$env_dat_tabpan)
+  # })
+
+  observeEvent(
+    {
+      # input$generate_ests_butt
+      input$tabs
+    },
+    {
+      if (input$tabs == "estimates") {
+        if (!input$input_box2$collapsed) {
+          shinydashboardPlus::updateBox("input_box2", action = "toggle")
+        }
+        if (input$est_box_ui$collapsed) {
+          shinydashboardPlus::updateBox("est_box_ui", action = "toggle")
+        }
+        print(input$env_dat_tabpan)
+      }
+
+      #  if(input$tabs=="inputs"){
+      #     if (!input$est_box_ui$collapsed) {
+      #       shinydashboardPlus::updateBox("est_box_ui", action = "toggle")
+      #     }
+      # if (input$input_box2$collapsed) {
+      # shinydashboardPlus::updateBox("input_box2", action = "toggle")
+      # }
+      #     print(input$env_dat_tabpan)
+      # }
     }
-    if (input$est_box_ui$collapsed) {
-      shinydashboardPlus::updateBox("est_box_ui", action = "toggle")
-    }
-    print(input$env_dat_tabpan)
-  })
+  )
 
   output$table_env_inputs <- DT::renderDataTable(
     DT::datatable(
@@ -1203,101 +1369,192 @@ app_server <- function(input, output, session) {
     )
   )
 
+  # unused
+  # output$doy_surv_ggpplt <- renderPlot({
+  #     ggplot_doy_surv_plt(
+  #         CVhelp_dat_w_plt=CVhelp_dat_w,
+  #     doy_rng_in = c(
+  #       in_selected_RV$start_day,
+  #       in_selected_RV$end_day
+  #     ),
+  #     pst_year_in = in_selected_RV$past_water_year
+  #   )
+  # })
 
-  output$doy_surv_ggpplt <- renderPlot({
-      ggplot_doy_surv_plt(
-          CVhelp_dat_w_plt=CVhelp_dat_w,
+  # HOR_TCJ_pred_tab <- reactiveVals()
+  OUT_tmp <- reactiveValues()
+  # OUT_tmp$HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+
+  # previous year data is pre-loaded
+  OUT_tmp$HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+
+  observeEvent(input$load_butt, {
+    OUT_tmp$HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(
+      sel_rows_tmp1 = CVhelp_dat_w,
+      HOR_TCJ_mod_ls = glmmTMB_mod_ls[["HOR_TCJ"]],
+      flength_in = in_selected_RV$flength
+    )
+  })
+
+  output$HOR_TCJ_pred_ggpplt <- renderPlot({
+    # reading from previously ran version of the data
+    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+
+    HOR_TCJ_pred_tab <- OUT_tmp$HOR_TCJ_pred_tab
+
+    # from scratch version
+    # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix
+    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+    #                                      flength_in=in_selected_RV$flength)
+
+    ggplot_doy_pred_plt(
+      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
       doy_rng_in = c(
         in_selected_RV$start_day,
         in_selected_RV$end_day
       ),
       pst_year_in = in_selected_RV$past_water_year
     )
-
-
-    
   })
 
-  
-  
-  
-  
-
-  
-  
-  output$HOR_TCJ_pred_ggpplt <- renderPlot({
-
+  output$HOR_TCJ_pred_ggpplt_dup1 <- renderPlot({
     # reading from previously ran version of the data
-    HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
-    
+    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
+
     # from scratch version
     # this function does a few things:
-    # renames variables so that column names match the glmmTMB model.matrix 
+    # renames variables so that column names match the glmmTMB model.matrix
     # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
     #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
     #                                      flength_in=in_selected_RV$flength)
 
-     ggplot_doy_pred_plt(
-      HOR_TCJ_pred_tab_plt=HOR_TCJ_pred_tab,
+    ggplot_doy_pred_plt(
+      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
       doy_rng_in = c(
         in_selected_RV$start_day,
-        in_selected_RV$end_day),
+        in_selected_RV$end_day
+      ),
       pst_year_in = in_selected_RV$past_water_year
     )
-    
   })
-  
 
-  output$submods_pred_ggpplt2 <- renderPlot({
-    
+  output$HOR_TCJ_pred_ggpplt_dup1a <- renderPlot({
     # reading from previously ran version of the data
-    HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
-    
+    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
+    HOR_TCJ_pred_tab$lo_pred <- log((plogis(HOR_TCJ_pred_tab$lo_pred)*0.4 ) / (1-(plogis(HOR_TCJ_pred_tab$lo_pred)*0.4)))
+    HOR_TCJ_pred_tab$LCL <- log((plogis(HOR_TCJ_pred_tab$LCL)*0.4 ) / (1-(plogis(HOR_TCJ_pred_tab$LCL)*0.4)))
+    HOR_TCJ_pred_tab$UCL <- log((plogis(HOR_TCJ_pred_tab$UCL)*0.4 ) / (1-(plogis(HOR_TCJ_pred_tab$UCL)*0.4)))
+
     # from scratch version
     # this function does a few things:
-    # renames variables so that column names match the glmmTMB model.matrix 
+    # renames variables so that column names match the glmmTMB model.matrix
     # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
     #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
     #                                      flength_in=in_selected_RV$flength)
-    
-    ggplot_doy_pred_plt_mult(
-      HOR_TCJ_pred_tab_plt=HOR_TCJ_pred_tab,
+
+    ggplot_doy_pred_plt(
+      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
       doy_rng_in = c(
         in_selected_RV$start_day,
-        in_selected_RV$end_day),
-      pst_year_in = in_selected_RV$past_water_year+1
+        in_selected_RV$end_day
+      ),
+     pst_year_in = 2013 + 9
+      # pst_year_in = in_selected_RV$past_water_year + 1
     )
-    
   })
-  
-  
-  output$ovrl_mods_pred_ggpplt2 <- renderPlot({
-    
+
+  output$HOR_TCJ_pred_ggpplt_dup1b <- renderPlot({
     # reading from previously ran version of the data
-    HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
-    
+    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
+
     # from scratch version
     # this function does a few things:
-    # renames variables so that column names match the glmmTMB model.matrix 
+    # renames variables so that column names match the glmmTMB model.matrix
     # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
     #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
     #                                      flength_in=in_selected_RV$flength)
-    
-    ggplot_doy_pred_plt_ovrl(
-      HOR_TCJ_pred_tab_plt=HOR_TCJ_pred_tab,
+
+    ggplot_doy_pred_plt(
+      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
       doy_rng_in = c(
         in_selected_RV$start_day,
-        in_selected_RV$end_day),
-      pst_year_in = in_selected_RV$past_water_year+1
+        in_selected_RV$end_day
+      ),
+      # pst_year_in = in_selected_RV$past_water_year + 2
+            pst_year_in = 2013 + 2
     )
-    
   })
-  
-  
-  
-  
-  
+
+  output$HOR_TCJ_pred_ggpplt_dup1c <- renderPlot({
+    # reading from previously ran version of the data
+    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
+
+    # from scratch version
+    # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix
+    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+    #                                      flength_in=in_selected_RV$flength)
+
+    ggplot_doy_pred_plt(
+      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      # pst_year_in = in_selected_RV$past_water_year + 8
+            pst_year_in = 2013 + 8
+    )
+  })
+
+  output$HOR_TCJ_pred_ggpplt_dup2 <- renderPlot({
+    # reading from previously ran version of the data
+    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+
+    # from scratch version
+    # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix
+    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+    #                                      flength_in=in_selected_RV$flength)
+
+    # Loads the reactive values
+    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
+
+    ggplot_doy_pred_plt(
+      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year
+    )
+  })
+
+  output$HOR_TCJ_pred_ggpplt_dup3 <- renderPlot({
+    # reading from previously ran version of the data
+    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
+    # from scratch version
+    # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix
+    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+    #                                      flength_in=in_selected_RV$flength)
+
+    ggplot_doy_pred_plt(
+      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year
+    )
+  })
 }
-
-
-

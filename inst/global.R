@@ -102,6 +102,10 @@
     LOC = init_start_loc,
     BAR = init_bar
   )
+  
+results_RV <- reactiveValues(
+  
+)
 
 # prepare data stored in package for creation of Datatable in app
 ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in = ann_HORbar_WYT_data))
@@ -121,7 +125,7 @@ ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in
       "inst/app/www/images/svg/basic route schematic/TCJ_CHP_bar_in.svg"
     )
 
-        barrier_opt <- c("In" = "In", "Out" = "Out")
+    barrier_opt <- c("In" = "In", "Out" = "Out")
     barrier_label <- "HOR Barrier:"
     loc_opt <- c(
       'Head of Old River (HOR)' = "HOR",
@@ -130,6 +134,7 @@ ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in
 
     init_data_source <- "Previous year"
 
+
      surv_route_diagram_wtt_xml <- xml2::read_xml(
-    "inst/app/www/surv_route_diagram_wtt.svg"
+    "inst/app/www/met_and_ref/surv_route_diagram_wtt.svg"
   )

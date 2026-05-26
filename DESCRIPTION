@@ -16,6 +16,7 @@ Imports:
     DT,
     fresh,
     ggplot2,
+    glmmTMB,
     golem,
     markdown,
     shiny,

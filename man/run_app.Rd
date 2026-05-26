@@ -9,6 +9,8 @@ run_app(
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",
+  start_tab = "about",
+  inputs_panel_collapse = FALSE,
   ...
 )
 }

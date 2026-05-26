@@ -1,3 +1,9 @@
+#' Title
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 draw_met_ref_page_ui <- function(){
   shiny::tagList(
   fluidRow(

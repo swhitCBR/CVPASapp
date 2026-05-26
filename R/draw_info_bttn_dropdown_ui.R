@@ -1,4 +1,12 @@
-info_drop_fun <- function(inputId_in = "daily_var_def_info_bttn2"){
+#' Title
+#'
+#' @param inputId_in 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+draw_info_bttn_dropdown_ui <- function(inputId_in = "daily_var_def_info_bttn2"){
   shinyWidgets::dropMenu(
     shinyWidgets::circleButton(
       inputId = inputId_in,

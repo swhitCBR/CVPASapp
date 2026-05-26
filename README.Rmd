@@ -15,29 +15,24 @@ output: github_document
 
 # `{CVPASapp}`
 
-<!-- badges: start -->
-[![Lifecycle: experimental](https://img.shields.io/badge/lifecycle-experimental-orange.svg)](https://lifecycle.r-lib.org/articles/stages.html#experimental)
-<!-- badges: end -->
-
 ## Installation
 
-You can install the development version of `{CVPASapp}` like so:
+The CVPAS app code is housed within an R package. To run the app locally you will neeed to navigate to the root directory 'CVPASapp' then run the following code to:
 
-```{r}
-# FILL THIS IN! HOW CAN PEOPLE INSTALL YOUR DEV PACKAGE?
+```{r eval=TRUE,comment=""}
+fs::dir_tree(type="directory")
 ```
 
-## Run
-
-You can launch the application by running:
+## Running the app
 
 ```{r, eval = FALSE}
+
+# loads all of the required functions into your environment
+devtools::load_all("CVPASapp")
+
+launches the application
 CVPASapp::run_app()
 ```
-
-## About
-
-You are reading the doc about version : `r golem::pkg_version()`
 
 This README has been compiled on the
 
@@ -45,16 +40,6 @@ This README has been compiled on the
 Sys.time()
 ```
 
-Here are the tests results and package coverage:
-
-```{r, error = TRUE}
-devtools::check(quiet = TRUE)
-```
-
 ```{r echo = FALSE}
 unloadNamespace("CVPASapp")
-```
-
-```{r, error = TRUE}
-covr::package_coverage()
 ```

@@ -73,18 +73,6 @@ app_server <- function(input, output, session) {
   # Starting location name to be inserted into UI downstream
   output$start_loc_heading = renderText({ paste(in_selected_RV$start_loc_in) })
 
-  ### change display based on reactive values ----
-  # for selecting among schematic plots
-  # swaps out .svg images depending on the values of two reactiveValues
-  # output$schem_start_loc_plt_ui <- renderUI({
-  #   tst_val <- paste(in_selected_RV$LOC, in_selected_RV$BAR, sep = "_")
-  #   tags$img(src = paste0("www/images/svg/basic route schematic/", tst_val, ".svg"),width = "100%")
-  # })
-
-  # output$schem_start_loc_plt_ui <- renderUI({
-  #   draw_basic_route_schematic_svg(LOC_in=in_selected_RV$LOC,BAR_in=in_selected_RV$BAR)
-  # })
-
   # could just be in ui
   output$data_source_ui <- renderUI({
     shinyWidgets::pickerInput(
@@ -103,7 +91,7 @@ app_server <- function(input, output, session) {
         data_source_selected(),
         "None" = NULL,
         "Previous year" = shiny::uiOutput("details_sel_data_bar"),
-        "Uploaded file (.csv)" = shiny::uiOutput("upload_deet_ui")
+        "Uploaded file (.csv)" = draw_upload_deet_ui()#shiny::uiOutput("upload_deet_ui")
       )
     )
   })
@@ -122,9 +110,9 @@ app_server <- function(input, output, session) {
     )
   })
 
-  output$upload_deet_ui <- renderUI({
-    draw_upload_deet_ui()
-  })
+  # output$upload_deet_ui <- renderUI({
+    
+  # })
 
   output$details_indiv_attrib_ui <- renderUI({
     # tagList(
@@ -257,8 +245,7 @@ app_server <- function(input, output, session) {
                 p("Major routes and key junctions in the Delta") #,
               )
             ),
-            # draw_basic_route_schematic_svg(LOC_in=in_selected_RV$LOC,BAR_in=in_selected_RV$BAR)
-            shiny::uiOutput("schem_start_loc_plt_ui")
+            draw_basic_route_schematic_svg(LOC_in=in_selected_RV$LOC,BAR_in=in_selected_RV$BAR),
           )
         )
       ),
@@ -286,12 +273,12 @@ app_server <- function(input, output, session) {
       fluidRow(
         h4(strong(
           paste0("Overall Survival Probability"),
-          style = "color:crimson;text-decoration: underline;padding-left: 10px;"
+          style = "color:#28547A;text-decoration: underline;padding-left: 10px;"
         )), 
         div(
           #ALT# wide vs. long
-          # style = "padding-left: 20px;padding-right:10px;"
-          style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;"
+          style = "padding-left: 20px;padding-right:10px;"
+          # style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;"
           ,
           div(
             h4(
@@ -312,7 +299,7 @@ app_server <- function(input, output, session) {
                   )
                 )
               ),
-              plotOutput("HOR_TCJ_pred_ggpplt_dup1a", height = "400px")
+                            plotOutput("HOR_TCJ_pred_ggpplt_dup1a", height = "400px")
             )
           ),
           div(
@@ -367,11 +354,15 @@ app_server <- function(input, output, session) {
         column(
             width = 6,
             h4(strong(paste0("San Joaquin River vs. Old River ")),style = "padding-left:10px;"
-            )
+            ),
+                          # plotOutput("HOR_TCJ_pred_ggpplt_dup1a", height = "400px")
+                                                    plotOutput("HOR_TCJ_pred_ggpplt_dup1d", height = "400px")
           ),
           column(
             width = 6,
-            h4(strong(paste0("San Joaquin River vs. Turner Cut")),style = "padding-left:10px;"))
+            h4(strong(paste0("San Joaquin River vs. Turner Cut")),style = "padding-left:10px;"),
+               plotOutput("HOR_TCJ_pred_ggpplt_dup1d2", height = "400px")
+          )
           # Blue: #4E79A7 (Steel Blue)Orange: #F28E2B (Burnt Orange)
         )
       ),
@@ -670,19 +661,15 @@ app_server <- function(input, output, session) {
               tags$li(
                 HTML(paste(
                   "<h5> Select a date range for arrival at  <strong>",
-                  # (input$start_loc_in),
+                  # (input$start_loc_in), replaced selector with reactive value
                   (in_selected_RV$LOC),
                   "</strong> junction by entering dates or adjusting Day of Year slider </h5> "
                 ))
-                # h5(
-                #   "Select a date range for fish arriving at the selected junction by entering date(s) or adjusting Day of Year slider"
-                # )
               )
             )
           ),
           tagList(
             div(
-              # style = "display: flex; gap:20px; align-items:center",
               shiny::uiOutput("start_date_entry_sep_ui"),
               div(
                 # style = "display: flex; gap:20px;",
@@ -1303,6 +1290,10 @@ app_server <- function(input, output, session) {
     )
   )
 
+  # estimates ----
+
+  ### checking inputs  ----
+
   ### calculate estimates  ----
 
   OUT_tmp <- reactiveValues()
@@ -1359,7 +1350,7 @@ app_server <- function(input, output, session) {
     )
   })
 
-  output$HOR_TCJ_pred_ggpplt_dup1a <- renderPlot({
+output$HOR_TCJ_pred_ggpplt_dup1a <- renderPlot({
     # reading from previously ran version of the data
     # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
     HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
@@ -1371,14 +1362,18 @@ app_server <- function(input, output, session) {
     #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
     #                                      flength_in=in_selected_RV$flength)
 
+    HOR_TCJ_pred_tab$lo_pred <- log((plogis(HOR_TCJ_pred_tab$lo_pred)*0.45 ) / (1-(plogis(HOR_TCJ_pred_tab$lo_pred)*0.45)))
+    HOR_TCJ_pred_tab$LCL <- log((plogis(HOR_TCJ_pred_tab$LCL)*0.45 ) / (1-(plogis(HOR_TCJ_pred_tab$LCL)*0.45)))
+    HOR_TCJ_pred_tab$UCL <- log((plogis(HOR_TCJ_pred_tab$UCL)*0.45 ) / (1-(plogis(HOR_TCJ_pred_tab$UCL)*0.45)))
+
     ggplot_doy_pred_plt(
       HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
       doy_rng_in = c(
         in_selected_RV$start_day,
         in_selected_RV$end_day
       ),
-      # pst_year_in = 2013 + 9
-      pst_year_in = in_selected_RV$past_water_year
+      pst_year_in = 2013 + 9
+      # pst_year_in = in_selected_RV$past_water_year
     )
   })
 
@@ -1390,8 +1385,8 @@ app_server <- function(input, output, session) {
         in_selected_RV$start_day,
         in_selected_RV$end_day
       ),
-      pst_year_in = in_selected_RV$past_water_year
-      # pst_year_in = 2013 + 2
+      # pst_year_in = in_selected_RV$past_water_year
+      pst_year_in = 2013 + 8
     )
   })
 
@@ -1406,6 +1401,90 @@ app_server <- function(input, output, session) {
       pst_year_in = in_selected_RV$past_water_year
     )
   })
+
+
+  
+  output$HOR_TCJ_pred_ggpplt_dup1d <- renderPlot({
+    # reading from previously ran version of the data
+    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
+
+    # from scratch version
+    # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix
+    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+    #                                      flength_in=in_selected_RV$flength)
+
+    # HOR_TCJ_pred_tab$lo_pred <- log((plogis(HOR_TCJ_pred_tab$lo_pred)*1.2 ) / (1-(plogis(HOR_TCJ_pred_tab$lo_pred)*1.2)))
+    # HOR_TCJ_pred_tab$LCL <- log((plogis(HOR_TCJ_pred_tab$LCL)*1.2 ) / (1-(plogis(HOR_TCJ_pred_tab$LCL)*1.2)))
+    # HOR_TCJ_pred_tab$UCL <- log((plogis(HOR_TCJ_pred_tab$UCL)*1.2 ) / (1-(plogis(HOR_TCJ_pred_tab$UCL)*1.2)))
+
+    ggplot_doy_rte_plt(
+      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = 2013 + 9
+      # pst_year_in = in_selected_RV$past_water_year
+    )
+  })
+
+    output$HOR_TCJ_pred_ggpplt_dup1d2 <- renderPlot({
+    # reading from previously ran version of the data
+    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
+
+    # from scratch version
+    # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix
+    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+    #                                      flength_in=in_selected_RV$flength)
+
+    # HOR_TCJ_pred_tab$lo_pred <- log((plogis(HOR_TCJ_pred_tab$lo_pred)*1.2 ) / (1-(plogis(HOR_TCJ_pred_tab$lo_pred)*1.2)))
+    # HOR_TCJ_pred_tab$LCL <- log((plogis(HOR_TCJ_pred_tab$LCL)*1.2 ) / (1-(plogis(HOR_TCJ_pred_tab$LCL)*1.2)))
+    # HOR_TCJ_pred_tab$UCL <- log((plogis(HOR_TCJ_pred_tab$UCL)*1.2 ) / (1-(plogis(HOR_TCJ_pred_tab$UCL)*1.2)))
+
+    ggplot_doy_rte_plt(
+      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = 2013 + 2
+      # pst_year_in = in_selected_RV$past_water_year
+    )
+  })
+  
+  output$HOR_TCJ_pred_ggpplt_dup1e <- renderPlot({
+    # reading from previously ran version of the data
+    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
+    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
+
+    # from scratch version
+    # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix
+    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+    #                                      flength_in=in_selected_RV$flength)
+
+    HOR_TCJ_pred_tab$lo_pred <- log((plogis(HOR_TCJ_pred_tab$lo_pred)*0.45 ) / (1-(plogis(HOR_TCJ_pred_tab$lo_pred)*0.45)))
+    HOR_TCJ_pred_tab$LCL <- log((plogis(HOR_TCJ_pred_tab$LCL)*0.45 ) / (1-(plogis(HOR_TCJ_pred_tab$LCL)*0.45)))
+    HOR_TCJ_pred_tab$UCL <- log((plogis(HOR_TCJ_pred_tab$UCL)*0.45 ) / (1-(plogis(HOR_TCJ_pred_tab$UCL)*0.45)))
+
+    ggplot_doy_pred_plt(
+      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = 2013 + 2
+      # pst_year_in = in_selected_RV$past_water_year
+    )
+  })
+
 
   output$HOR_TCJ_pred_ggpplt_dup2 <- renderPlot({
     # reading from previously ran version of the data

@@ -24,51 +24,7 @@ app_server <- function(input, output, session) {
   data_source_selected <- reactiveVal("prev_pan")
 
   ### debugging print  ----
-  observeEvent(input$tabs, {
-    tab_selected(input$tabs)
-    print(input$tabs)
-  })
-  observeEvent(input$data_source_picker, {
-    data_source_selected(input$data_source_picker)
-  })
-
-  observeEvent(input$goto_inputs_butt, {
-    tab_selected("inputs") # this is a reactiveVal
-    shinydashboard::updateTabItems(
-      "tabs",
-      session = session,
-      selected = "inputs"
-    )
-  })
-
-  observeEvent(input$goto_met_ref_butt, {
-    tab_selected("met_ref")
-    shinydashboard::updateTabItems(
-      "tabs",
-      session = session,
-      selected = "met_ref"
-    )
-  })
-
-  observeEvent(input$top_met_ref_butt, {
-    tab_selected("met_ref")
-    shinydashboard::updateTabItems(
-      "tabs",
-      session = session,
-      selected = "met_ref"
-    )
-  })
-
-  observeEvent(input$top_about_butt, {
-    tab_selected("about")
-    shinydashboard::updateTabItems(
-      "tabs",
-      session = session,
-      selected = "about"
-    )
-  })
-
-  # debugging and printing
+  observeEvent(input$tabs, {  tab_selected(input$tabs); print(input$tabs)})
   output$sel_in_ls_text = renderText({
     RV_text_fun(
       heading = "Selected",
@@ -76,29 +32,31 @@ app_server <- function(input, output, session) {
     )
   })
 
-  # print global (i.e., locked-in values)
-  output$glob_in_ls_text = renderText({
-    RV_text_fun(heading = "none", RVls_in = shiny::reactiveValuesToList(global))
-  })
+  ### tab and navigation  ----
+  observeEvent(input$data_source_picker, { data_source_selected(input$data_source_picker)})
 
-  observeEvent(input$start_loc_in, {
-    in_selected_RV$LOC <- input$start_loc_in
-  })
+  observeEvent(input$goto_inputs_butt, { tab_selected("inputs"); shinydashboard::updateTabItems(inputId="tabs", session = session, selected = "inputs")})
+  observeEvent(input$goto_met_ref_butt, { tab_selected("met_ref"); shinydashboard::updateTabItems(inputId="tabs", session = session, selected = "met_ref")})
+
+  observeEvent(input$top_met_ref_butt, { tab_selected("met_ref"); shinydashboard::updateTabItems(inputId="tabs", session = session, selected = "met_ref")})
+  observeEvent(input$top_about_butt, { tab_selected("about"); shinydashboard::updateTabItems(inputId="tabs", session = session, selected = "about") })
+
+  ### reactive value definitions  ----
+
+  # print global (i.e., locked-in values)
+  output$glob_in_ls_text = renderText({    RV_text_fun(heading = "none", RVls_in = shiny::reactiveValuesToList(in_global_RV)) })
+
+  observeEvent(input$start_loc_in, { in_selected_RV$LOC <- input$start_loc_in })
 
   # Starting location name to be inserted into UI downstream
-  output$start_loc_heading = renderText({
-    paste(in_selected_RV$start_loc_in)
-  })
+  output$start_loc_heading = renderText({ paste(in_selected_RV$start_loc_in) })
 
   ### change display based on reactive values ----
   # for selecting among schematic plots
   # swaps out .svg images depending on the values of two reactiveValues
   output$schem_start_loc_plt_ui <- renderUI({
     tst_val <- paste(in_selected_RV$LOC, in_selected_RV$BAR, sep = "_")
-    tags$img(
-      src = paste0("www/images/svg/basic route schematic/", tst_val, ".svg"),
-      width = "100%"
-    )
+    tags$img(src = paste0("www/images/svg/basic route schematic/", tst_val, ".svg"),width = "100%")
   })
 
   # could just be in ui
@@ -106,19 +64,15 @@ app_server <- function(input, output, session) {
     shinyWidgets::pickerInput(
       inputId = "data_source_picker",
       choices = c("Previous year", "Uploaded file (.csv)", "None"),
-      selected = init_data_source
-    )
+      selected = init_data_source)
   })
 
   ### change major display change based on reactive values ----
   # for selecting among schematic plots
-  output$data_source_selected_txt <- renderText({
-    data_source_selected()
-  })
+  output$data_source_selected_txt <- renderText({ data_source_selected()  })
 
-  output$deet_panel_prev_upload_ui <- renderUI({
+  output$data_source_inputs_dynui <- renderUI({
     tagList(
-      # shiny::verbatimTextOutput("data_source_selected_txt"),
       switch(
         data_source_selected(),
         "None" = NULL,
@@ -285,7 +239,7 @@ app_server <- function(input, output, session) {
         width = 12,
         style = "margin:10px;",
         tagList(
-          shiny::uiOutput("deet_panel_prev_upload_ui"),
+          shiny::uiOutput("data_source_inputs_dynui"),
           shiny::uiOutput("details_indiv_attrib_ui")
         )
       ),
@@ -302,168 +256,165 @@ app_server <- function(input, output, session) {
       collapsible = T,
       collapsed = FALSE,
       width = 12,
-      column(
-        width = 12,
+      fluidRow(
         h4(strong(
           paste0("Overall Survival Probability"),
-          style = "color:crimson;text-decoration: underline;"
-        )), #,strong(paste0("Head of Old River to Chipps Island (HOR-CHP)"))),
-        h4(
-          strong(paste0("Head of Old River to Chipps Island (HOR-CHP)")),
-          style = "padding-left:10px;"
-        ),
-        fluidRow(
+          style = "color:crimson;text-decoration: underline;padding-left: 10px;"
+        )), 
+        div(
+          #ALT# wide vs. long
+          # style = "padding-left: 20px;padding-right:10px;"
+          style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;"
+          ,
           div(
-            style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;",
+            h4(
+              strong(paste0(
+                "Head of Old River to Chipps Island (HOR-CHP)"
+              )),
+              style = "padding-left:10px;"
+            ),
             div(
-              tags$ul(
-                style = "padding-left:15px;",
-                tags$li(
-                  "Survival from the head of Head of Old River to Chipps Island across all major routes (San Joaquin R.,Middle R.,Old R.)",
-                  style = "margin-left:25px;"
+              div(
+                tags$ul(
+                  style = "padding-left:15px;",
+                  tags$li(
+                    "Survival from the head of Head of Old River to Chipps Island across (all routes).",
+                    #ALT# longer version
+                    # "Survival from the head of Head of Old River to Chipps Island across all major routes (San Joaquin R.,Middle R.,Old R.)",
+                    style = "margin-left:25px;"
+                  )
                 )
-              )
-            ),
-            plotOutput("HOR_TCJ_pred_ggpplt_dup1a", height = "400px")
-          ),
-          h4(
-            strong(paste0(
-              "Head of Old River to Turner Cut Junction (HOR-TRN)"
-            )),
-            style = "padding-left:10px;"
-          ),
-          div(
-            style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;",
-            div(
-              tags$ul(
-                style = "padding-left:15px;",
-                tags$li(
-                  "Survival from the head of Head of Old River to Chipps Island across all major routes (San Joaquin R.,Middle R.,Old R.)",
-                  style = "margin-left:25px;"
-                )
-              )
-            ),
-            plotOutput("HOR_TCJ_pred_ggpplt_dup1b", height = "400px")
-          ),
-          h4(
-            strong(paste0(
-              "Head of Old River to Turner Cut Junction (HOR-TRN)"
-            )),
-            style = "padding-left:10px;"
-          ),
-          div(
-            style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right:10px;",
-            div(
-              tags$ul(
-                style = "padding-left:15px;",
-                tags$li(
-                  "Survival from the head of Head of Old River to Chipps Island across all major routes (San Joaquin R.,Middle R.,Old R.)",
-                  style = "margin-left:25px;"
-                )
-              )
-            ),
-            plotOutput("HOR_TCJ_pred_ggpplt_dup1c", height = "400px")
-          ),
-          div(
-            style = "padding-left: 10px;",
-            h4(strong(
-              paste0("Route Usage Probability"),
-              style = "color:green;text-decoration: underline;"
-            )), #,strong(paste0("Head of Old River to Chipps Island (HOR-CHP)"))),
-            column(
-              width = 6,
-              h4(
-                strong(paste0("San Joaquin River vs. Old River ")),
-                style = "padding-left:10px;"
-              )
-            ),
-            column(
-              width = 6,
-              h4(
-                strong(paste0("San Joaquin River vs. Turner Cut")),
-                style = "padding-left:10px;"
               ),
+              plotOutput("HOR_TCJ_pred_ggpplt_dup1a", height = "400px")
             )
-            # Blue: #4E79A7 (Steel Blue)Orange: #F28E2B (Burnt Orange)
+          ),
+          div(
+            h4(
+              strong(paste0(
+                "Head of Old River to Turner Cut Junction (HOR-TRN)"
+              )),
+              style = "padding-left:10px;"
+            ),
+            div(
+              div(
+                tags$ul(
+                  style = "padding-left:15px;",
+                  tags$li(
+                    "Survival from the head of Head of Old River to Turner Cut Junction",
+                    style = "margin-left:25px;"
+                  )
+                )
+              ),
+              plotOutput("HOR_TCJ_pred_ggpplt_dup1b", height = "400px")
+            )
+          ),
+          div(
+            h4(
+              strong(paste0(
+                "Turner Cut Junction to Chipps Island (TRN-CHP)"
+              )),
+              style = "padding-left:10px;"
+            ),
+            div(
+              div(
+                tags$ul(
+                  style = "padding-left:15px;",
+                  tags$li(
+                    "Survival from Turner Cut Junction to Chipps Island",
+                    style = "margin-left:25px;"
+                  )
+                )
+              ),
+              plotOutput("HOR_TCJ_pred_ggpplt_dup1c", height = "400px")
+            )
           )
-        )
-      ),
-      footer = div(
-        #p("hdfsl")
-        # footer(
+        ),
         div(
           style = "padding-left: 10px;",
           h4(strong(
-            paste0("More Information"),
-            style = "color:black;text-decoration: underline;"
-          )), #,strong(paste0("Head of Old River to Chipps Island (HOR-CHP)"))),
-        ),
-        div(
-          style = "padding-left: 10px;",
-          tags$details(
-            id = "hor_tcj_surv_deet",
-            open = NULL,
-            style = "margin-top:15px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
-            tags$summary(
-              title = "Click to open or close",
-              "Route-Specific Survival",
-              style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
-                  padding-bottom: 2px;background-color:#ddd;"
-            ),
-            # h4("HOR-TCJ via SJL",style="margin-left:20px;"),
-            h4(
-              "Head of Old River to Turner Cut via the San Joaquin River",
-              style = "margin-left:20px;"
-            ),
-            # p("Head of Old River to Turner Cut",style="margin-left:25px;"),
-            div(
-              style = "display:flex;",
-              plotOutput("doy_ins_ggpplt", height = "400px"),
-              plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
-            ),
-            h4(
-              "Turner Cut Chipps Island via the San Joaquin River",
-              style = "margin-left:20px;"
-            ),
-            # p("Head of Old River to Turner Cut",style="margin-left:25px;"),
-            div(
-              style = "display:flex;",
-              plotOutput("doy_ins_ggpplt_dup1", height = "400px"),
-              plotOutput("HOR_TCJ_pred_ggpplt_dup3", height = "400px")
-            ),
-            h4(
-              "Head of Old River to Chipps Island via the Old and Middle rivers",
-              style = "margin-left:20px;"
-            ),
-            # p("Head of Old River to Turner Cut",style="margin-left:25px;"),
-            div(
-              style = "display:flex;",
-              plotOutput("doy_ins_ggpplt_dup2", height = "400px"),
-              plotOutput("HOR_TCJ_pred_ggpplt_dup1", height = "400px")
+            paste0("Route Usage"),
+            style = "color:green;text-decoration: underline;"
+          )
+        )
+        ,
+        column(
+            width = 6,
+            h4(strong(paste0("San Joaquin River vs. Old River ")),style = "padding-left:10px;"
             )
           ),
-          tags$details(
-            id = "hor_chp_ore_surv_deets",
-            open = NULL,
-            style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
-            tags$summary(
-              title = "Click to open or close",
-              "Model Details",
-              style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+          column(
+            width = 6,
+            h4(strong(paste0("San Joaquin River vs. Turner Cut")),style = "padding-left:10px;"))
+          # Blue: #4E79A7 (Steel Blue)Orange: #F28E2B (Burnt Orange)
+        )
+      ),
+  footer = div(
+          #p("hdfsl")
+          # footer(
+          div(
+            style = "padding-left: 10px;",
+            h4(strong(
+              paste0("More Information"),
+              style = "color:black;text-decoration: underline;"
+            )),
+          ),
+          div(
+            style = "padding-left: 10px;",
+            tags$details(
+              id = "hor_tcj_surv_deet",
+              open = NULL,
+              style = "margin-top:15px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+              tags$summary(
+                title = "Click to open or close",
+                "Route-Specific Survival",
+                style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
                   padding-bottom: 2px;background-color:#ddd;"
+              ),
+              h4("Head of Old River to Turner Cut via the San Joaquin River",style = "margin-left:20px;"),
+              div(
+                style = "display:flex;",
+                plotOutput("doy_ins_ggpplt", height = "400px"),
+                plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
+              ),
+              h4("Turner Cut Chipps Island via the San Joaquin River",
+                style = "margin-left:20px;"),
+              div(
+                style = "display:flex;",
+                plotOutput("doy_ins_ggpplt_dup1", height = "400px"),
+                plotOutput("HOR_TCJ_pred_ggpplt_dup3", height = "400px")
+              ),
+              h4("Head of Old River to Chipps Island via the Old and Middle rivers",style = "margin-left:20px;"),
+              # p("Head of Old River to Turner Cut",style="margin-left:25px;"),
+              div(
+                style = "display:flex;",
+                plotOutput("doy_ins_ggpplt_dup2", height = "400px"),
+                plotOutput("HOR_TCJ_pred_ggpplt_dup1", height = "400px")
+              )
             ),
-            h4("HOR-TCJ Survival", style = "margin-left:20px;"),
-            div(
-              style = "display:flex;",
-              p("placeholder")
-              # plotOutput("doy_ins_ggpplt_dup3", height = "400px")
-              # ,
-              # plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
+            tags$details(
+              id = "hor_chp_ore_surv_deets",
+              open = NULL,
+              style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+              tags$summary(
+                title = "Click to open or close",
+                "Model Details",
+                style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+                  padding-bottom: 2px;background-color:#ddd;"
+              ),
+              h4("HOR-TCJ Survival", style = "margin-left:20px;"),
+              div(
+                style = "display:flex;",
+                p("placeholder")
+                # plotOutput("doy_ins_ggpplt_dup3", height = "400px")
+                # ,
+                # plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
+              )
             )
           )
         )
+        # )
       )
-    )
+    # )
   })
 
   # shinyWidgets::radioGroupButtons(
@@ -979,15 +930,15 @@ app_server <- function(input, output, session) {
   observeEvent(
     input$load_butt,
     {
-      global$past_water_year <- in_selected_RV$past_water_year
-      global$WYT <- in_selected_RV$WYT
-      global$WYT <- in_selected_RV$WYT
-      global$BAR <- in_selected_RV$BAR
-      global$start_day <- in_selected_RV$start_day
-      global$end_day <- in_selected_RV$end_day
-      global$start_date <- in_selected_RV$start_date
-      global$end_date <- in_selected_RV$end_date
-      global$flength <- in_selected_RV$flength
+      in_global_RV$past_water_year <- in_selected_RV$past_water_year
+      in_global_RV$WYT <- in_selected_RV$WYT
+      in_global_RV$WYT <- in_selected_RV$WYT
+      in_global_RV$BAR <- in_selected_RV$BAR
+      in_global_RV$start_day <- in_selected_RV$start_day
+      in_global_RV$end_day <- in_selected_RV$end_day
+      in_global_RV$start_date <- in_selected_RV$start_date
+      in_global_RV$end_date <- in_selected_RV$end_date
+      in_global_RV$flength <- in_selected_RV$flength
     }
   )
 
@@ -1287,43 +1238,15 @@ app_server <- function(input, output, session) {
 
   # observeEvent(input$inputs_done, {
 
-  # observeEvent(input$generate_ests_butt, {
-  #   if (!input$input_box2$collapsed) {
-  #     shinydashboardPlus::updateBox("input_box2", action = "toggle")
-  #   }
-  #   if (input$est_box_ui$collapsed) {
-  #     shinydashboardPlus::updateBox("est_box_ui", action = "toggle")
-  #   }
-  #   print(input$env_dat_tabpan)
-  # })
-
-  observeEvent(
-    {
-      # input$generate_ests_butt
-      input$tabs
-    },
-    {
-      if (input$tabs == "estimates") {
-        if (!input$input_box2$collapsed) {
-          shinydashboardPlus::updateBox("input_box2", action = "toggle")
-        }
-        if (input$est_box_ui$collapsed) {
-          shinydashboardPlus::updateBox("est_box_ui", action = "toggle")
-        }
-        print(input$env_dat_tabpan)
-      }
-
-      #  if(input$tabs=="inputs"){
-      #     if (!input$est_box_ui$collapsed) {
-      #       shinydashboardPlus::updateBox("est_box_ui", action = "toggle")
-      #     }
-      # if (input$input_box2$collapsed) {
-      # shinydashboardPlus::updateBox("input_box2", action = "toggle")
-      # }
-      #     print(input$env_dat_tabpan)
-      # }
+  observeEvent(input$generate_ests_butt, {
+    if (!input$input_box2$collapsed) {
+      shinydashboardPlus::updateBox("input_box2", action = "toggle")
     }
-  )
+    if (input$est_box_ui$collapsed) {
+      shinydashboardPlus::updateBox("est_box_ui", action = "toggle")
+    }
+    print(input$env_dat_tabpan)
+  })
 
   output$table_env_inputs <- DT::renderDataTable(
     DT::datatable(
@@ -1369,45 +1292,29 @@ app_server <- function(input, output, session) {
     )
   )
 
-  # unused
-  # output$doy_surv_ggpplt <- renderPlot({
-  #     ggplot_doy_surv_plt(
-  #         CVhelp_dat_w_plt=CVhelp_dat_w,
-  #     doy_rng_in = c(
-  #       in_selected_RV$start_day,
-  #       in_selected_RV$end_day
-  #     ),
-  #     pst_year_in = in_selected_RV$past_water_year
-  #   )
-  # })
+  ### calculate estimates  ----
 
-  # HOR_TCJ_pred_tab <- reactiveVals()
   OUT_tmp <- reactiveValues()
-  # OUT_tmp$HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
 
   # previous year data is pre-loaded
   OUT_tmp$HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
 
   observeEvent(input$load_butt, {
+     # this function does a few things:
+    # renames variables so that column names match the glmmTMB model.matrix
+    # uses the full previous years data data set for everything except flength
+    # setting to 'in_selected_RV' vs 'in_global_RV'
+    # in_selected_RV
     OUT_tmp$HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(
-      sel_rows_tmp1 = CVhelp_dat_w,
+      sel_rows_tmp1 = CVhelp_dat_w, # uses the full previous years data data set for everything except flength
       HOR_TCJ_mod_ls = glmmTMB_mod_ls[["HOR_TCJ"]],
       flength_in = in_selected_RV$flength
     )
   })
 
   output$HOR_TCJ_pred_ggpplt <- renderPlot({
-    # reading from previously ran version of the data
-    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
-
+    
     HOR_TCJ_pred_tab <- OUT_tmp$HOR_TCJ_pred_tab
-
-    # from scratch version
-    # this function does a few things:
-    # renames variables so that column names match the glmmTMB model.matrix
-    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
-    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
-    #                                      flength_in=in_selected_RV$flength)
 
     ggplot_doy_pred_plt(
       HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
@@ -1445,9 +1352,6 @@ app_server <- function(input, output, session) {
     # reading from previously ran version of the data
     # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
     HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
-    HOR_TCJ_pred_tab$lo_pred <- log((plogis(HOR_TCJ_pred_tab$lo_pred)*0.4 ) / (1-(plogis(HOR_TCJ_pred_tab$lo_pred)*0.4)))
-    HOR_TCJ_pred_tab$LCL <- log((plogis(HOR_TCJ_pred_tab$LCL)*0.4 ) / (1-(plogis(HOR_TCJ_pred_tab$LCL)*0.4)))
-    HOR_TCJ_pred_tab$UCL <- log((plogis(HOR_TCJ_pred_tab$UCL)*0.4 ) / (1-(plogis(HOR_TCJ_pred_tab$UCL)*0.4)))
 
     # from scratch version
     # this function does a few things:
@@ -1462,54 +1366,33 @@ app_server <- function(input, output, session) {
         in_selected_RV$start_day,
         in_selected_RV$end_day
       ),
-     pst_year_in = 2013 + 9
-      # pst_year_in = in_selected_RV$past_water_year + 1
+      # pst_year_in = 2013 + 9
+      pst_year_in = in_selected_RV$past_water_year
     )
   })
 
   output$HOR_TCJ_pred_ggpplt_dup1b <- renderPlot({
-    # reading from previously ran version of the data
-    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
     HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
-
-    # from scratch version
-    # this function does a few things:
-    # renames variables so that column names match the glmmTMB model.matrix
-    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
-    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
-    #                                      flength_in=in_selected_RV$flength)
-
     ggplot_doy_pred_plt(
       HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
       doy_rng_in = c(
         in_selected_RV$start_day,
         in_selected_RV$end_day
       ),
-      # pst_year_in = in_selected_RV$past_water_year + 2
-            pst_year_in = 2013 + 2
+      pst_year_in = in_selected_RV$past_water_year
+      # pst_year_in = 2013 + 2
     )
   })
 
   output$HOR_TCJ_pred_ggpplt_dup1c <- renderPlot({
-    # reading from previously ran version of the data
-    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
     HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
-
-    # from scratch version
-    # this function does a few things:
-    # renames variables so that column names match the glmmTMB model.matrix
-    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
-    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
-    #                                      flength_in=in_selected_RV$flength)
-
     ggplot_doy_pred_plt(
       HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
       doy_rng_in = c(
         in_selected_RV$start_day,
         in_selected_RV$end_day
       ),
-      # pst_year_in = in_selected_RV$past_water_year + 8
-            pst_year_in = 2013 + 8
+      pst_year_in = in_selected_RV$past_water_year
     )
   })
 

@@ -84,7 +84,7 @@
     BAR = init_bar
   )
 
-  global <- reactiveValues(
+  in_global_RV <- reactiveValues(
     # past water year should be NA to start otherwise app flickers
     past_water_year = init_water_year,
     start_day = init_DOY[1],

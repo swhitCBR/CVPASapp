@@ -32,7 +32,27 @@ app_server <- function(input, output, session) {
     )
   })
 
-  stop()
+  # major dynamic ui elements ----
+
+  output$main_page_content_dynui <- renderUI({
+    switch(
+      tab_selected(),
+      "about" = shiny::tagList(
+        mod_about_page_ui("mod_about_page-about_page_ui_1")
+      ),
+      "met_ref" = shiny::tagList(
+        uiOutput("met_ref_page_ui")
+      ),
+      "inputs" = shiny::tagList(
+        uiOutput("input_page_UI")
+      ),
+      "estimates" = shiny::tagList(
+        uiOutput("input_page_UI")
+      )
+    )
+  })
+
+
 
   ### tab and navigation  ----
   observeEvent(input$data_source_picker, { data_source_selected(input$data_source_picker)})
@@ -56,10 +76,14 @@ app_server <- function(input, output, session) {
   ### change display based on reactive values ----
   # for selecting among schematic plots
   # swaps out .svg images depending on the values of two reactiveValues
-  output$schem_start_loc_plt_ui <- renderUI({
-    tst_val <- paste(in_selected_RV$LOC, in_selected_RV$BAR, sep = "_")
-    tags$img(src = paste0("www/images/svg/basic route schematic/", tst_val, ".svg"),width = "100%")
-  })
+  # output$schem_start_loc_plt_ui <- renderUI({
+  #   tst_val <- paste(in_selected_RV$LOC, in_selected_RV$BAR, sep = "_")
+  #   tags$img(src = paste0("www/images/svg/basic route schematic/", tst_val, ".svg"),width = "100%")
+  # })
+
+  # output$schem_start_loc_plt_ui <- renderUI({
+  #   draw_basic_route_schematic_svg(LOC_in=in_selected_RV$LOC,BAR_in=in_selected_RV$BAR)
+  # })
 
   # could just be in ui
   output$data_source_ui <- renderUI({
@@ -233,6 +257,7 @@ app_server <- function(input, output, session) {
                 p("Major routes and key junctions in the Delta") #,
               )
             ),
+            # draw_basic_route_schematic_svg(LOC_in=in_selected_RV$LOC,BAR_in=in_selected_RV$BAR)
             shiny::uiOutput("schem_start_loc_plt_ui")
           )
         )
@@ -560,7 +585,8 @@ app_server <- function(input, output, session) {
           style = "display: flex;",
           HTML(paste(
             "<p> Day of arrival at <strong>",
-            (input$start_loc_in),
+            # (input$start_loc_in),
+            (in_selected_RV$LOC),
             "</strong> junction </p> "
           )),
           div(
@@ -644,7 +670,8 @@ app_server <- function(input, output, session) {
               tags$li(
                 HTML(paste(
                   "<h5> Select a date range for arrival at  <strong>",
-                  (input$start_loc_in),
+                  # (input$start_loc_in),
+                  (in_selected_RV$LOC),
                   "</strong> junction by entering dates or adjusting Day of Year slider </h5> "
                 ))
                 # h5(
@@ -955,24 +982,6 @@ app_server <- function(input, output, session) {
     )
   })
 
-  output$top_of_body_text <- renderUI({
-    # because this is within a renderUI, changing the input$tab value rewrites the sidebar content
-    switch(
-      tab_selected(),
-      "about" = shiny::tagList(
-        mod_about_page_ui("mod_about_page-about_page_ui_1")
-      ),
-      "met_ref" = shiny::tagList(
-        uiOutput("met_ref_page_ui")
-      ),
-      "inputs" = shiny::tagList(
-        uiOutput("input_page_UI")
-      ),
-      "estimates" = shiny::tagList(
-        uiOutput("input_page_UI")
-      )
-    )
-  })
 
   # if remaining static move to ui.R script
   output$met_ref_page_ui <- renderUI({

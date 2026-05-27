@@ -110,7 +110,7 @@ app_ui <- function(request) {
         tagList(
           h2("CVPAS - South Delta Central Valley Steelhead Survival and Routing Predictions"),
           hr(),
-          uiOutput("top_of_body_text")
+          uiOutput("main_page_content_dynui")
         )
       )
     ),

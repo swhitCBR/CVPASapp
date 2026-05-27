@@ -32,6 +32,8 @@ app_server <- function(input, output, session) {
     )
   })
 
+  stop()
+
   ### tab and navigation  ----
   observeEvent(input$data_source_picker, { data_source_selected(input$data_source_picker)})
 
@@ -1313,7 +1315,7 @@ app_server <- function(input, output, session) {
   })
 
   output$HOR_TCJ_pred_ggpplt <- renderPlot({
-    
+
     HOR_TCJ_pred_tab <- OUT_tmp$HOR_TCJ_pred_tab
 
     ggplot_doy_pred_plt(

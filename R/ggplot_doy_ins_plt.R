@@ -32,7 +32,7 @@ ggplot_doy_ins_plt <- function(
                        ggplot2::aes(y=value,x=DOY,color=site),alpha = 0.4) +
     ggplot2::geom_line(data=subset(CVhelp_dat_l_plt,Year==pst_year_in & site %in% sub_vars & SELECTED),
                         ggplot2::aes(y=value,x=DOY,color=site),alpha=1) +
-    ggplot2::facet_wrap(~site,scales = "free_y",ncol=1) + ggplot2::theme(strip.position="right") +
+    ggplot2::facet_wrap(~site,scales = "free_y",ncol=1) +# ggplot2::theme(strip.position="right") +
     
     ggplot2::geom_vline(xintercept = doy_int1) +
     ggplot2::geom_vline(xintercept = doy_int2) +

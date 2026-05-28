@@ -17,7 +17,7 @@ ggplot_doy_pred_plt <- function(
   doy_int1 <- doy_rng_in[1]
   doy_int2 <- doy_rng_in[2]
   
-  print(str(HOR_TCJ_pred_tab_plt))
+  # print(str(HOR_TCJ_pred_tab_plt))
   HOR_TCJ_pred_tab_plt <- subset(HOR_TCJ_pred_tab_plt,Year==pst_year_in)
   HOR_TCJ_pred_tab_plt$SELECTED  <- HOR_TCJ_pred_tab_plt$DOY >= doy_int1 & HOR_TCJ_pred_tab_plt$DOY <= doy_int2
   

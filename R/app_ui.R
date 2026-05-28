@@ -23,6 +23,7 @@ app_ui <- function(request) {
     # Leave this function for adding external resources
     golem_add_external_resources(),
     shinydashboardPlus::dashboardPage(
+      options = list(sidebarSlimScroll = FALSE),
       header = shinydashboardPlus::dashboardHeader(
         leftUi=
          tagList(
@@ -104,7 +105,7 @@ app_ui <- function(request) {
         )
       ),
       body = shinydashboard::dashboardBody(
-         tags$script(HTML("$('body').addClass('fixed');")),
+        #  tags$script(HTML("$('body').addClass('fixed');")),
         # add CSS CBR global theme
         fresh::use_theme(CBRtheme),
         tagList(

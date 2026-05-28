@@ -17,7 +17,6 @@ draw_ann_summ_tab <- function(input_year=input$year_picker){
           "function(settings, json) {",
           "$(this.api().table().header()).css({'font-size': '70%'});",
           "$(this.api().table().body()).css({'font-size': '70%'});",
-          "$(this.api().table().caption()).css({'font-size': '70%'});",
           "$(this.api().table().footer()).css({'font-size': '70%'});",
           "}"
         )

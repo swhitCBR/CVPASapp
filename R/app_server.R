@@ -314,7 +314,7 @@ app_server <- function(input, output, session) {
                 tags$ul(
                   style = "padding-left:15px;",
                   tags$li(
-                    "Survival from the head of Head of Old River to Turner Cut Junction",
+                    "Survival from the head of Head of Old River to Turner Cut Junction via San Joaquin R.",
                     style = "margin-left:25px;"
                   )
                 )
@@ -353,7 +353,7 @@ app_server <- function(input, output, session) {
         ,
         column(
             width = 6,
-            h4(strong(paste0("San Joaquin River vs. Old River ")),style = "padding-left:10px;"
+            h4(strong(paste0("San Joaquin River vs. Old River  (all routes)")),style = "padding-left:10px;"
             ),
                           # plotOutput("HOR_TCJ_pred_ggpplt_dup1a", height = "400px")
                                                     plotOutput("HOR_TCJ_pred_ggpplt_dup1d", height = "400px")
@@ -559,27 +559,35 @@ app_server <- function(input, output, session) {
     shinyjs::disable("generate_ests_butt")
   })
 
-  output$time_of_year_ui <- renderUI({
+  output$time_of_year_entry_ui <- renderUI({
     tagList(
       div(
         style = "display: left;margin-top: 10px;width: 600px;",
         sliderInput(
           "DOYslider_rng",
           label = NULL,
-          min = 0,
+          min = 1,
           max = 250,
+          # value = c(100,200),
+          # value = isolate(c(in_selected_RV$start_day, in_selected_RV$end_day)),
           value = c(in_selected_RV$start_day, in_selected_RV$end_day),
           width = '99%'
         ),
         plotOutput("doy_ref_strt_loc", height = "100px"),
         div(
-          style = "display: flex;",
+          # style = "display: inline-flex;    align-items: baseline;",
+          style="display: flex; justify-content: space-between;",
+
+        div(
+          style = "display: inline-flex;    align-items: baseline;",
           HTML(paste(
             "<p> Day of arrival at <strong>",
             # (input$start_loc_in),
             (in_selected_RV$LOC),
             "</strong> junction </p> "
-          )),
+          ))
+
+          ,
           div(
             style = "margin-left: 10px; z-index: 2",
             shinyWidgets::dropdownButton(
@@ -596,6 +604,11 @@ app_server <- function(input, output, session) {
             )
           )
         )
+        ,
+        div(
+          actionButton("doy_slider_set_butt", "Done")
+        )
+      )
       )
     )
   })
@@ -674,14 +687,18 @@ app_server <- function(input, output, session) {
               div(
                 # style = "display: flex; gap:20px;",
                 shinyWidgets::dropMenu(
+                  hideOnClick = FALSE,
                   placement = "bottom",
                   tag = actionButton(
                     inputId = "doy_slider_dropdown",
+                          
                     label = HTML(
                       '<i class="fas fa-sliders" role="presentation" aria-label="sliders icon"></i> Day of Year Slider'
                     )
                   ),
-                  shiny::uiOutput("time_of_year_ui")
+                  shiny::uiOutput("time_of_year_entry_ui")
+                 
+            
                 )
               )
             )
@@ -975,7 +992,15 @@ app_server <- function(input, output, session) {
     draw_met_ref_page_ui()
   })
 
+
+  
+  # user inputs ----
+
+  ### date range entry  ----
+
+  #
   output$start_date_entry_sep_ui <- renderUI({
+    # tagList()
     div(
       style = "display: flex; gap:20px;",
       shinyWidgets::airDatepickerInput(
@@ -985,7 +1010,8 @@ app_server <- function(input, output, session) {
         width = "100px",
         value = c(
           as.Date(
-            paste(in_selected_RV$past_water_year, in_selected_RV$start_day),
+            isolate(paste(in_selected_RV$past_water_year, in_selected_RV$start_day)),
+            # paste(in_selected_RV$past_water_year, 5),
             "%Y %j"
           )
         ),
@@ -993,7 +1019,8 @@ app_server <- function(input, output, session) {
         maxDate = as.Date("2024-12-31"),
         range = FALSE,
         disabledDaysOfWeek = TRUE
-      ),
+      )
+      ,
       shinyWidgets::airDatepickerInput(
         inputId = "date_end_sep",
         label = "End Date :",
@@ -1001,7 +1028,8 @@ app_server <- function(input, output, session) {
         width = "100px",
         value = c(
           as.Date(
-            paste(in_selected_RV$past_water_year, in_selected_RV$end_day),
+            isolate(paste(in_selected_RV$past_water_year, in_selected_RV$end_day)),
+            # paste(in_selected_RV$past_water_year, 55),
             "%Y %j"
           )
         )
@@ -1009,31 +1037,68 @@ app_server <- function(input, output, session) {
     )
   })
 
-  # output$DOY_slider_ui <- renderUI({
-  #   tagList(
-  #     sliderInput(
-  #       "DOYslider_rng",
-  #       label = NULL,
-  #       min = 0,
-  #       max = 250,
-  #       value = c(in_selected_RV$start_day, in_selected_RV$end_day),
-  #       width = '99%'
-  #     )
-  #   )
+
+
+  # observeEvent(input$date_start_sep, {
+  #   in_selected_RV$start_day <- as.numeric(format(input$date_start_sep, "%j"))
   # })
 
-  observeEvent(input$date_start_sep, {
-    in_selected_RV$start_day <- as.numeric(format(input$date_start_sep, "%j"))
-  })
-
-  observeEvent(input$date_end_sep, {
-    in_selected_RV$end_day <- as.numeric(format(input$date_end_sep, "%j"))
-  })
+  # observeEvent(input$date_end_sep, {
+  #   in_selected_RV$end_day <- as.numeric(format(input$date_end_sep, "%j"))
+  # })
 
   observeEvent(input$DOYslider_rng, {
-    in_selected_RV$start_day <- input$DOYslider_rng[1]
-    in_selected_RV$end_day <- input$DOYslider_rng[2]
 
+    
+    if(in_selected_RV$start_day!=input$DOYslider_rng[1]){
+      # in_selected_RV$start_day <- input$DOYslider_rng[1]
+        shinyWidgets::updateAirDateInput(inputId="date_start_sep",
+            value=as.Date(paste(in_selected_RV$past_water_year,input$DOYslider_rng[1]),"%Y %j"))
+    }
+     
+    if(in_selected_RV$end_day!=input$DOYslider_rng[2]){
+      # in_selected_RV$end_day <- input$DOYslider_rng[2]
+       shinyWidgets::updateAirDateInput(inputId="date_end_sep",
+       value=as.Date(paste(in_selected_RV$past_water_year,input$DOYslider_rng[2]),"%Y %j"))
+    }
+
+    # in_selected_RV$start_day <- input$DOYslider_rng[1]
+    # in_selected_RV$end_day <- input$DOYslider_rng[2]
+
+    # if (!is.na(in_selected_RV$past_water_year)) {
+    #   in_selected_RV$start_date <- as.Date(
+    #     paste(
+    #       in_selected_RV$start_day,
+    #       in_selected_RV$past_water_year,
+    #       sep = "-"
+    #     ),
+    #     format = "%j-%Y"
+    #   )
+    #   in_selected_RV$end_date <- as.Date(
+    #     paste(
+    #       in_selected_RV$end_day,
+    #       in_selected_RV$past_water_year,
+    #       sep = "-"
+    #     ),
+    #     format = "%j-%Y"
+    #   )
+    # }
+
+  })
+
+  # When it closes
+  # observeEvent(input$doy_slider_dropdown_dropmenu, {
+  #     if(!input$doy_slider_dropdown_dropmenu){
+  #       print("update!")
+  #     }
+  #     # ignoreInit = TRUE,
+  #     # print(input$doy_slider_dropdown_dropmenu)
+  #   })
+
+  # close on click
+  observeEvent(input$doy_slider_set_butt, {
+      shinyWidgets::hideDropMenu("doy_slider_dropdown_dropmenu")
+      
     if (!is.na(in_selected_RV$past_water_year)) {
       in_selected_RV$start_date <- as.Date(
         paste(
@@ -1052,10 +1117,20 @@ app_server <- function(input, output, session) {
         format = "%j-%Y"
       )
     }
-    # if (!SILENT) {
-    #   cat("Doy range is:", input$DOYslider_rng, "\n")
-    # }
-  })
+
+    if(in_selected_RV$start_day!=input$DOYslider_rng[1]){
+      in_selected_RV$start_day <- input$DOYslider_rng[1]
+        # shinyWidgets::updateAirDateInput(inputId="date_start_sep",
+        #     value=as.Date(paste(in_selected_RV$past_water_year,input$DOYslider_rng[1]),"%Y %j"))
+    }
+     
+    if(in_selected_RV$end_day!=input$DOYslider_rng[2]){
+      in_selected_RV$end_day <- input$DOYslider_rng[2]
+      #  shinyWidgets::updateAirDateInput(inputId="date_end_sep",
+      #  value=as.Date(paste(in_selected_RV$past_water_year,input$DOYslider_rng[2]),"%Y %j"))
+    }
+
+    })
 
   # Fork length reference selection
   output$flength_sel_ui <- renderUI({
@@ -1155,8 +1230,12 @@ app_server <- function(input, output, session) {
     ggplt_day_input_ref_hist(
       DOY_arvDF_l_in = DOY_arvDF_l,
       LOC_in = in_selected_RV$LOC,
-      start_day_in = in_selected_RV$start_day,
-      end_day_in = in_selected_RV$end_day
+      # start_day_in = in_selected_RV$start_day,
+      # end_day_in = in_selected_RV$end_day
+      start_day_in = input$DOYslider_rng[1],
+      end_day_in = input$DOYslider_rng[2]
+
+      
     )
   })
 
@@ -1264,7 +1343,6 @@ app_server <- function(input, output, session) {
         function(settings, json) {",
           "$(this.api().table().header()).css({'font-size': '75%'});",
           "$(this.api().table().body()).css({'font-size': '75%'});",
-          "$(this.api().table().caption()).css({'font-size': '75%'});",
           "}
         "
         )

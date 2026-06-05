@@ -8,7 +8,8 @@
 #' @examples
 draw_ibutt_dropdown_ui <- function(
   inputId_in = "daily_var_def_ibutt2",
-  ibox_content_label="daily_values_box"
+  ibox_content_label="daily_values_box",
+  width_in="100%"
 ){
 
   # info_box_contents = get_ibox_contents(ibox_content_label="daily_values_box")
@@ -20,6 +21,7 @@ draw_ibutt_dropdown_ui <- function(
       status = "primary",
       size = "xs",
     ),
+    width=width_in,
     get_ibox_contents(ibox_content_label),
     # info_box_contents,
     placement = "left-start"

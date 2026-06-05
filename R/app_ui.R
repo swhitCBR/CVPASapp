@@ -168,7 +168,25 @@ app_ui <- function(request) {
         ,
           hr()#id="inputTop")
           ,
-          uiOutput("main_page_content_dynui")
+        conditionalPanel(
+                  #  condition = "input.tabs == 'inputs'",
+         condition = "input.tabs == 'inputs' || input.tabs == 'check' || input.tabs == 'estimates'",
+        #  condition = "(typeof input.tabs !== 'undefined') && (input.tabs == 'inputs' || input.tabs == 'estimates')",
+          draw_inputs_panel_ui(),
+          draw_estimates_panel_ui(),
+          # hr(id="estimatesTop")
+         )
+         ,
+        conditionalPanel(
+         condition = "input.tabs == 'about'",
+         mod_about_page_ui("mod_about_page-about_page_ui_1")
+         )
+        ,
+        conditionalPanel(
+         condition = "input.tabs == 'met_ref'",
+         uiOutput("met_ref_page_ui")
+         )
+          # uiOutput("main_page_content_dynui")
         )
         ,
   # actionButton("btn", "Go to Bottom"),

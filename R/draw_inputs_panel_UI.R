@@ -94,8 +94,8 @@ draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse){
               # )
             ),
             draw_basic_route_schematic_svg(
-              LOC_in = in_selected_RV$LOC,
-              BAR_in = in_selected_RV$BAR
+              # LOC_in = in_selected_RV$LOC,
+              # BAR_in = in_selected_RV$BAR
             ),
           )
         )

@@ -37,10 +37,8 @@
         conditionalPanel(
                   #  condition = "input.tabs == 'inputs'",
          condition = "input.tabs == 'inputs' || input.tabs == 'check' || input.tabs == 'estimates'",
-        #  condition = "(typeof input.tabs !== 'undefined') && (input.tabs == 'inputs' || input.tabs == 'estimates')",
           draw_inputs_panel_ui(),
           draw_estimates_panel_ui(),
-          # hr(id="estimatesTop")
          )
          ,
         # conditionalPanel(

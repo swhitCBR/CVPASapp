@@ -1,5 +1,14 @@
- draw_start_loc_ui <- function(){
-#  output$start_loc_ui <- renderUI({
+#' Title
+#'
+#' @param loc_selected_in
+#'
+#' @returns
+#'
+#' @export
+#' @examples
+draw_start_loc_ui <- function(){
+# draw_start_loc_ui <- function(loc_selected_in=in_selected_RV$LOC){
+  #  output$start_loc_ui <- renderUI({
     div(
       style = "display: inline-flex; align-items: left;margin-top: 10px;",
       div(
@@ -11,7 +20,8 @@
           width = "fit",
           'start_loc_in',
           choices = loc_opt_nms,
-          selected = in_selected_RV$LOC,
+          # selected = loc_selected_in,
+          selected = "HOR",
           ,
           choicesOpt = list(
             style = paste0(

@@ -12,6 +12,7 @@ ggplot_doy_rte_plt <- function(
   HOR_TCJ_pred_tab_plt <- subset(HOR_TCJ_pred_tab_plt,Year==pst_year_in)
   HOR_TCJ_pred_tab_plt$SELECTED  <- HOR_TCJ_pred_tab_plt$DOY >= doy_int1 & HOR_TCJ_pred_tab_plt$DOY <= doy_int2
 
+  # manipulations to change height of line and ribbon
   HOR_TCJ_pred_tab_plt$lo_pred <- HOR_TCJ_pred_tab_plt$lo_pred+2.5
   HOR_TCJ_pred_tab_plt$UCL <-HOR_TCJ_pred_tab_plt$UCL+2.5
   HOR_TCJ_pred_tab_plt$LCL <- HOR_TCJ_pred_tab_plt$LCL+2.5

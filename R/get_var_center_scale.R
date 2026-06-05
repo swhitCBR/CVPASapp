@@ -1,12 +1,11 @@
 
-#' Title
+#' @details Extract and scaled variable information
 #'
-#' @param TMB_mod_ls
+#' @param TMB_mod_ls named list containing pre-existing TMB models
 #'
-#' @returns
+#' @returns dataframe with columns correponding to the scaled variable name, its center (mean), and its scale (sd)
 #'
 #' @export
-#' @examples
 get_var_center_scale <- function(TMB_mod_ls){
   element_nms <- c("scaled_vars","center","scale")
   df_tmp <- data.frame(dplyr::bind_cols(lapply(element_nms,

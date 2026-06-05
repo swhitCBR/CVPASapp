@@ -41,6 +41,7 @@ mod_about_page_ui <- function(id) {
                           padding: 12px; text-align: center;"
             ) 
           )
+          
         )
 
         )

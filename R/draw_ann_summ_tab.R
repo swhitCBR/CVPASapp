@@ -15,9 +15,9 @@ draw_ann_summ_tab <- function(input_year=input$year_picker){
         pagingType = "simple",
         initComplete = DT::JS(
           "function(settings, json) {",
-          "$(this.api().table().header()).css({'font-size': '70%'});",
-          "$(this.api().table().body()).css({'font-size': '70%'});",
-          "$(this.api().table().footer()).css({'font-size': '70%'});",
+          "$(this.api().table().header()).css({'font-size': '100%'});",
+          "$(this.api().table().body()).css({'font-size': '80%'});",
+          "$(this.api().table().footer()).css({'font-size': '80%'});",
           "}"
         )
       )

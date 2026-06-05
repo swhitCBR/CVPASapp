@@ -127,14 +127,19 @@ ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in
 
     barrier_opt <- c("In" = "In", "Out" = "Out")
     barrier_label <- "HOR Barrier:"
-    loc_opt <- c(
+    loc_opt_nms <- c(
       'Head of Old River (HOR)' = "HOR",
       'Turner Cut Junction (TCJ)' = "TCJ"
     )
 
+    loc_opt_cols <-  c("#67AB9F", "#FF3399")
     init_data_source <- "Previous year"
 
 
      surv_route_diagram_wtt_xml <- xml2::read_xml(
     "inst/app/www/met_and_ref/surv_route_diagram_wtt.svg"
   )
+
+    # Retrieve specific argument
+  start_tab_passed <- golem::get_golem_options("start_tab")
+  inputs_panel_collapse <- golem::get_golem_options("inputs_panel_collapse")

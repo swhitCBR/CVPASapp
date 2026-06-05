@@ -8,7 +8,18 @@ app_ui <- function(request) {
   tagList(
     shinyjs::useShinyjs(),
     # adding 'subtext' on pickerInput
-    tags$head(tags$style(HTML("
+    tags$head(
+          tags$script("
+      Shiny.addCustomMessageHandler('scroll-to', function(id) {
+        document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+      });
+    "),
+    # tags$style(HTML("
+    #     .scroll-box {
+    #       scroll-margin-top: 600px; /* 50px header + 20px padding */
+    #     }
+    #   ")),
+    tags$style(HTML("
     .dropdown-menu span {width: 100%;} 
     .text-muted {color: black !important; float: right;}
     .bootstrap-select .dropdown-menu {
@@ -62,6 +73,7 @@ app_ui <- function(request) {
       ,
       ## Sidebar content - used as a navigation menu to each tab
       sidebar = shinydashboard::dashboardSidebar(
+       
         #{{alt_config 1}--sub argument}
         # sidebar = shinydashboardPlus::dashboardSidebar(
         tagList(
@@ -79,14 +91,41 @@ app_ui <- function(request) {
         tabName = "inputs",
         icon = icon("sliders"),
         startExpanded = T,
-        selected = F
+        selected = F,
+        shinydashboard::menuSubItem(
+          "Starting location",
+          tabName = "inputs",
+          # icon = icon("A"),#<i class="fa-solid fa-a"></i>
+          icon = HTML('<i class="fa-solid fa-location-dot"></i>'),
+          selected = F)
+          ,
+          shinydashboard::menuSubItem(
+          "Check Inputs",
+          tabName = "check",
+          icon = icon("check"),
+          selected = F)
       ),
+      # shinyjs::hide(
       shinydashboard::menuItem(
         text = "Estimates",
         tabName = "estimates",
         icon = icon("chart-line"),
         startExpanded = T #,
+      # )
       ),
+      # This is an invisible side panel
+      # could not get the sidebar menu to hide using shinyjs
+      # shinyjs::disabled(
+      div(id="met_ref_side",
+      shinydashboard::menuItem(
+        text = NULL,#"Help",
+        tabName = "met_ref",
+        icon =NULL,# icon("book"),
+        startExpanded = T #,
+      )
+      )
+      # )
+      ,
       br(),
       tags$div(
         id = "newsidebox",
@@ -96,23 +135,45 @@ app_ui <- function(request) {
 
       )
     )
-          ,
-          verbatimTextOutput("sel_in_ls_text")
-                  ,
+        ,
+        verbatimTextOutput("sel_in_ls_text")
+        ,
         actionButton("load_butt", "Load")
+        # ,
+        #             shinyWidgets::pickerInput(
+        #               inputId = "data_source_picker_dup",
+        #               choices = c(
+        #                 "Previous year",
+        #                 "Uploaded file (.csv)",
+        #                 "None"
+        #               ),
+        #               width = "180px",
+        #               selected = init_data_source
+        #             )
           # ,
           # verbatimTextOutput("glob_in_ls_text")
         )
       ),
       body = shinydashboard::dashboardBody(
-        #  tags$script(HTML("$('body').addClass('fixed');")),
-        # add CSS CBR global theme
+
+        ##ALT## {prevents the sidebar from scrollling with rest of page}
+        ## {causes a seemingly minor error in the javascript that has to do with 'slim-slider'}
+         tags$script(HTML("$('body').addClass('fixed');")),
+        #######
+
+        # adds CSS CBR global theme
         fresh::use_theme(CBRtheme),
         tagList(
-          h2("CVPAS - South Delta Central Valley Steelhead Survival and Routing Predictions"),
-          hr(),
+          h2("CVPAS - South Delta Central Valley Steelhead Survival and Routing Predictions",id="inputTop")
+        ,
+          hr()#id="inputTop")
+          ,
           uiOutput("main_page_content_dynui")
         )
+        ,
+  # actionButton("btn", "Go to Bottom"),
+  # div(style = "height: 1000px;"), # Spacer
+  # div(id = "bottom_element", h3("You've arrived!"))
       )
     ),
     ## Footer content

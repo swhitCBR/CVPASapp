@@ -1,3 +1,5 @@
+init_tab <- "inputs"
+
 # Initial values
   init_water_year <- 2013
   init_DOY <- c(45, 135)
@@ -5,6 +7,7 @@
   init_start_loc <- "HOR"
   init_bar <- "Out"
   init_flength <- 244
+
   
   
 # Water Year Type Labels and selections 
@@ -28,7 +31,7 @@
     paste(
       heading,
       paste0(
-        "start_day - end_day : ",
+        "start_day - end_day : \n\t",
         RVls_in[["start_day"]], #global_reactive$start_day,
         " - ",
         RVls_in[["end_day"]] #global_reactive$end_day
@@ -84,7 +87,7 @@
     BAR = init_bar
   )
 
-  in_global_RV <- reactiveValues(
+  global <- reactiveValues(
     # past water year should be NA to start otherwise app flickers
     past_water_year = init_water_year,
     start_day = init_DOY[1],
@@ -103,9 +106,9 @@
     BAR = init_bar
   )
   
-results_RV <- reactiveValues(
-  
-)
+# results_RV <- reactiveValues(
+#   global <- reactiveValues(
+# )
 
 # prepare data stored in package for creation of Datatable in app
 ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in = ann_HORbar_WYT_data))
@@ -127,19 +130,14 @@ ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in
 
     barrier_opt <- c("In" = "In", "Out" = "Out")
     barrier_label <- "HOR Barrier:"
-    loc_opt_nms <- c(
+    loc_opt <- c(
       'Head of Old River (HOR)' = "HOR",
       'Turner Cut Junction (TCJ)' = "TCJ"
     )
 
-    loc_opt_cols <-  c("#67AB9F", "#FF3399")
     init_data_source <- "Previous year"
 
 
      surv_route_diagram_wtt_xml <- xml2::read_xml(
     "inst/app/www/met_and_ref/surv_route_diagram_wtt.svg"
   )
-
-    # Retrieve specific argument
-  start_tab_passed <- golem::get_golem_options("start_tab")
-  inputs_panel_collapse <- golem::get_golem_options("inputs_panel_collapse")

@@ -5,16 +5,22 @@
 #' @import shiny
 #' @noRd
 app_server <- function(input, output, session) {
+
+  # output$dyn_sidebar_txt <- renderText({paste0("You are viewing tab \"", get_dyn_sidebar_txt(input$tabs), "\"")})
+  output$dyn_sidebar_txt <- renderText({paste0(get_dyn_sidebar_txt(input$tabs))})
+
   # autoselect specify starting tab
   # session$onSessionEnded(stopApp)
 
   # at startup ----
   # inputs_selected by default
-  tab_selected <- reactiveVal(start_tab_passed)
+  # tab_selected <- reactiveVal(start_tab_passed)
+  tab_selected <- reactiveVal("about")
   shinydashboard::updateTabItems(
     "tabs",
     session = session,
-    selected = start_tab_passed
+    # selected = start_tab_passed
+    selected = "about"
   )
   # probably better as a reactiveValues (list format)
   data_source_selected <- reactiveVal("prev_pan")
@@ -1797,4 +1803,7 @@ app_server <- function(input, output, session) {
       pst_year_in = in_selected_RV$past_water_year
     )
   })
+
+
+
 }

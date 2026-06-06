@@ -6,7 +6,7 @@ draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse){
       status = "primary",
       collapsible = T,
       collapsed = FALSE,
-      tags$head(tags$style(HTML(get_custom_css_txt(css_txt_content="sidebar")))),
+      # tags$head(tags$style(HTML(get_custom_css_txt(css_txt_content="sidebar")))),
         width = 12,
       column(
         width = 7,

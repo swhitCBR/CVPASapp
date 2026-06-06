@@ -2,8 +2,11 @@
 #'
 #' @param loc_selected_in
 #'
-#' @returns
-#'
+#' @returns R shiny UI elements
+#' 
+#' @family {ui builders }
+#' @family {front-end functions }
+#' 
 #' @export
 #' @examples
 draw_start_loc_ui <- function(){
@@ -19,14 +22,16 @@ draw_start_loc_ui <- function(){
           inline = T,
           width = "fit",
           'start_loc_in',
-          choices = loc_opt_nms,
+          choices = c("HOR","TCJ"),
+          # choices = loc_opt_nms,
           # selected = loc_selected_in,
           selected = "HOR",
           ,
           choicesOpt = list(
             style = paste0(
               "background-color:",
-              loc_opt_cols,
+              c("#67AB9F", "#FF3399"),
+              # loc_opt_cols,
               ";"
             )
           )

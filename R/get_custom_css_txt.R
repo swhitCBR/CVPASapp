@@ -6,7 +6,7 @@
 #'
 #' @param css_txt_content
 #'
-#' @returns
+#' @returns .css definitions for specific ui elements (i.e., sidebar)
 #'
 #' @export
 #' @examples

@@ -6,7 +6,8 @@
 \usage{
 draw_ibutt_dropdown_ui(
   inputId_in = "daily_var_def_ibutt2",
-  ibox_content_label = "daily_values_box"
+  ibox_content_label = "daily_values_box",
+  width_in = "100\%"
 )
 }
 \arguments{

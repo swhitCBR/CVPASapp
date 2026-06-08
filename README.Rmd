@@ -19,6 +19,8 @@ output: github_document
 
 The CVPAS app code is housed within an R package. To run the app locally you will neeed to navigate to the root directory 'CVPASapp' then run the following code to:
 
+minor
+
 ```{r eval=TRUE,comment=""}
 fs::dir_tree(type="directory")
 ```

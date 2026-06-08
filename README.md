@@ -9,6 +9,8 @@ The CVPAS app code is housed within an R package. To run the app locally
 you will neeed to navigate to the root directory ‘CVPASapp’ then run the
 following code to:
 
+minor
+
 ``` r
 fs::dir_tree(type="directory")
 .
@@ -52,5 +54,5 @@ This README has been compiled on the
 
 ``` r
 Sys.time()
-#> [1] "2026-05-26 09:49:26 PDT"
+#> [1] "2026-06-08 10:12:35 PDT"
 ```

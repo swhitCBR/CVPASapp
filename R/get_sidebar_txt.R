@@ -15,7 +15,6 @@ get_dyn_sidebar_txt <- function(tab_name_in){
     "about" = "hello about"
     )
   )
-  # p(paste0("I AM '",tab_name_in,"' text"))
 }
 
 #' Title
@@ -30,43 +29,6 @@ get_sidebar_txt_content <- function(tab_name_in){
   p(paste0("I am '",tab_name_in,"' text"))
 }
 
-#' Title
-#'
-#' @returns
-#'
-#' @export
-#' @examples
-#' 
-#' get_sidebar_txt_old
-#' 
-get_sidebar_txt_old <- function(){
-  tagList(
-    conditionalPanel(
-      condition = "input.tabs == 'inputs'",
-      get_sidebar_txt_content("inputs")
-    )
-    ,
-    conditionalPanel(
-      condition = "input.tabs == 'check'",
-      p("I am 'check' text")
-    )
-    ,
-    conditionalPanel(
-      condition = "input.tabs == 'estimates'",
-      p("I am 'estimates' text")
-    )
-    ,
-    conditionalPanel(
-      condition = "input.tabs == 'met_ref'",
-      p("I am 'met_ref' text")
-    )
-    ,
-    conditionalPanel(
-      condition = "input.tabs == 'about'",
-      p("I am 'about' text")
-    )
-)
-}
 
 
 

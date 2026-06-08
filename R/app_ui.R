@@ -43,6 +43,45 @@ app_ui <- function(request) {
         draw_sidebar_ui()
       ),
       body = shinydashboard::dashboardBody(
+    tags$head(
+      tags$style("
+        .hover-container {
+          position: relative;
+          /* FIX: Changed from inline-block to inline so text wraps seamlessly without jumping to a new line */
+          display: inline;
+        }
+        .hover-modal {
+          display: none;
+          position: absolute;
+          top: 125%; 
+          left: 0;
+          width: 600px; 
+          max-width: 90vw;
+          background-color: #ffffff;
+          color: #333333;
+          border: 1px solid #dddddd;
+          box-shadow: 0px 8px 16px rgba(0,0,0,0.15);
+          padding: 20px;
+          border-radius: 8px;
+          z-index: 1050; 
+          text-align: left; 
+          /* FIX: Explicitly set font-weight and white-space to normalize parent inline constraints */
+          font-weight: normal;
+          white-space: normal;
+        }
+        /* Targets the child modal display when hovering over the wrapper container */
+        .hover-container:hover .hover-modal {
+          display: block;
+        }
+        .modal-img {
+          width: 100%;
+          height: 200px;
+          border-radius: 4px;
+          margin-top: 10px;
+          border: 1px solid #eee;
+        }
+      ")
+    ),
         
         ##ALT## {prevents the sidebar from scrollling with rest of page}
         ## {causes a seemingly minor error in the javascript that has to do with 'slim-slider'}

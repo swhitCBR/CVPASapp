@@ -31,10 +31,7 @@ app_ui <- function(request) {
     shinydashboardPlus::dashboardPage(
       options = list(sidebarSlimScroll = FALSE),
       header = shinydashboardPlus::dashboardHeader(
-        leftUi=draw_dashboard_header_ui()
-        ,
-        # reactive values ----
-        ## Title above sidebar ----
+        leftUi=draw_dashboard_header_ui(),
         title = "CVPAS - Steelhead"
       )
       ,
@@ -43,28 +40,20 @@ app_ui <- function(request) {
         draw_sidebar_ui()
       ),
       body = shinydashboard::dashboardBody(
-
-        
         ##ALT## {prevents the sidebar from scrollling with rest of page}
         ## {causes a seemingly minor error in the javascript that has to do with 'slim-slider'}
         tags$script(HTML("$('body').addClass('fixed');")),
         #######
-        
         # adds CSS CBR global theme
         fresh::use_theme(CBRtheme),
         tagList(
-          # textOutput("text1"),
           h2("CVPAS - South Delta Central Valley Steelhead Survival and Routing Predictions",id="inputTop")
           ,
           hr()
           ,
-#           route_spec_surv
-# route_usage
-# more_info
           conditionalPanel(
-            #  condition = "input.tabs == 'inputs'",
             condition = "input.tabs == 'inputs' || input.tabs == 'check' || input.tabs == 'estimates'
-             || input.tabs == 'overall' || input.tabs == 'route_spec_surv' || input.tabs == 'route_usage' || input.tabs == 'more_info'",
+             || input.tabs == 'overall_surv' || input.tabs == 'route_spec_surv' || input.tabs == 'route_usage' || input.tabs == 'more_info'",
             draw_inputs_panel_ui(),
             draw_estimates_panel_ui(),
           )
@@ -103,35 +92,3 @@ app_ui <- function(request) {
   )
 }
 
-#' Add external Resources to the Application
-#'
-#' This function is internally used to add external
-#' resources inside the Shiny application.
-#'
-#' @import shiny
-#' @importFrom golem add_resource_path activate_js favicon bundle_resources
-#' @noRd
-golem_add_external_resources <- function() {
-  add_resource_path(
-    "www",
-    app_sys("app/www")
-  )
-  
-  tags$head(
-    # favicon(resources_path = "app/www"),
-    favicon(),
-    bundle_resources(
-      path = app_sys("app/www"),
-      app_title = "CVPAS_v0.9"
-    ),
-    # Add here other external resources
-    # for example, you can add shinyalert::useShinyalert()
-    
-    #added external JS and CSS files beyond files within www/ folder
-    shinyjs::useShinyjs(),
-    # # External library  for js cookies (added by CO)
-    # tags$script(
-    #   src = "https://cdnjs.cloudflare.com/ajax/libs/js-cookie/3.0.1/js.cookie.min.js"
-    # )
-  )
-}

@@ -12,7 +12,8 @@ run_app <- function(
   options = list(),
   enableBookmarking = NULL,
   uiPattern = "/",
-  start_tab = "about",
+  # start_tab = "about",
+  start_tab = "inputs",
   inputs_panel_collapse = FALSE,
   ...
 ) {

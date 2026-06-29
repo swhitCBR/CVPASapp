@@ -1,4 +1,4 @@
-init_tab <- "inputs"
+# init_tab <- "inputs"
 
 # Initial values
   init_water_year <- 2013

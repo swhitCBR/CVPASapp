@@ -6,30 +6,6 @@
   #'
   #' @export
   #' @examples
-  # draw_main_page_content_dynui <- function(input_tab_in= input$tabs){
-  #   switch(
-  #     input_tab_in,
-  #     "about" = shiny::tagList(
-  #       mod_about_page_ui("mod_about_page-about_page_ui_1")
-  #     ),
-  #     "met_ref" = shiny::tagList(
-  #       uiOutput("met_ref_page_ui")
-  #     ),
-  #     "inputs" = shiny::tagList(
-  #        draw_inputs_panel_UI(),
-  #        draw_estimates_panel_ui()
-  #       #  uiOutput("estimates_panel_ui")      
-  #     ),
-  #     "estimates" = shiny::tagList(
-  #       #  draw_inputs_panel_UI(),
-  #       #  draw_estimates_panel_ui()
-  #       #  uiOutput("estimates_panel_ui")      
-  #       )
-  #   )
-  # }
-
-
-    #' @examples
   draw_main_page_content_dynui <- function(input_tab_in= input$tabs){
 
 

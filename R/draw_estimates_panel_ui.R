@@ -90,6 +90,7 @@ draw_estimates_panel_ui <- function(){
         ),
         div(
           style = "padding-left: 10px;",
+          id = "route_usage_panel",
           h3(
             paste0("Route Usage"),
             style = "color:#006400;text-decoration: underline;"
@@ -115,9 +116,11 @@ draw_estimates_panel_ui <- function(){
         )
       ),
       footer = div(
+
         #p("hdfsl")
         # footer(
         div(
+          id = "more_info_panel",
           style = "padding-left: 10px;",
                     h3(
             paste0("More Information"),

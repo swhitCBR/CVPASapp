@@ -15,17 +15,20 @@ app_server <- function(input, output, session) {
   # at startup ----
   # inputs_selected by default
   # tab_selected <- reactiveVal(start_tab_passed)
-  tab_selected <- reactiveVal("about")
-  shinydashboard::updateTabItems(
-    "tabs",
-    session = session,
-    # selected = start_tab_passed
-    selected = "about"
-  )
+  # tab_selected <- reactiveVal("about")
+  tab_selected <- reactiveVal("inputs")
+
+  # shinydashboard::updateTabItems(
+  #   "tabs",
+  #   session = session,
+  #   # selected = start_tab_passed
+  #   # selected = "about"
+  #   # selected = "inputs"
+  # )
   # probably better as a reactiveValues (list format)
   data_source_selected <- reactiveVal("prev_pan")
 
-  ### debugging print  ----
+  ### Tab switching behavior  ----
   observeEvent(input$tabs, {
     tab_selected(input$tabs)
     print(input$tabs)
@@ -35,13 +38,6 @@ app_server <- function(input, output, session) {
       shinyjs::runjs("
       document.getElementById('details_indiv').scrollIntoView({ behavior: 'smooth', block: 'start' });
       ")
-      # shinyjs::runjs("
-      # document.getElementById('checKTop').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      # ")
-      #OLD BAD
-      # shinyjs::runjs("
-      # document.getElementById('input_box2').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      # ")
   }
     
     
@@ -50,24 +46,32 @@ app_server <- function(input, output, session) {
       shinyjs::runjs("
       document.getElementById('inputTop').scrollIntoView({ behavior: 'smooth', block: 'start' });
       ")
-      #OLD BAD
-      # shinyjs::runjs("
-      # document.getElementById('input_box2').scrollIntoView({ behavior: 'smooth', block: 'start' });
-      # ")
   }
      
-    if(input$tabs=="estimates"){
+    # if(input$tabs=="estimates"){
     # shinyjs::runjs("
-    #   document.getElementById('est_box_ui').scrollIntoView({ behavior: 'smooth' });
+    #   document.getElementById('generate_ests_butt').scrollIntoView({ behavior: 'smooth' });
     # ")
+    # }
+
+    if(input$tabs=="overall_surv"){
     shinyjs::runjs("
-      document.getElementById('generate_ests_butt').scrollIntoView({ behavior: 'smooth' });
+      document.getElementById('est_box_ui').scrollIntoView({ behavior: 'smooth' });
     ")
-    # 
-    # shinyjs::runjs("
-    #   document.getElementById('estimatesTop').scrollIntoView({ behavior: 'smooth' });
-    # ")
     }
+
+    if(input$tabs=="route_usage"){
+    shinyjs::runjs("
+      document.getElementById('route_usage_panel').scrollIntoView({ behavior: 'smooth' });
+    ")
+    }
+
+    if(input$tabs=="more_info"){
+    shinyjs::runjs("
+      document.getElementById('more_info_panel').scrollIntoView({ behavior: 'smooth' });
+    ")
+    }
+
 
 
   })
@@ -110,7 +114,7 @@ app_server <- function(input, output, session) {
 
 
   observeEvent(input$sidebarItemExpanded, {
-    print(paste("ha",input$sidebarItemExpanded))
+    print(paste("expand",input$sidebarItemExpanded))
     if(input$sidebarItemExpanded == "Inputs"){
     shinydashboard::updateTabItems(
       inputId = "tabs",

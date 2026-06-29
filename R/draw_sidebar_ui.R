@@ -15,10 +15,11 @@
 #' 
 #' 
 draw_sidebar_ui <- function() {
-         #{{alt_config 1}--sub argument}
-        # sidebar = shinydashboardPlus::dashboardSidebar(
         tagList(
-                tags$head(tags$style(HTML(get_custom_css_txt(css_txt_content="sidebar")))),
+          tags$head(
+            tags$style(HTML(get_custom_css_txt(css_txt_content="sidebar"))
+          )
+        ),
           collapsed = FALSE, # Set the sidebar to be collapsed by default
           shinydashboard::sidebarMenu(
       id = "tabs",
@@ -26,20 +27,19 @@ draw_sidebar_ui <- function() {
         "About",
         tabName = "about",
         icon = icon("house"),
-        selected = T
+        selected = FALSE
       ),
       shinydashboard::menuItem(
         "Inputs",
         tabName = "inputs",
         icon = icon("sliders"),
         startExpanded = T,
-        selected = F,
         shinydashboard::menuSubItem(
           "Starting location",
           tabName = "inputs",
-          # icon = icon("A"),#<i class="fa-solid fa-a"></i>
           icon = HTML('<i class="fa-solid fa-location-dot"></i>'),
-          selected = F)
+          selected = TRUE
+        )
           ,
           shinydashboard::menuSubItem(
           "Check inputs",
@@ -54,7 +54,7 @@ draw_sidebar_ui <- function() {
         startExpanded = T ,
         shinydashboard::menuSubItem(
           "Overall survival",
-          tabName = "overall",
+          tabName = "overall_surv",
           icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),
           selected = F),
         shinydashboard::menuSubItem(

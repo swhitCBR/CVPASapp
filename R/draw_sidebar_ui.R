@@ -40,12 +40,12 @@ draw_sidebar_ui <- function() {
           icon = HTML('<i class="fa-solid fa-location-dot"></i>'),
           selected = TRUE
         )
-          ,
-          shinydashboard::menuSubItem(
-          "Check inputs",
-          tabName = "check",
-          icon = icon("check"),
-          selected = F)
+          # ,
+          # shinydashboard::menuSubItem(
+          # "Check inputs",
+          # tabName = "check",
+          # icon = icon("check"),
+          # selected = F)
       ),
       shinydashboard::menuItem(
         text = "Estimates",
@@ -65,12 +65,14 @@ draw_sidebar_ui <- function() {
         shinydashboard::menuSubItem(
           "Route usage",
           tabName = "route_usage",
-          icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),selected = F),
-        shinydashboard::menuSubItem(
-          "More information",
-          tabName = "more_info",
-          icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),
-          selected = F)
+          icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),selected = F)
+        # ,
+        # shinydashboard::menuSubItem(
+        #   "More information",
+          
+        #   tabName = "more_info",
+        #   icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),
+        #   selected = F)
       ),
 
       # This is an invisible side panel
@@ -96,10 +98,10 @@ draw_sidebar_ui <- function() {
           textOutput("dyn_sidebar_txt")
         )
         ### FOR DEBUGGING ###
-        ,
-        verbatimTextOutput("sel_in_ls_text")
-        ,
-        actionButton("load_butt", "Load")
+        # ,
+        # verbatimTextOutput("sel_in_ls_text")
+        # ,
+        # actionButton("load_butt", "Load")
         )
       )
       }

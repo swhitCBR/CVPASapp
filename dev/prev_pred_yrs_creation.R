@@ -1,6 +1,8 @@
 # generate predictions aand plot from HOR_TCJ glmmTMB models
 
-# library(devtools)
+library(devtools)
+load_all()
+
 
 data("CVhelp_dat_w")
 # data("CVhelp_dat_l")

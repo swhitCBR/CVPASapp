@@ -12,6 +12,15 @@
 #' 
 #' 
 get_ibox_contents <- function(box_content_in="daily_values_box"){
+
+  if(box_content_in=="total_surv_ibox"){
+   return(
+   tags$p(
+    "Survival from Head of Old River to Chipps Island across all monitored routes. Gray shading denotes 95% confidence intervals "
+     )
+    )
+  }
+
   if(box_content_in=="daily_values_box"){
    return(
    tags$dl(

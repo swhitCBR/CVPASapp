@@ -19,7 +19,7 @@ draw_chk_input_ui <- function(){
               size = "xs"
             ),
             p(
-              "How well user input data is assessed by comparing selections to the range of observed value in the Six-Year Study"
+              "Examines user-provided input data to the range of observed value in the Six-Year Study"
             ,
             width="300px")
             ,

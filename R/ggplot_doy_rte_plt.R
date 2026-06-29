@@ -31,4 +31,39 @@ ggplot_doy_rte_plt <- function(
     # ggplot2::labs(x="",y="") + 
     ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8)) +
     ggplot2::scale_x_continuous(expand = c(0.01, 0.01))
+
+
+print(head(HOR_TCJ_pred_tab_plt))
+print(str(HOR_TCJ_pred_tab_plt))
+  
+HOR_TCJ_pred_tab_plt <- HOR_TCJ_pred_tab_plt |> 
+  dplyr::mutate(SJR_prob=plogis(.data$lo_pred),
+                nonSJR_prob=1-SJR_prob,
+                SJR_prob_LCL=plogis(.data$LCL),
+                SJR_prob_UCL=plogis(.data$UCL),
+                nonSJR_prob_LCL=1-.data$SJR_prob_UCL,
+                nonSJR_prob_UCL=1-.data$SJR_prob_LCL
+              )
+
+# HOR_TCJ_pred_tab_plt <- HOR_TCJ_pred_tab_plt |> dplyr::mutate(SJR_prob=plogis(.data$lo_pred))
+# Blue: #4E79A7 (Steel Blue)Orange: #F28E2B (Burnt Orange)
+ HOR_TCJ_pred_tab_plt <- HOR_TCJ_pred_tab_plt[HOR_TCJ_pred_tab_plt$DOY >= doy_int1 & HOR_TCJ_pred_tab_plt$DOY <= doy_int2,]
+  
+ggplot2::ggplot() +
+    ggplot2::geom_ribbon(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,ymin=SJR_prob_LCL,ymax=SJR_prob_UCL),fill="#4E79A7",alpha=0.4) +
+    ggplot2::geom_ribbon(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,ymin=nonSJR_prob_LCL,ymax=nonSJR_prob_UCL),fill="#F28E2B",alpha=0.4) +
+    ggplot2::geom_line(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=nonSJR_prob)) +
+    ggplot2::geom_point(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=nonSJR_prob),fill="#F28E2B",shape=21) +
+    ggplot2::geom_line(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=SJR_prob)) +
+    ggplot2::geom_point(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=SJR_prob),fill="#4E79A7",shape=21) +
+    # ggplot2::geom_vline(xintercept = doy_int1) +
+    # ggplot2::geom_vline(xintercept = doy_int2) +
+    ggplot2::theme(legend.position="none")+
+    ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8)) +
+    ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) +
+    ggplot2::labs(y="Route Use Probability",x="Day of Year")
+
+
+
+
 }

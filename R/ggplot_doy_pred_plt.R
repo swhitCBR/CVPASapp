@@ -21,17 +21,27 @@ ggplot_doy_pred_plt <- function(
   HOR_TCJ_pred_tab_plt <- subset(HOR_TCJ_pred_tab_plt,Year==pst_year_in)
   HOR_TCJ_pred_tab_plt$SELECTED  <- HOR_TCJ_pred_tab_plt$DOY >= doy_int1 & HOR_TCJ_pred_tab_plt$DOY <= doy_int2
   
+  # DEBUG MODE
+  # omitting this line can be thought of as activating a debug mode of sorts
+  HOR_TCJ_pred_tab_plt <- HOR_TCJ_pred_tab_plt[HOR_TCJ_pred_tab_plt$DOY >= doy_int1 & HOR_TCJ_pred_tab_plt$DOY <= doy_int2,]
+
+
   ggplot2::ggplot() +
     ggplot2::geom_ribbon(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,ymin=plogis(LCL),ymax=plogis(UCL)),fill="gray70") +
     ggplot2::geom_line(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=plogis(lo_pred))) +
     ggplot2::geom_point(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=plogis(lo_pred),fill=SELECTED),shape=21) +
     #ggplot2::facet_wrap(~Year) + 
-    ggplot2::geom_vline(xintercept = doy_int1) +
-    ggplot2::geom_vline(xintercept = doy_int2) +
+    # ggplot2::geom_vline(xintercept = doy_int1) +
+    # ggplot2::geom_vline(xintercept = doy_int2) +
     ggplot2::scale_fill_manual(values = c("darkgray", "#428BCA")) +
     ggplot2::scale_color_manual(values = c("gray40", "#28547A")) + 
     ggplot2::theme(legend.position="none")+
     # ggplot2::labs(x="",y="") + 
     ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8)) +
-    ggplot2::scale_x_continuous(expand = c(0.01, 0.01))
+    ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) +
+    ggplot2::labs(y="Survival Probability",x="Day of Year")
+
+
+
+
 }

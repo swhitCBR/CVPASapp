@@ -10,6 +10,45 @@
 mod_about_page_ui <- function(id) {
   ns <- NS(id)
   tagList(
+      tags$head(
+      tags$style("
+        .hover-container {
+          position: relative;
+          /* FIX: Changed from inline-block to inline so text wraps seamlessly without jumping to a new line */
+          display: inline;
+        }
+        .hover-modal {
+          display: none;
+          position: absolute;
+          top: 125%; 
+          left: 0;
+          width: 600px; 
+          max-width: 90vw;
+          background-color: #ffffff;
+          color: #333333;
+          border: 1px solid #dddddd;
+          box-shadow: 0px 8px 16px rgba(0,0,0,0.15);
+          padding: 20px;
+          border-radius: 8px;
+          z-index: 1050; 
+          text-align: left; 
+          /* FIX: Explicitly set font-weight and white-space to normalize parent inline constraints */
+          font-weight: normal;
+          white-space: normal;
+        }
+        /* Targets the child modal display when hovering over the wrapper container */
+        .hover-container:hover .hover-modal {
+          display: block;
+        }
+        .modal-img {
+          width: 100%;
+          height: 100%;
+          border-radius: 4px;
+          margin-top: 10px;
+          border: 1px solid #eee;
+        }
+      ")
+    ),
     fluidRow(
       shinydashboard::box(
         title = HTML("About"),
@@ -30,7 +69,7 @@ mod_about_page_ui <- function(id) {
             <a href="https://cdnsciencepub.com/doi/10.1139/cjfas-2020-0467" target="_blank" rel="noopener noreferrer">(Buchanan et al. 2021; </a>
               <div class="hover-modal">
                 <a href="https://cdnsciencepub.com/doi/10.1139/cjfas-2020-0467" target="_blank">
-                  <img src="https://onlinelibrary.wiley.com/cms/asset/dc48586b-dbfd-4240-9705-8c08ee6cf914/nafm.v44.3.cover.jpg" class="modal-img">
+                  <img src="www/about/Buchanan_etal_2021_topofpage.png" class="modal-img">
                 </a>
               </div>
             </div>
@@ -38,7 +77,7 @@ mod_about_page_ui <- function(id) {
             <a href="" target="_blank" rel="noopener noreferrer">Buchanan et al. 2024) </a>.
               <div class="hover-modal">
                 <a href="https://onlinelibrary.wiley.com/doi/full/10.1002/nafm.11005" target="_blank">
-                  <img src="https://onlinelibrary.wiley.com/cms/asset/dc48586b-dbfd-4240-9705-8c08ee6cf914/nafm.v44.3.cover.jpg" class="modal-img">
+                  <img src="www/about/Buchanan2024_topofpage.png" class="modal-img">
                 </a>
               </div>
             </div>

@@ -13,7 +13,7 @@ shinydashboard sidebar panel shinyUI code (i.e., within \code{shiny::tagList()})
 Title
 }
 \details{
-the
+calls \code{\link[=get_custom_css_txt]{get_custom_css_txt()}} for special formatting
 }
 \examples{
 draw_sidebar_ui()
@@ -21,8 +21,6 @@ draw_sidebar_ui()
 
 }
 \seealso{
-calls \code{\link[=get_custom_css_txt]{get_custom_css_txt()}} for special formatting
-
 Other {ui builders }: 
 \code{\link{draw_start_loc_ui}()}
 

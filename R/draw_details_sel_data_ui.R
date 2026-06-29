@@ -119,7 +119,9 @@ draw_details_sel_data_ui <- function(){
             style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px;    border-bottom: solid 1px gray; align-items:center",
             title = "Plots of selected or uploaded data in the context of observations from 2011-2024",
             h5(em("View Daily Values")),
-            draw_ibutt_dropdown_ui(inputId_in = "daily_var_def_ibutt1",ibox_content_label="daily_values_box")
+            draw_ibutt_dropdown_ui(
+              inputId_in = "daily_var_def_ibutt1",
+              ibox_content_label="daily_values_box")
           ),
           div(
             style = "margin-left:20px;margin-top:20px",

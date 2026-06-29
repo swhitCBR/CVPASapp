@@ -42,48 +42,60 @@ draw_sidebar_ui <- function() {
           selected = F)
           ,
           shinydashboard::menuSubItem(
-          "Check Inputs",
+          "Check inputs",
           tabName = "check",
           icon = icon("check"),
           selected = F)
       ),
-      # shinyjs::hide(
       shinydashboard::menuItem(
         text = "Estimates",
         tabName = "estimates",
         icon = icon("chart-line"),
-        startExpanded = T #,
-      # )
+        startExpanded = T ,
+        shinydashboard::menuSubItem(
+          "Overall survival",
+          tabName = "overall",
+          icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),
+          selected = F),
+        shinydashboard::menuSubItem(
+          "Route-specific survival",
+          tabName = "route_spec_surv",
+          icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),
+                    selected = F),
+        shinydashboard::menuSubItem(
+          "Route usage",
+          tabName = "route_usage",
+          icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),selected = F),
+        shinydashboard::menuSubItem(
+          "More information",
+          tabName = "more_info",
+          icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),
+          selected = F)
       ),
+
       # This is an invisible side panel
       # could not get the sidebar menu to hide using shinyjs
       # shinyjs::disabled(
-      # div(id="met_ref_side",
+      div(id="met_ref_side",
+        style="display: none !important;",
       shinydashboard::menuItem(
-        text = NULL,#"Help",
+        # id="invis_met_ref",
+        # style="display: none !important;",
+        text = "Help",
         tabName = "met_ref",
-        icon =NULL,# icon("book"),
+        icon = icon("book"),
         startExpanded = T #,
       )
-      # )
-      # )
-
+      )
     )
           ,
       br(),
       tags$div(
-        id = "newsidebox",
-          # conditionalPanel(
-          #   # condition = "input.tabs == 'inputs'",
-          #   condition = paste0("input.tabs == '",input$tabs,"'"),
-          #   get_sidebar_txt(input$tabs)
-          # )
-          # get_sidebar_txt("inputs")
-          # get_sidebar_txt(input$tabs)
+        id = "newsidebox", #needed for applying specific formatting
         wellPanel(
-          textOutput("dyn_sidebar_txt"),
-          get_sidebar_txt_content("ha")
+          textOutput("dyn_sidebar_txt")
         )
+        ### FOR DEBUGGING ###
         ,
         verbatimTextOutput("sel_in_ls_text")
         ,

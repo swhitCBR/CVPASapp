@@ -77,26 +77,44 @@ draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse){
               id = "schem_info_drop_div",
               style = "float:right !important;
                       position: relative;
-                      z-index: 2;",
+                      z-index: 2"
+              ,
               draw_ibutt_dropdown_ui(
                 inputId_in = "daily_var_def_ibutt2",
                 ibox_content_label = "basic_route_schematic_ibox_content"
               )
-              # shinyWidgets::dropdownButton(
-              #   right = TRUE,
-              #   up = FALSE,
-              #   circle = TRUE,
-              #   size = "xs",
-              #   status = "primary",
-              #   icon = icon("info", style = "color: white;"),
-              #   width = "300px",
-              #   p("Major routes and key junctions in the Delta") #,
-              # )
             ),
-            draw_basic_route_schematic_svg(
-              # LOC_in = in_selected_RV$LOC,
-              # BAR_in = in_selected_RV$BAR
-            ),
+            tagList(
+            conditionalPanel(condition = "input.start_loc_in == 'TCJ' && output.BarStatus == 'In'",
+              draw_basic_route_schematic_svg(
+              LOC_in = "TCJ",
+              BAR_in = "In"
+            ))
+            ,
+            conditionalPanel(condition = "input.start_loc_in == 'TCJ' && output.BarStatus == 'Out'",
+              draw_basic_route_schematic_svg(
+              LOC_in = "TCJ",
+              BAR_in = "Out"
+            ))
+            ,
+            conditionalPanel(condition = "input.start_loc_in == 'HOR' && output.BarStatus == 'In'",
+              draw_basic_route_schematic_svg(
+              LOC_in = "HOR",
+              BAR_in = "In"
+            ))
+            ,
+            conditionalPanel(condition = "input.start_loc_in == 'HOR' && output.BarStatus == 'Out'",
+              draw_basic_route_schematic_svg(
+              LOC_in = "HOR",
+              BAR_in = "Out"
+            ))
+          # ,
+            # draw_basic_route_schematic_svg(
+            #   # LOC_in = in_selected_RV$LOC,
+            #   # BAR_in = in_selected_RV$BAR
+            # )
+          )
+          ,
           )
         )
       ),

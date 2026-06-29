@@ -33,10 +33,7 @@ ggplot_doy_env__plt <- function(
         ggplot2::aes(
           x = DOY,
           y = value,
-          fill = WYT,
           alpha = SELECTED,
-          xmin = doy_int1,
-          xmax = doy_int2,
           group = year)) +
         ggplot2::geom_vline(xintercept = doy_int1) +
         ggplot2::geom_vline(xintercept = doy_int2) +
@@ -47,8 +44,6 @@ ggplot_doy_env__plt <- function(
           y = value,
           fill = WYT,
           alpha = SELECTED,
-          xmin = doy_int1,
-          xmax = doy_int2,
           group = year),
           shape = 21) +
         ggplot2::scale_alpha_manual(values = c(0.2, 0.9)) +

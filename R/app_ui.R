@@ -60,7 +60,8 @@ app_ui <- function(request) {
           ,
           conditionalPanel(
             condition = "input.tabs == 'about'",
-            mod_about_page_ui("mod_about_page-about_page_ui_1")
+            # mod_about_page_ui("mod_about_page-about_page_ui_1")
+            draw_about_page_ui()
           )
           ,
           conditionalPanel(

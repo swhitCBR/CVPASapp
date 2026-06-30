@@ -3,10 +3,10 @@
 #' @returns a `shiny.tag` object inside a `shinydashboardPlus::box()``
 #'
 #' @export
-#' 
+#'
 #' @examples
 #' draw_estimates_panel_ui()
-#' 
+#'
 draw_estimates_panel_ui <- function() {
   shinydashboardPlus::box(
     id = "est_box_ui",
@@ -20,134 +20,67 @@ draw_estimates_panel_ui <- function() {
     collapsed = FALSE,
     width = 12,
     fluidRow(
-      h3(
-        paste0("Overall Survival"),
-        style = "color:#28547A;text-decoration: underline;padding-left: 10px;"
-      ),
-      div(
-        style = "display:grid; grid-template-columns: repeat(3, 1fr); padding-left: 10px;padding-right:10px;",
-        div(
-          span(h4(
-            style="font-weight: normal; padding-left: 10px; display:inline-flex",
-              HTML('
-               <span style="margin-right:5px">
-                <strong>Total Survival: </strong>HOR to CHP
-            <div class="hover-container">
-            <a>(all routes) </a>
-              <div class="hover-modal">
-                <p> Estimate accounts for the possibility that smolts are diverted from the main
-               San Joaquin River along the route the Old/Middle River route (ORE), which diverges
-                at the Head of Old River junction (HOR), or into Turner Cut at the 
-                Turner Cut junction (TCJ) further downstream. </p>
-              </div>
-            </div>
-              </span>'
-            ),
-              draw_ibutt_dropdown_ui(
-                inputId_in = "total_surv_ibutt",
-                ibox_content_label="total_surv_ibox"))
-
-          ),
-          div(
-            div(
-              tags$ul(
-                style = "padding-left:15px;",
-                tags$li(
-                  "Survival from Head of Old River to Chipps Island across (all routes).",
-                  style = "margin-left:25px;"
-                )
-              )
-            ),
-            plotOutput("HOR_TCJ_pred_ggpplt_s_tot")
-          )
-        )
-      ),
+      draw_ovr_surv_est_sec_ui()
+      ,
+      # section break
       hr(),
-      h3(
-        paste0("Reach Survival"),
-        style = "color:#28547A;text-decoration: underline;padding-left: 10px;"
-      ),
-      div(
-        style = "display:grid; grid-template-columns: repeat(3, 1fr); padding-left: 10px;padding-right:10px;",
-        div(
-          HTML(
-            '<h4 style="font-weight: normal; padding-left: 10px;">
-              <strong>Reach Survival: </strong>
-               HOR to TCJ (via SJR)</h4>'
-          ),
-          strong(
-            style="font-weight: normal; padding-left: 10px;",
-            HOR to TCJ (via SJR)),
-          div(
-            plotOutput("HOR_TCJ_pred_ggpplt_rs1", height = "400px")
-          )
-        ),
-        div(
-          HTML(
-            '<h4 style="font-weight: normal; padding-left: 10px;">
-              <strong>Reach Survival: </strong>
-               TCJ to CHP (all routes)</h4>'
-          ),
-          div(
-            plotOutput("HOR_TCJ_pred_ggpplt_rs_2", height = "400px")
-          )
-        )
-      ),
+      draw_reach_surv_est_sec_ui()
+    ,
       hr(),
-      h3(
-        paste0("Route-Specific Survival"),
-        style = "color:#28547A;text-decoration: underline;padding-left: 10px;"
-      ),
-      div(
-        id = "route_spec_surv_panel",
-        ##ALT## wide vs. long display of overall survival plots
-        # style = "padding-left: 20px;padding-right:10px;"
-        # equal width alternative
-        style = "display:grid; grid-template-columns: repeat(2, 1fr); padding-left: 10px;padding-right:10px;",
-        # flexible width alternative
-        # style = "display:flex; justify-content: space-evenly;padding-left: 10px;padding-right:10px;",
+      draw_reach_spec_surv_est_sec_ui()
+      ,
+      # div(
+      #   id = "route_spec_surv_panel",
+      #   ##ALT## wide vs. long display of overall survival plots
+      #   # style = "padding-left: 20px;padding-right:10px;"
+      #   # equal width alternative
+      #   style = "display:grid; grid-template-columns: repeat(3, 1fr); padding-left: 10px;padding-right:10px;",
+      #   # style = "display:grid; grid-template-columns: repeat(2, 1fr); padding-left: 10px;padding-right:10px;",
+      #   # flexible width alternative
+      #   # style = "display:flex; justify-content: space-evenly;padding-left: 10px;padding-right:10px;",
 
-        div(
-          HTML(
-            '<h4 style="font-weight: normal; padding-left: 10px;">
-              <strong>Route-Specific Survival: </strong>
-               HOR to CHP via SJR route</h4>'
-          ),
-          div(
-            plotOutput("HOR_TCJ_pred_ggpplt_dup1b", height = "400px")
-          )
-        ),
-        div(
-          HTML(
-            '<h4 style="font-weight: normal; padding-left: 10px;">
-              <strong>Route-Specific Survival: </strong>
-               HOR to CHP via ORE route</h4>'
-          ),
-          div(
-            plotOutput("HOR_TCJ_pred_ggpplt_dup1a", height = "400px")
-          )
-        ),
-        div(
-          HTML(
-            '<h4 style="font-weight: normal; padding-left: 10px;">
-              <strong>Route-Specific Survival: </strong>
-               TCJ to CHP via SJR route</h4>'
-          ),
-          div(
-            plotOutput("HOR_TCJ_pred_ggpplt_dup1e", height = "400px")
-          )
-        ),
-        div(
-          HTML(
-            '<h4 style="font-weight: normal; padding-left: 10px;">
-              <strong>Route-Specific Survival: </strong>
-               TCJ to CHP via TRN route</h4>'
-          ),
-          div(
-            plotOutput("HOR_TCJ_pred_ggpplt_dup1c", height = "400px")
-          )
-        )
-      ),
+      #   # div(
+      #   #   HTML(
+      #   #     '<h4 style="font-weight: normal; padding-left: 10px;">
+      #   #       <strong>Route-Specific Survival: </strong>
+      #   #       Head of Old River to CHP via SJR route</h4>'
+      #   #   ),
+      #   #   div(
+      #   #     plotOutput("HOR_TCJ_pred_ggpplt_dup1b", height = "400px")
+      #   #   )
+      #   # ),
+      #   # div(
+      #   #   HTML(
+      #   #     '<h4 style="font-weight: normal; padding-left: 10px;">
+      #   #       <strong>Route-Specific Survival: </strong>
+      #   #       Head of Old River to CHP via ORE route</h4>'
+      #   #   ),
+      #   #   div(
+      #   #     plotOutput("HOR_TCJ_pred_ggpplt_dup1a", height = "400px")
+      #   #   )
+      #   # ),
+      #   div(
+      #     HTML(
+      #       '<h4 style="font-weight: normal; padding-left: 10px;">
+      #         <strong>Route-Specific Survival: </strong>
+      #         Turner Cut Junction to CHP via SJR route</h4>'
+      #     ),
+      #     div(
+      #       plotOutput("HOR_TCJ_pred_ggpplt_dup1e", height = "400px")
+      #     )
+      #   ),
+      #   div(
+      #     HTML(
+      #       '<h4 style="font-weight: normal; padding-left: 10px;">
+      #         <strong>Route-Specific Survival: </strong>
+      #         Turner Cut Junction to CHP via TRN route</h4>'
+      #     ),
+      #     div(
+      #       plotOutput("HOR_TCJ_pred_ggpplt_dup1c", height = "400px")
+      #     )
+      #   )
+      # )
+      # ,
       hr(),
       div(
         style = "padding-left: 10px;",
@@ -160,8 +93,8 @@ draw_estimates_panel_ui <- function() {
           width = 6,
           HTML(
             '<h4 style="font-weight: normal; padding-left: 10px;">
-              <strong>Route Usage: </strong>
-               at HOR</h4>'
+              <strong>At Head of Old River</strong>
+               </h4>'
           ),
           plotOutput("HOR_TCJ_pred_ggpplt_dup1d", height = "400px")
         ),
@@ -169,8 +102,8 @@ draw_estimates_panel_ui <- function() {
           width = 6,
           HTML(
             '<h4 style="font-weight: normal; padding-left: 10px;">
-              <strong>Route Usage: </strong>
-               at TCJ</h4>'
+              <strong>At Turner Cut Junction </strong>
+               </h4>'
           ),
           plotOutput("HOR_TCJ_pred_ggpplt_dup1d2", height = "400px")
         )
@@ -205,7 +138,7 @@ draw_estimates_panel_ui <- function() {
           ),
           div(
             style = "display:flex;",
-            plotOutput("doy_ins_ggpplt", height = "400px")#,
+            plotOutput("doy_ins_ggpplt", height = "400px") #,
             # plotOutput("HOR_TCJ_pred_ggpplt", height = "400px")
           ),
           h4(

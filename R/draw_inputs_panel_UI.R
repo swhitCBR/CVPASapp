@@ -10,14 +10,14 @@
   #' @examples
   #' draw_inputs_panel_ui(init_data_source="Previous years")
   #' 
-draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse,init_data_source_in){
+draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse,init_data_source_in,collapsed_in=TRUE){
     shinydashboardPlus::box(
       id = "input_box2",
       title = span(h2("Inputs",style="margin-top: 0px; margin-bottom: 0px;"),id="input_box2_title"),
       solidHeader = TRUE,
       status = "primary",
       collapsible = T,
-      collapsed = FALSE,
+      collapsed = collapsed_in,
         width = 12,
       column(
         width = 7,

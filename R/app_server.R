@@ -363,7 +363,7 @@ app_server <- function(input, output, session) {
   })
 
   output$doy_var_ggpplt <- renderPlot({
-    ggplot_doy_env__plt(
+    ggplot_doy_env_plt(
       CVhelp_dat_l_plt = CVhelp_dat_l,
       doy_rng_in = c(
         in_selected_RV$start_day,

@@ -1,4 +1,4 @@
-ggplot_doy_env__plt <- function(
+ggplot_doy_env_plt <- function(
   CVhelp_dat_l_plt=CVhelp_dat_l,
   doy_rng_in=c(10,100),
   pst_year_in="2012",

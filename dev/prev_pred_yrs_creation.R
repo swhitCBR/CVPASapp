@@ -39,7 +39,7 @@ HOR_TCJ_tmp <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w[600:700,],
 
 HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
-                                     flength_in=244) # def_flength()
+                                     flength_in=244) 
 pred_prev_yrs_ls <- list(  "HOR_TCJ_pred_tab" = HOR_TCJ_pred_tab)
 
 # strange warning
@@ -53,9 +53,11 @@ usethis::use_data(pred_prev_yrs_ls,overwrite=TRUE)
 
 glmmTMB_mod_ls[["HOR_TCJ"]]
 
+HOR_TCJ_mod_ls
 
-HOR_TCJ_tmp2 <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w[600:700,],flength_in = 100)
-HOR_TCJ_tmp3 <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w[600:700,],flength_in = 400)
+
+HOR_TCJ_tmp2 <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w[600:700,],flength_in = 100,HOR_TCJ_mod_ls = HOR_TCJ_mod_d2_ls)
+HOR_TCJ_tmp3 <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w[600:700,],flength_in = 400,HOR_TCJ_mod_ls = HOR_TCJ_mod_d2_ls)
 
 ggplot2::ggplot() +
   ggplot2::geom_ribbon(data=HOR_TCJ_tmp,ggplot2::aes(x=DOY,ymin=plogis(LCL),ymax=plogis(UCL)),fill="gray40") +

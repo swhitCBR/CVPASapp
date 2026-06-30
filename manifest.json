@@ -4569,7 +4569,7 @@
       "checksum": "8536c0b1b0a5a6da1637feed7ca91d43"
     },
     "app.R": {
-      "checksum": "9031cbe1387017d5c8f0901e7d2df0ea"
+      "checksum": "caa78588af234431f16289d9957424d9"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "d43c9ca5b4999c6e1ffc17ff8e80d2bc"
@@ -4596,7 +4596,7 @@
       "checksum": "bef0cada79c36135e3693ce7b88e9179"
     },
     "DESCRIPTION": {
-      "checksum": "dd4218bf3969c0e7b2cfc771caa8bf18"
+      "checksum": "7360255985dadf374de8af04477f382e"
     },
     "dev/01_start.R": {
       "checksum": "999c179998525d4cf0ef886adfbec1c8"
@@ -4610,8 +4610,11 @@
     "dev/config_attachment.yaml": {
       "checksum": "ee1f6aaa2ef5dfcfc6db5a4b09d2cd2f"
     },
+    "dev/HOR_CHP_dev.R": {
+      "checksum": "d42756713d683851a0b1305d459fb56f"
+    },
     "dev/prev_pred_yrs_creation.R": {
-      "checksum": "2510a95186d5812a01845c6d4fb82e51"
+      "checksum": "3df0574ae4e49dad8f540ae681097789"
     },
     "dev/run_dev.R": {
       "checksum": "e16497b4e7787e5fd1495f9e1aa81182"
@@ -4621,6 +4624,12 @@
     },
     "inst/app/www/about/about_left_col_text.md": {
       "checksum": "4f86fde61570f276a6c39e7b11fae984"
+    },
+    "inst/app/www/about/Buchanan_etal_2021_topofpage.png": {
+      "checksum": "c09e2e7591fc014ab286dc44b971fc30"
+    },
+    "inst/app/www/about/Buchanan2024_topofpage.png": {
+      "checksum": "9f2a5cea75e4a7ac3a42b8a106e6f20a"
     },
     "inst/app/www/about/simple_route_image.png": {
       "checksum": "6b7fa76eb6da85e096785e75e0fbded7"
@@ -4632,7 +4641,7 @@
       "checksum": "9008fcb8f0bb7469f7b7982211646858"
     },
     "inst/app/www/custom.css": {
-      "checksum": "069fb0d9032b4d432525b214d12d3fec"
+      "checksum": "b404a8c3f154331623aad077fabc1847"
     },
     "inst/app/www/favicon.ico": {
       "checksum": "c31cac31d4a7d7486da4364a57c6f248"
@@ -4683,7 +4692,7 @@
       "checksum": "636a7801d03fc379fe60645f5c9b0181"
     },
     "inst/app/www/sidebar/sidebar.md": {
-      "checksum": "7be4ef28c982ffaf2e4c63f892ba8788"
+      "checksum": "54d3c4299a9d0082945abe35a2bb73af"
     },
     "inst/app/www/surv_route_diagram_wtt.svg": {
       "checksum": "49f8cbc11636db77a3f86a7dbb0ab313"
@@ -4696,9 +4705,6 @@
     },
     "inst/app/www/surv_route_diagram_wtt_xml.svg": {
       "checksum": "552f06614535bb5673eae42514f5dd1e"
-    },
-    "inst/app/www/thumbnail_modal.js": {
-      "checksum": "4e7474bc9e1fa4632deff34c9497513b"
     },
     "inst/app/www/unused/about_text.md": {
       "checksum": "d27a8309b3a3114bff12985277981512"
@@ -4716,22 +4722,52 @@
       "checksum": "636a7801d03fc379fe60645f5c9b0181"
     },
     "inst/global.R": {
-      "checksum": "4b0f0b2c4ddeecaa6d1d1c9946347681"
+      "checksum": "728a6e27a388536d4d3b4eb1083db609"
     },
     "inst/golem-config.yml": {
       "checksum": "abe08f0b0fc3106dffeb21d24badcddd"
     },
     "man/ann_HORbar_WYT_data.Rd": {
-      "checksum": "5f4cee9a971972cc37a756ff0bdd9519"
+      "checksum": "cc9272951f93e1bec59a4c1e6a57f391"
     },
     "man/CVhelp_dat_l.Rd": {
-      "checksum": "acdb697da4999ed0da7c8e44e351cf75"
+      "checksum": "21ca8bf8d728bee3b3d60cb4830f5713"
+    },
+    "man/draw_dashboard_header_ui.Rd": {
+      "checksum": "7673702dc54d0a58c27ed1a578d522e8"
+    },
+    "man/draw_estimates_panel_ui.Rd": {
+      "checksum": "29fcc8bd5add07b7bcd4226551508392"
+    },
+    "man/draw_ibutt_dropdown_ui.Rd": {
+      "checksum": "dec9c8ef402da9356166d7a0e30f9cb2"
+    },
+    "man/draw_main_page_content_dynui.Rd": {
+      "checksum": "ca6b7e480011a14f4c7bb8cf0cdd3ffd"
+    },
+    "man/draw_met_ref_page_ui.Rd": {
+      "checksum": "fb36bbd191bdc2e8e4ab5162e176d35d"
+    },
+    "man/draw_sidebar_ui.Rd": {
+      "checksum": "9f593cc0500fb4240b57909b2b65645f"
+    },
+    "man/draw_start_loc_ui.Rd": {
+      "checksum": "012baec17357b66d238135d493a84046"
+    },
+    "man/draw_upload_deet_ui.Rd": {
+      "checksum": "25e3066b20f14133bbabc1b50a9fe819"
     },
     "man/extract_glmmTMB_ests.Rd": {
       "checksum": "3d039ba7066ef1d2a67c04dadb86bcfb"
     },
     "man/extract_glmmTMB_frame.Rd": {
       "checksum": "0200e269cb642e4f97738611f4665f17"
+    },
+    "man/get_custom_css_txt.Rd": {
+      "checksum": "8ac9273f897b905531dd77366904ef94"
+    },
+    "man/get_sidebar_dyntxt.Rd": {
+      "checksum": "92dcdc098305a5369f564edec42c4e07"
     },
     "man/ggplot_doy_pred_plt.Rd": {
       "checksum": "a6384cadbb1446fd277484b24885b503"
@@ -4740,10 +4776,10 @@
       "checksum": "7e861811ec11fe78b67542627b6333e3"
     },
     "man/run_app.Rd": {
-      "checksum": "068d2f012ee9215c9b5a91cdbff317c4"
+      "checksum": "83ad9761fc4ffd131e53f9b0957ee3fa"
     },
     "NAMESPACE": {
-      "checksum": "8263cdee225d90034978ba82d93713ce"
+      "checksum": "37481d3c82d05adbb850f009e3e73e87"
     },
     "R/_disable_autoload.R": {
       "checksum": "9d8f7f20e88b559c046ec1f59fe82cba"
@@ -4752,22 +4788,55 @@
       "checksum": "f9449395606b508d0215d74d5441533f"
     },
     "R/app_server.R": {
-      "checksum": "bf925442783a5970dee060e716487ab8"
+      "checksum": "bc0b2089e334b60bc03b86dcf7947f52"
     },
     "R/app_ui.R": {
-      "checksum": "62753f1262a064dca8e3470637e23ba2"
+      "checksum": "e18f964c6d30eaf9ee25ef08435a0345"
     },
     "R/data.R": {
       "checksum": "a3b1ac8cf8cc8b264127bb8d17372a9c"
     },
+    "R/draw_about_page_ui.R": {
+      "checksum": "14148057ba1ed4fd7e48edcbd33611e0"
+    },
     "R/draw_ann_summ_tab.R": {
-      "checksum": "59373fb5f1531e616f1309dc69889689"
+      "checksum": "eee2f6b2b3df984d02c632d6d016350a"
+    },
+    "R/draw_basic_route_schematic_svg.R": {
+      "checksum": "f67d54609ae6a82944b53a42aaba2175"
+    },
+    "R/draw_chk_input_ui.R": {
+      "checksum": "70e7f98bd4a235b5110034fdecba746f"
+    },
+    "R/draw_dashboard_header_ui.R": {
+      "checksum": "40e8cac9bfe429628d5b9b0f754d2e6e"
+    },
+    "R/draw_details_indiv_attrib_ui.R": {
+      "checksum": "0807cb087c656ecbaf03d990bd48629d"
+    },
+    "R/draw_details_sel_data_ui.R": {
+      "checksum": "585b9491061b10c6d500885e87d78931"
+    },
+    "R/draw_estimates_panel_ui.R": {
+      "checksum": "2b903e0e2674a26d02f075f3a70716a0"
     },
     "R/draw_info_bttn_dropdown_ui.R": {
-      "checksum": "2e5bd3bf8f3ae84a50a1438bd41322cf"
+      "checksum": "8fc08d82bc5a14e86806e0f413230448"
+    },
+    "R/draw_inputs_panel_UI.R": {
+      "checksum": "8167f1b5bc1628b3efdba01411c5f943"
+    },
+    "R/draw_main_page_content_dynui.R": {
+      "checksum": "fc75ae828f72ef8ca3f3d6270139ffb8"
     },
     "R/draw_met_ref_page_ui.R": {
-      "checksum": "8d01f9906a8a15dabc4b70dcc95e1233"
+      "checksum": "355ea51c6e5c872cd96a312c02f41fd4"
+    },
+    "R/draw_sidebar_ui.R": {
+      "checksum": "8cfa87dd32887cf9629de7d08b61fd2e"
+    },
+    "R/draw_start_loc_ui.R": {
+      "checksum": "ac301dc3ce068d7bf12ef19d773d62fc"
     },
     "R/draw_upload_deet_ui.R": {
       "checksum": "9c7d8db7b53ffd6425ed902f5526794e"
@@ -4778,17 +4847,32 @@
     "R/extract_glmmTMB_ests.R": {
       "checksum": "d3c5dc6059e1d477ed75d8513132f27d"
     },
+    "R/get_custom_css_txt.R": {
+      "checksum": "fffc41cf7c6bd34a68ea1467a6dfe71a"
+    },
+    "R/get_ibox_contents.R": {
+      "checksum": "b15661584ac9bcdff0c797aff4b1c657"
+    },
+    "R/get_sidebar_dyntxt.R": {
+      "checksum": "83b329979e249b8d5dde02348ef0b5c3"
+    },
+    "R/get_var_center_scale.R": {
+      "checksum": "2234e78e343e85b55c1d0488bd2e7864"
+    },
     "R/ggplot_doy_env__plt.R": {
-      "checksum": "6f3965254bc2d76d81e9599293d38f23"
+      "checksum": "3e176f6210d8b2a6912b1f4e7ca03dc1"
     },
     "R/ggplot_doy_ins_plt.R": {
-      "checksum": "0d29e74b3bc0a68cd7f497194e22617c"
+      "checksum": "05da97322f2358562458dbe007d1358f"
     },
     "R/ggplot_doy_pred_plt.R": {
-      "checksum": "bcc42bfd8ca800aa5e987483614a7589"
+      "checksum": "9a16e4d85bc126e7d79c6c34c55f7a70"
     },
     "R/ggplot_doy_pred_plt_mult.R": {
       "checksum": "d41d8cd98f00b204e9800998ecf8427e"
+    },
+    "R/ggplot_doy_rte_plt.R": {
+      "checksum": "f313bcb72bb79e30f4021ab00bb4c4bc"
     },
     "R/ggplot_input_flength_ref_hist.R": {
       "checksum": "6af1e9e0f358e88db47db8703a1869ef"
@@ -4796,11 +4880,17 @@
     "R/ggplt_day_input_ref_hist.R": {
       "checksum": "8bd0807823e1659d63b1a4af479de838"
     },
+    "R/golem_add_external_resources.R": {
+      "checksum": "363a344eea7775c63fc32843a4475eb3"
+    },
     "R/golem_utils_server.R": {
       "checksum": "c2998ee5dbb57c9af79904bc79133f74"
     },
     "R/golem_utils_ui.R": {
       "checksum": "1694775e681b1a4cf1ce4d2dda7e0316"
+    },
+    "R/HOR_CHP_mod_wrap.R": {
+      "checksum": "fae71b011b91dfb901dd866bfdf07594"
     },
     "R/HOR_TCJ_mod_wrap.R": {
       "checksum": "b2d0580c19328e678326621344e5bcfe"
@@ -4808,14 +4898,11 @@
     "R/HOR_TCJ_redef_fun.R": {
       "checksum": "2d00ef2d3c45c4552ae3aa0d54ac2785"
     },
-    "R/mod_about_page.R": {
-      "checksum": "bb46aada8da82a01ddd10aca0df5f274"
-    },
     "R/mod_main_page.R": {
       "checksum": "ff5b738035415e8cd75c02ba4cda44ea"
     },
     "R/run_app.R": {
-      "checksum": "0284e79684df94ef795c3acc04663bd0"
+      "checksum": "b75f3e1e4bf2b0269c74c76159712348"
     },
     "R/utils_CBRtheme.R": {
       "checksum": "9548b86cf86838e826697edb354988b2"
@@ -4836,10 +4923,10 @@
       "checksum": "9a702b7310cf1ff4fb033951b688eaf9"
     },
     "README.md": {
-      "checksum": "69c10b7e357d5c1ba3d25d2c7950be18"
+      "checksum": "538b841a8368ef6820bd273ea235f055"
     },
     "README.Rmd": {
-      "checksum": "d0047cdb4102cfb21685a77ec8870935"
+      "checksum": "713bef635a2ea459b8f25e466fbbca77"
     },
     "tests/testthat.R": {
       "checksum": "c5ec65b13191b44286d84b6c3f332420"

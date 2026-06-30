@@ -12,7 +12,7 @@ draw_ibutt_dropdown_ui <- function(
   width_in="100%"
 ){
 
-  # info_box_contents = get_ibox_contents(ibox_content_label="daily_values_box")
+  # info_box_contents = draw_ibox_ui(ibox_content_label="daily_values_box")
 
   shinyWidgets::dropMenu(
     style="width=600px;",
@@ -23,7 +23,7 @@ draw_ibutt_dropdown_ui <- function(
       size = "xs",
     ),
     width=width_in,
-    get_ibox_contents(ibox_content_label),
+    draw_ibox_ui(ibox_content_label),
     # info_box_contents,
     placement = "left-start"
   )

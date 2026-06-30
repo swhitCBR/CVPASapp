@@ -25,15 +25,62 @@ minor
 fs::dir_tree(type="directory")
 ```
 
+## Development notes
+
+### good prefix defs
+"draw" means create a user interface
+"get" means to look up content to place somewhere
+"utils" means general tool used in many places
+
+### good suffix defs
+"txt" mean character string
+"ui" means R shiny UI code (tagList())
+
+### /R basic package functions
+data.R
+
+### /R basic shiny functions
+app_server.R
+app_ui.R
+run_app.R
+
+### /R golem and extra shiny package functions
+data.R
+
+## Alterations
+- maybe "ggplot" should be a suffix and not a prefix
+- choose either "details" or "deets" probably should do details
+- get rid of "extract" prefix because and use "get" or "calc"
+- These utils functions are weird: "utils_plotting.R","utils_prep_datasets.R"
+
+
+```{r,
+# library(data.tree)
+
+# acme <- Node$new("Acme Inc.")
+#   accounting <- acme$AddChild("Accounting")
+#     software <- accounting$AddChild("New Software")
+#     standards <- accounting$AddChild("New Accounting Standards")
+#   research <- acme$AddChild("Research")
+#     newProductLine <- research$AddChild("New Product Line")
+#     newLabs <- research$AddChild("New Labs")
+#   it <- acme$AddChild("IT")
+#     outsource <- it$AddChild("Outsource")
+#     agile <- it$AddChild("Go agile")
+#     goToR <- it$AddChild("Switch to R")
+
+```
+
+
 ## Running the app
 
 ```{r, eval = FALSE}
 
 # loads all of the required functions into your environment
-devtools::load_all("CVPASapp")
+# devtools::load_all("CVPASapp")
 
-launches the application
-CVPASapp::run_app()
+# launches the application
+# CVPASapp::run_app()
 ```
 
 This README has been compiled on the
@@ -43,5 +90,5 @@ Sys.time()
 ```
 
 ```{r echo = FALSE}
-unloadNamespace("CVPASapp")
+# unloadNamespace("CVPASapp")
 ```

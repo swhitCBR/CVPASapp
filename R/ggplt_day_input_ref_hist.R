@@ -1,4 +1,4 @@
-#' ggplt_day_input_ref_hist
+#' ggplot_day_input_ref_hist
 #'
 #' @param DOY_arvDF_l_in day of year arrivals from 2011-2016 studies
 #' @param LOC_in TCJ or HOR
@@ -11,7 +11,7 @@
 #' @return The return value, if any, from executing the utility.
 #'
 #' @noRd
-ggplt_day_input_ref_hist <- function(
+ggplot_day_input_ref_hist <- function(
     DOY_arvDF_l_in,
     LOC_in,
     start_day_in,

@@ -1,9 +1,11 @@
 #' create ui for estimate panels
 #'
-#' @returns
+#' @returns a `shiny.tag` object inside a `shinydashboardPlus::box()``
 #'
 #' @export
+#' 
 #' @examples
+#' draw_estimates_panel_ui()
 #' 
 draw_estimates_panel_ui <- function() {
   shinydashboardPlus::box(
@@ -23,9 +25,6 @@ draw_estimates_panel_ui <- function() {
         style = "color:#28547A;text-decoration: underline;padding-left: 10px;"
       ),
       div(
-        ##ALT## wide vs. long display of overall survival plots
-        # style = "padding-left: 20px;padding-right:10px;"
-        # equal width alternative
         style = "display:grid; grid-template-columns: repeat(3, 1fr); padding-left: 10px;padding-right:10px;",
         div(
           span(h4(
@@ -36,8 +35,9 @@ draw_estimates_panel_ui <- function() {
             <div class="hover-container">
             <a>(all routes) </a>
               <div class="hover-modal">
-                <p> Estimate accounts for the possibility that smolts are diverted from the main San Joaquin River along the route
-                the Old/Middle River route (ORE), which diverges at the Head of Old River junction (HOR), or into Turner Cut at the 
+                <p> Estimate accounts for the possibility that smolts are diverted from the main
+               San Joaquin River along the route the Old/Middle River route (ORE), which diverges
+                at the Head of Old River junction (HOR), or into Turner Cut at the 
                 Turner Cut junction (TCJ) further downstream. </p>
               </div>
             </div>
@@ -59,8 +59,6 @@ draw_estimates_panel_ui <- function() {
               )
             ),
             plotOutput("HOR_TCJ_pred_ggpplt_s_tot")
-            
-
           )
         )
       ),
@@ -77,6 +75,9 @@ draw_estimates_panel_ui <- function() {
               <strong>Reach Survival: </strong>
                HOR to TCJ (via SJR)</h4>'
           ),
+          strong(
+            style="font-weight: normal; padding-left: 10px;",
+            HOR to TCJ (via SJR)),
           div(
             plotOutput("HOR_TCJ_pred_ggpplt_rs1", height = "400px")
           )

@@ -4,15 +4,15 @@
 #' @param doy_rng_in range of days of year to include
 #' @param pst_year_in previous water year by which to subset the data
 #'
-#' @returns
+#' @returns ggplot object
+#' 
 #' @export
 #'
-#' @examples
+#' 
 ggplot_doy_pred_plt <- function(
     HOR_TCJ_pred_tab_plt,
     doy_rng_in=c(10,100),
-    pst_year_in="2012"#,
-    # disp_SE=TRUE
+    pst_year_in="2012"
 ){
   doy_int1 <- doy_rng_in[1]
   doy_int2 <- doy_rng_in[2]

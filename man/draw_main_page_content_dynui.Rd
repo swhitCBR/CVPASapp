@@ -4,11 +4,18 @@
 \alias{draw_main_page_content_dynui}
 \title{Title}
 \usage{
-draw_main_page_content_dynui(input_tab_in = input$tabs)
+draw_main_page_content_dynui(input_tab_in = "about", init_data_source_in)
 }
 \arguments{
 \item{input_tab_in}{}
 }
+\value{
+ui output based on \code{uiOutput} \link[htmltools:tagList]{htmltools::tagList}
+}
 \description{
 Title
+}
+\examples{
+draw_main_page_content_dynui()
+
 }

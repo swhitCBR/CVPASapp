@@ -48,7 +48,9 @@ place somewhere “utils” means general tool used in many places
 
 ### good suffix defs
 
-“txt” mean character string “ui” means R shiny UI code (tagList())
+“txt” mean character string “ui” means R shiny UI code (tagList()); also
+called “shiny.tag” see
+<https://shiny.posit.co/py/api/core/TagTypes.html>
 
 ### /R basic package functions
 
@@ -106,5 +108,5 @@ This README has been compiled on the
 
 ``` r
 Sys.time()
-#> [1] "2026-06-30 11:13:24 PDT"
+#> [1] "2026-06-30 11:35:23 PDT"
 ```

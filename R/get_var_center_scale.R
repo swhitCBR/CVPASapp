@@ -1,4 +1,5 @@
-
+#' Title
+#'
 #' @details Extract and scaled variable information
 #'
 #' @param TMB_mod_ls named list containing pre-existing TMB models

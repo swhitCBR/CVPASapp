@@ -1,10 +1,12 @@
 #' Title
 #'
-#' @returns
+#' @returns a `shiny.tag` with a `tags$details` object
 #' @export
 #'
 #' @examples
-draw_upload_deet_ui <- function(){
+#' draw_upload_details_ui()
+#' 
+draw_upload_details_ui <- function(){
   tags$details(
     id = "details_up",
     # open=ifelse(

@@ -6,6 +6,13 @@
 \usage{
 draw_dashboard_header_ui()
 }
+\value{
+shinydashboard header panel shinyUI code (i.e., within \code{shiny::tagList()})
+}
 \description{
 Title
+}
+\examples{
+draw_dashboard_header_ui()
+
 }

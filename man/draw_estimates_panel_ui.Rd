@@ -6,6 +6,13 @@
 \usage{
 draw_estimates_panel_ui()
 }
+\value{
+a \code{shiny.tag} object inside a `shinydashboardPlus::box()``
+}
 \description{
 create ui for estimate panels
+}
+\examples{
+draw_estimates_panel_ui()
+
 }

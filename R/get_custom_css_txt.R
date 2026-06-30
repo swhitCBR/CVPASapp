@@ -1,6 +1,3 @@
-#    tags$head(
-#   tags$style(HTML(
-
 # Custom CSS that does not work if it's in the 'custom.css' file alone
 #' Title
 #'
@@ -10,6 +7,8 @@
 #'
 #' @export
 #' @examples
+#' get_custom_css_txt()
+#' 
 get_custom_css_txt <- function(css_txt_content="sidebar"){
     if(css_txt_content=="sidebar"){
     tmp_txt <- "

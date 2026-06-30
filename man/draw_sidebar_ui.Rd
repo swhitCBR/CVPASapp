@@ -20,12 +20,5 @@ draw_sidebar_ui()
 
 
 }
-\seealso{
-Other {ui builders }: 
-\code{\link{draw_start_loc_ui}()}
-
-Other {front-end functions }: 
-\code{\link{draw_start_loc_ui}()}
-}
-\concept{{front-end functions }}
-\concept{{ui builders }}
+\concept{${front-end functions }}
+\concept{${ui builders }}

@@ -1,4 +1,5 @@
-
+#' Title
+#'
 #' @details wrapper for generating HOR-TCJ survival predictions
 #'
 #' @param HOR_TCJ_mod_ls named list with aic table and list of models
@@ -30,9 +31,9 @@ HOR_TCJ_mod_wrap <- function(HOR_TCJ_mod_ls,
   # print(aic_avg_tb)
   aic_avg_tb_wts <- aic_avg_tb |> dplyr::mutate(AICwt=exp(-0.5*dAIC)/sum(exp(-0.5*aic_avg_tb$dAIC)))
   
-  # tmp_ls <- extract_glmmTMB_ests()
+  # tmp_ls <- get_glmmTMB_ests()
   
-  tmp_HOR_TCJ_preds1 <- extract_glmmTMB_ests(sel_data_in = sel_rows_tmp4,
+  tmp_HOR_TCJ_preds1 <- get_glmmTMB_ests(sel_data_in = sel_rows_tmp4,
                                              aic_avg_tb_wts_in=aic_avg_tb_wts,
                                              glmmTMB_res_ls_in=HOR_TCJ_mod_ls)
   

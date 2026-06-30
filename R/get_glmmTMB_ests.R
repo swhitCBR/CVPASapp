@@ -5,11 +5,17 @@
 #' @param sel_data_in 
 #' @param aic_avg_tb_wts_in 
 #'
-#' @returns
+#' @returns named list of model objects
 #' @export
 #'
 #' @examples
-extract_glmmTMB_ests <- function(glmmTMB_res_ls_in,
+#' \dontrun{
+#' # This code will not be run automatically
+#' get_glmmTMB_ests()
+#' }
+#' 
+#' 
+get_glmmTMB_ests <- function(glmmTMB_res_ls_in,
                                  mods_obj_nm='HOR_TCJ_d2_mods',
                                  sel_data_in=sel_rows_tmp4,
                                  aic_avg_tb_wts_in=aic_avg_tb_wts){

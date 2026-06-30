@@ -1,8 +1,10 @@
 #' Title
 #'
-#' @returns
+#' @returns method and refernce page as a  [htmltools::tagList]
+#' 
 #' @export
-#'
+#' 
+#' 
 draw_met_ref_page_ui <- function(){
   shiny::tagList(
   fluidRow(

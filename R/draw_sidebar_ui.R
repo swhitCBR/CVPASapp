@@ -5,9 +5,6 @@
 #' @details 
 #' calls [get_custom_css_txt()] for special formatting
 #'
-#' @family {ui builders }
-#' @family {front-end functions }
-#' 
 #' @export 
 #' 
 #' @examples

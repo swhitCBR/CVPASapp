@@ -15,3 +15,7 @@ get_custom_css_txt(css_txt_content = "sidebar")
 \description{
 Title
 }
+\examples{
+get_custom_css_txt()
+
+}

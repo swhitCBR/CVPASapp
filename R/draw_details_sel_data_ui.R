@@ -1,3 +1,11 @@
+#' Title
+#'
+#' @returns  a `shiny.tag` with a `tags$details` object
+#'
+#' @export
+#' @examples
+#' draw_details_sel_data_ui()
+#' 
 draw_details_sel_data_ui <- function(){
   tags$details(
       id = "details_prev_yr",
@@ -45,10 +53,12 @@ draw_details_sel_data_ui <- function(){
                             choicesOpt = list(
                               style = paste0(
                                 "background-color:",
-                                WYT_cols[match(
-                                  ann_HORbar_WYT_data$WYT,
-                                  names(WYT_cols)
-                                )],
+                                mtch_WYT()
+                                # WYT_cols[match(
+                                #   ann_HORbar_WYT_data$WYT,
+                                #   names(WYT_cols)
+                                # )]
+                                ,
                                 ";"
                               )
                             )
@@ -164,3 +174,8 @@ draw_details_sel_data_ui <- function(){
       # shiny::uiOutput("prev_yr_ui")
     )
 }
+
+
+
+
+

@@ -8,16 +8,7 @@
   init_bar <- "Out"
   init_flength <- 244
 
-  
-  
-# Water Year Type Labels and selections 
-  WYT_cols <- c("#3399FF",  "#99EEFF", "#FFFFCC","#FFCC66", "#FF5500")
-  names(WYT_cols) <- c(
-      "Wet",
-      "Above Normal",
-      "Below Normal",
-      "Dry",
-      "Critical") # new addition
+WYT_cols <- utils_get_WYT_cols_vec()
 
   wyt_type_opt <- c(
       "Wet" = "Wet",
@@ -116,16 +107,16 @@ ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in
 
     # .svg plot read_in
     HOR_CHP_xml <- xml2::read_xml(
-      "inst/app/www/images/svg/basic route schematic/HOR_CHP.svg"
+      "inst/app/www/images/svg/basic_route_schematic/HOR_CHP.svg"
     )
     HOR_CHP_bar_in_xml <- xml2::read_xml(
-      "inst/app/www/images/svg/basic route schematic/HOR_CHP_bar_in.svg"
+      "inst/app/www/images/svg/basic_route_schematic/HOR_CHP_bar_in.svg"
     )
     TCJ_CHP_xml <- xml2::read_xml(
-      "inst/app/www/images/svg/basic route schematic/TCJ_CHP.svg"
+      "inst/app/www/images/svg/basic_route_schematic/TCJ_CHP.svg"
     )
     TCJ_CHP_bar_in_xml <- xml2::read_xml(
-      "inst/app/www/images/svg/basic route schematic/TCJ_CHP_bar_in.svg"
+      "inst/app/www/images/svg/basic_route_schematic/TCJ_CHP_bar_in.svg"
     )
 
     barrier_opt <- c("In" = "In", "Out" = "Out")

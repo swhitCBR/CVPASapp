@@ -34,7 +34,7 @@ fs::dir_tree(type="directory")
 
 ### good suffix defs
 "txt" mean character string
-"ui" means R shiny UI code (tagList())
+"ui" means R shiny UI code (tagList()); also called "shiny.tag"  see https://shiny.posit.co/py/api/core/TagTypes.html
 
 ### /R basic package functions
 data.R

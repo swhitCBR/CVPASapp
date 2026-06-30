@@ -7,7 +7,7 @@
 app_server <- function(input, output, session) {
 
   # output$dyn_sidebar_txt <- renderText({paste0("You are viewing tab \"", get_dyn_sidebar_txt(input$tabs), "\"")})
-  output$dyn_sidebar_txt <- renderText({paste0(get_sidebar_dyntxt(input$tabs))})
+  output$dyn_sidebar_txt <- renderText({paste0(get_sidebar_txt(input$tabs))})
 
   # autoselect specify starting tab
   # session$onSessionEnded(stopApp)
@@ -40,7 +40,9 @@ app_server <- function(input, output, session) {
 
   output$main_page_content_dynui <- renderUI({
     draw_main_page_content_dynui(
-      input_tab_in= input$tabs)
+      # input_tab_in= input$tabs,init_data_source_in=init_data_source_in
+      input_tab_in= input$tabs,init_data_source_in="Previous year"
+      )
   })
 
 

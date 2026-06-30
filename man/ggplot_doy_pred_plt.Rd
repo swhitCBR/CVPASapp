@@ -17,6 +17,9 @@ ggplot_doy_pred_plt(
 
 \item{pst_year_in}{previous water year by which to subset the data}
 }
+\value{
+ggplot object
+}
 \description{
 Title
 }

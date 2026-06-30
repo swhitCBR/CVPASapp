@@ -14,7 +14,7 @@ draw_basic_route_schematic_svg <- function(
         tags$img(
             src =  file.path(
                 img_pth,
-                "basic route schematic",
+                "basic_route_schematic",
                 paste0(concat_name, ".svg")
             ),
         title=title_in,

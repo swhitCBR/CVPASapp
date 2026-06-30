@@ -1,9 +1,12 @@
 #' Title
 #'
-#' @returns
+#' @returns shinydashboard header panel shinyUI code (i.e., within `shiny::tagList()`)
+#' 
 #' @export
 #'
 #' @examples
+#' draw_dashboard_header_ui()
+#' 
 draw_dashboard_header_ui <- function() {
   tagList(
     actionButton(

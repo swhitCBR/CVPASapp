@@ -6,6 +6,9 @@
 \usage{
 draw_met_ref_page_ui()
 }
+\value{
+method and refernce page as a  \link[htmltools:tagList]{htmltools::tagList}
+}
 \description{
 Title
 }

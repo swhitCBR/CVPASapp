@@ -1,4 +1,16 @@
-draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse){
+  #' Title
+  #'
+  #' @param input_tab_in input$tabs
+  #' @param init_data_source_in data source object
+  #'
+  #' @returns a `shiny.tag` object inside a `shinydashboardPlus::box()``
+  #'
+  #' @export
+  #' 
+  #' @examples
+  #' draw_inputs_panel_ui(init_data_source="Previous years")
+  #' 
+draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse,init_data_source_in){
     shinydashboardPlus::box(
       id = "input_box2",
       title = span(h2("Inputs",style="margin-top: 0px; margin-bottom: 0px;"),id="input_box2_title"),
@@ -6,7 +18,6 @@ draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse){
       status = "primary",
       collapsible = T,
       collapsed = FALSE,
-      # tags$head(tags$style(HTML(get_custom_css_txt(css_txt_content="sidebar")))),
         width = 12,
       column(
         width = 7,
@@ -22,7 +33,6 @@ draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse){
               tags$li(
                 style = "list-style-type: none;",
                 draw_start_loc_ui()
-                # shiny::uiOutput("start_loc_ui")
               )
             )
           ),
@@ -50,15 +60,7 @@ draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse){
                         "None"
                       ),
                       width = "180px",
-                      #      choicesOpt = list(
-                      #       subtext = c(
-                      #       "Inflow",
-                      #       "Outlflow",
-                      #       "Interior flow"
-                      #   )
-                      # )
-                      ,
-                      selected = init_data_source
+                      selected = init_data_source_in
                     )
                   )
                 )
@@ -132,7 +134,7 @@ draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse){
               condition = "input.data_source_picker == 'Uploaded file (.csv)'",
 
             # "Uploaded file (.csv)" = 
-              draw_upload_deet_ui() #shiny::uiOutput("upload_deet_ui")
+              draw_upload_details_ui() #shiny::uiOutput("upload_deet_ui")
           )
         )
           ,

@@ -15,12 +15,9 @@ R shiny UI elements
 \description{
 Title
 }
-\seealso{
-Other {ui builders }: 
-\code{\link{draw_sidebar_ui}()}
+\examples{
+draw_start_loc_ui()
 
-Other {front-end functions }: 
-\code{\link{draw_sidebar_ui}()}
 }
 \concept{{front-end functions }}
 \concept{{ui builders }}

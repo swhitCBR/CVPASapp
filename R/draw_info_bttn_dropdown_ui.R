@@ -2,10 +2,11 @@
 #'
 #' @param inputId_in 
 #'
-#' @returns
+#' @returns `shiny.tag` object inside a [shinyWidgets::dropMenu]
+#' 
 #' @export
 #'
-#' @examples
+#' 
 draw_ibutt_dropdown_ui <- function(
   inputId_in,
   ibox_content_label="daily_values_box",

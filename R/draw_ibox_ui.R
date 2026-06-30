@@ -1,14 +1,16 @@
+#' Title
 #' 
-#' 
-#' @details lookup content to place in box or well panel. If name is not recognized than an HTML paragraph `<p> placeholder </p>` is used
+#' @details lookup content to place in box or well panel. If name is not recognized than an HTML
+#'  paragraph `<p> placeholder </p>` is used. See https://shiny.posit.co/py/api/core/TagTypes.html
 #' 
 #' @param box_content_in specific text referring to a predefined HTML or shiny-renderable objected in a named list
 #'
 #' @returns HTML object displayed to display when information button 'ibutt' is clicked or in the help
 #' 
-#'
 #' @export
+#' 
 #' @examples
+#' draw_ibox_ui()
 #' 
 #' 
 draw_ibox_ui <- function(box_content_in="daily_values_box"){

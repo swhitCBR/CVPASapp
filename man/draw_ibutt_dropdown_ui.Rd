@@ -13,6 +13,9 @@ draw_ibutt_dropdown_ui(
 \arguments{
 \item{inputId_in}{}
 }
+\value{
+\code{shiny.tag} object inside a \link[shinyWidgets:dropMenu]{shinyWidgets::dropMenu}
+}
 \description{
 Title
 }

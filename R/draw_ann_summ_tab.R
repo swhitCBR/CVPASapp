@@ -24,7 +24,7 @@ draw_ann_summ_tab <- function(input_year=input$year_picker){
     ) |>
       DT::formatStyle(
         'WYT',
-        backgroundColor = DT::styleEqual(wyt_type_opt, WYT_cols)
+        backgroundColor = DT::styleEqual(wyt_type_opt, utils_get_WYT_cols_vec())
       ) |>
       DT::formatStyle(
         'Model',

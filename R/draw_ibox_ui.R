@@ -11,7 +11,7 @@
 #' @examples
 #' 
 #' 
-get_ibox_contents <- function(box_content_in="daily_values_box"){
+draw_ibox_ui <- function(box_content_in="daily_values_box"){
 
   if(box_content_in=="total_surv_ibox"){
    return(

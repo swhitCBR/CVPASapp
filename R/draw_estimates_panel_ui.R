@@ -22,93 +22,17 @@ draw_estimates_panel_ui <- function() {
     fluidRow(
       draw_ovr_surv_est_sec_ui()
       ,
-      # section break
-      hr(),
-      draw_reach_surv_est_sec_ui()
-    ,
-      hr(),
-      draw_reach_spec_surv_est_sec_ui()
+      hr()
       ,
-      # div(
-      #   id = "route_spec_surv_panel",
-      #   ##ALT## wide vs. long display of overall survival plots
-      #   # style = "padding-left: 20px;padding-right:10px;"
-      #   # equal width alternative
-      #   style = "display:grid; grid-template-columns: repeat(3, 1fr); padding-left: 10px;padding-right:10px;",
-      #   # style = "display:grid; grid-template-columns: repeat(2, 1fr); padding-left: 10px;padding-right:10px;",
-      #   # flexible width alternative
-      #   # style = "display:flex; justify-content: space-evenly;padding-left: 10px;padding-right:10px;",
-
-      #   # div(
-      #   #   HTML(
-      #   #     '<h4 style="font-weight: normal; padding-left: 10px;">
-      #   #       <strong>Route-Specific Survival: </strong>
-      #   #       Head of Old River to CHP via SJR route</h4>'
-      #   #   ),
-      #   #   div(
-      #   #     plotOutput("HOR_TCJ_pred_ggpplt_dup1b", height = "400px")
-      #   #   )
-      #   # ),
-      #   # div(
-      #   #   HTML(
-      #   #     '<h4 style="font-weight: normal; padding-left: 10px;">
-      #   #       <strong>Route-Specific Survival: </strong>
-      #   #       Head of Old River to CHP via ORE route</h4>'
-      #   #   ),
-      #   #   div(
-      #   #     plotOutput("HOR_TCJ_pred_ggpplt_dup1a", height = "400px")
-      #   #   )
-      #   # ),
-      #   div(
-      #     HTML(
-      #       '<h4 style="font-weight: normal; padding-left: 10px;">
-      #         <strong>Route-Specific Survival: </strong>
-      #         Turner Cut Junction to CHP via SJR route</h4>'
-      #     ),
-      #     div(
-      #       plotOutput("HOR_TCJ_pred_ggpplt_dup1e", height = "400px")
-      #     )
-      #   ),
-      #   div(
-      #     HTML(
-      #       '<h4 style="font-weight: normal; padding-left: 10px;">
-      #         <strong>Route-Specific Survival: </strong>
-      #         Turner Cut Junction to CHP via TRN route</h4>'
-      #     ),
-      #     div(
-      #       plotOutput("HOR_TCJ_pred_ggpplt_dup1c", height = "400px")
-      #     )
-      #   )
-      # )
-      # ,
-      hr(),
-      div(
-        style = "padding-left: 10px;",
-        id = "route_usage_panel",
-        h3(
-          paste0("Route Usage"),
-          style = "color:#006400;text-decoration: underline;"
-        ),
-        column(
-          width = 6,
-          HTML(
-            '<h4 style="font-weight: normal; padding-left: 10px;">
-              <strong>At Head of Old River</strong>
-               </h4>'
-          ),
-          plotOutput("HOR_TCJ_pred_ggpplt_dup1d", height = "400px")
-        ),
-        column(
-          width = 6,
-          HTML(
-            '<h4 style="font-weight: normal; padding-left: 10px;">
-              <strong>At Turner Cut Junction </strong>
-               </h4>'
-          ),
-          plotOutput("HOR_TCJ_pred_ggpplt_dup1d2", height = "400px")
-        )
-        # Blue: #4E79A7 (Steel Blue)Orange: #F28E2B (Burnt Orange)
-      )
+      draw_reach_surv_est_sec_ui()
+      ,
+      hr()
+      ,
+      draw_rte_spec_surv_est_sec_ui()
+      ,
+      hr()
+      ,
+      draw_rte_use_est_sec_ui()
     ),
     footer = div(
       style = "display: none;",

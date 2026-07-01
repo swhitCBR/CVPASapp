@@ -12,6 +12,7 @@
 #' 
 #' 
 draw_sidebar_ui <- function() {
+  shinydashboard::dashboardSidebar(
         tagList(
           tags$head(
             tags$style(HTML(get_custom_css_txt(css_txt_content="sidebar"))
@@ -54,6 +55,11 @@ draw_sidebar_ui <- function() {
           tabName = "overall_surv",
           icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),
           selected = F),
+        shinydashboard::menuSubItem(
+          "Reach survival",
+          tabName = "reach_surv",
+          icon=HTML('<i class="fa-solid fa-solidLarge fa-angle-right">‌</i>'),
+                    selected = F),
         shinydashboard::menuSubItem(
           "Route-specific survival",
           tabName = "route_spec_surv",
@@ -101,4 +107,5 @@ draw_sidebar_ui <- function() {
         # actionButton("load_butt", "Load")
         )
       )
+    )
       }

@@ -19,15 +19,16 @@ app_server <- function(input, output, session) {
 
   ### Tab switching behavior  ----
   observeEvent(input$tabs, {
-    tab_selected(input$tabs)
+    tab_selected(input$tabs) # changes tab
     print(input$tabs)
     # scrollIntoView options
-    if(input$tabs=="check"){shinyjs::runjs("document.getElementById('details_indiv').scrollIntoView({ behavior: 'smooth', block: 'start' });")}
-    if(input$tabs=="inputs"){shinyjs::runjs("document.getElementById('inputTop').scrollIntoView({ behavior: 'smooth', block: 'start' });")}
-    if(input$tabs=="overall_surv"){shinyjs::runjs("document.getElementById('est_box_ui').scrollIntoView({ behavior: 'smooth' });")}
-    if(input$tabs=="route_spec_surv"){shinyjs::runjs("document.getElementById('route_spec_surv_panel').scrollIntoView({ behavior: 'smooth' });")}
-    if(input$tabs=="route_usage"){shinyjs::runjs("document.getElementById('route_usage_panel').scrollIntoView({ behavior: 'smooth' });")}
-    if(input$tabs=="more_info"){shinyjs::runjs("document.getElementById('more_info_panel').scrollIntoView({ behavior: 'smooth' });")}
+    if(input$tabs=="check"){shinyjs::runjs("window.scrollTo({top: document.getElementById('details_indiv').getBoundingClientRect().top + window.scrollY - 75, behavior: 'smooth'});")}
+    if(input$tabs=="inputs"){shinyjs::runjs("window.scrollTo({top: document.getElementById('inputTop').getBoundingClientRect().top + window.scrollY - 75, behavior: 'smooth'});")}
+    if(input$tabs=="overall_surv"){shinyjs::runjs("window.scrollTo({top: document.getElementById('overall_surv_panel').getBoundingClientRect().top + window.scrollY - 75, behavior: 'smooth'});")}
+    if(input$tabs=="reach_surv"){shinyjs::runjs("window.scrollTo({top: document.getElementById('reach_surv_panel').getBoundingClientRect().top + window.scrollY - 75, behavior: 'smooth'});")}
+    if(input$tabs=="route_spec_surv"){shinyjs::runjs("window.scrollTo({top: document.getElementById('route_spec_surv_panel').getBoundingClientRect().top + window.scrollY - 75, behavior: 'smooth'});")}
+    if(input$tabs=="route_usage"){shinyjs::runjs("window.scrollTo({top: document.getElementById('route_usage_panel').getBoundingClientRect().top + window.scrollY - 75, behavior: 'smooth'});")}
+    # if(input$tabs=="more_info"){shinyjs::runjs("window.scrollTo({top: document.getElementById('more_info').getBoundingClientRect().top + window.scrollY - 75, behavior: 'smooth'});")}
   })
 
   output$sel_in_ls_text = renderText({

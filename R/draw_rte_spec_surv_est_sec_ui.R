@@ -1,9 +1,24 @@
 
- draw_rte_spec_surv_est_sec_ui <- function(
-  plots_in=list("HOR_TCJ_pred_ggpplt_dup1b","HOR_TCJ_pred_ggpplt_dup1a","HOR_TCJ_pred_ggpplt_dup1e","HOR_TCJ_pred_ggpplt_dup1c")){
+#' Title
+#'
+#' @param plots_in
+#'
+#' @returns
+#'
+#' @export
+#' @examples
+#' draw_rte_spec_surv_est_sec_ui()
+#' 
+draw_rte_spec_surv_est_sec_ui <- function(
+  plots_in=list(
+    "HOR_TCJ_pred_ggpplt_dup1b",
+    "HOR_TCJ_pred_ggpplt_dup1a",
+    "HOR_TCJ_pred_ggpplt_dup1e",
+    "HOR_TCJ_pred_ggpplt_dup1c")){
   tagList(
       div(
-      h3(paste0("Reach-Specific Survival"),style = "color:#28547A;text-decoration: underline;padding-left: 10px;"),
+      id='route_spec_surv_panel',
+      h3(paste0("Route-Specific Survival"),style = "color:#28547A;text-decoration: underline;padding-left: 10px;"),
       div(
         style = "display:grid; grid-template-columns: repeat(2, 1fr); padding-left: 10px;padding-right:10px;",
         div(

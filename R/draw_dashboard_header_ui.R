@@ -7,8 +7,11 @@
 #' @examples
 #' draw_dashboard_header_ui()
 #' 
-draw_dashboard_header_ui <- function() {
-  tagList(
+draw_dashboard_header_ui <- function(){
+shinydashboardPlus::dashboardHeader(
+      title = "CVPAS - Steelhead",
+      # the leftUi container hacked so it can s
+      leftUi =  tagList(
     actionButton(
       inputId = "top_about_butt",
       label = "About",
@@ -36,4 +39,8 @@ draw_dashboard_header_ui <- function() {
       )
     )
   )
+)
 }
+
+
+

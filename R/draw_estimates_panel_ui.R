@@ -20,18 +20,22 @@ draw_estimates_panel_ui <- function() {
     collapsed = FALSE,
     width = 12,
     fluidRow(
+      # Overall Survival
       draw_ovr_surv_est_sec_ui()
       ,
       hr()
       ,
+      # Reach Survival 
       draw_reach_surv_est_sec_ui()
       ,
       hr()
       ,
+      # Route-Specific Survival
       draw_rte_spec_surv_est_sec_ui()
       ,
       hr()
       ,
+      # Route Use
       draw_rte_use_est_sec_ui()
     ),
     footer = div(

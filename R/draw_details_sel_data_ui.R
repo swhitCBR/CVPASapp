@@ -53,11 +53,7 @@ draw_details_sel_data_ui <- function(){
                             choicesOpt = list(
                               style = paste0(
                                 "background-color:",
-                                mtch_WYT()
-                                # WYT_cols[match(
-                                #   ann_HORbar_WYT_data$WYT,
-                                #   names(WYT_cols)
-                                # )]
+                                get_mtch_WYT_txt(intab=ann_HORbar_WYT_data)
                                 ,
                                 ";"
                               )

@@ -20,5 +20,3 @@ draw_sidebar_ui()
 
 
 }
-\concept{${front-end functions }}
-\concept{${ui builders }}

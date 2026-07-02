@@ -1,6 +1,5 @@
-# init_tab <- "inputs"
-
 # Initial values
+  init_data_source <- "Previous year"
   init_water_year <- 2013
   init_DOY <- c(45, 135)
   init_WYT_type <- "Wet"
@@ -16,48 +15,6 @@
       "Below Normal" = "Below Normal",
       "Dry" = "Dry",
       "Critical" = "Critical")
-
-  RV_text_fun <- function(heading="replace_me",RVls_in,sep_in="\n   "){
-    if(heading!="none"){
-    paste(
-      heading,
-      paste0(
-        "start_day - end_day : \n\t",
-        RVls_in[["start_day"]], #global_reactive$start_day,
-        " - ",
-        RVls_in[["end_day"]] #global_reactive$end_day
-      ),
-      paste0("flength : ", RVls_in[["flength"]]),
-      paste0(
-        "past_water_year : ",
-        RVls_in[["past_water_year"]]
-      ),
-      paste0("WYT : ", RVls_in[["WYT"]]),
-      paste0("BAR : ", RVls_in[["BAR"]]),
-      paste0("LOC : ", RVls_in[["LOC"]]),
-      sep = sep_in
-    )
-  } else{
-     paste(
-      paste0(
-        "start_day - end_day : ",
-        RVls_in[["start_day"]], #global_reactive$start_day,
-        " - ",
-        RVls_in[["end_day"]] #global_reactive$end_day
-      ),
-      paste0("flength : ", RVls_in[["flength"]]),
-      paste0(
-        "past_water_year : ",
-        RVls_in[["past_water_year"]]
-      ),
-      paste0("WYT : ", RVls_in[["WYT"]]),
-      paste0("BAR : ", RVls_in[["BAR"]]),
-      paste0("LOC : ", RVls_in[["LOC"]]),
-      sep = "\n"
-    )
-  }
-
-}
 
   in_selected_RV <- reactiveValues(
     # past water year should be NA to start otherwise app flickers
@@ -96,24 +53,20 @@
     LOC = init_start_loc,
     BAR = init_bar
   )
-  
-# results_RV <- reactiveValues(
-#   global <- reactiveValues(
-# )
 
 # prepare data stored in package for creation of Datatable in app
 ann_HORbar_WYT_data_TAB <- reactiveVal(CVPASapp:::past_year_tab_prep(ann_data_in = ann_HORbar_WYT_data))
 
 # .svg plot read_in
-HOR_CHP_xml <- xml2::read_xml("inst/app/www/images/svg/basic_route_schematic/HOR_CHP.svg")
-HOR_CHP_bar_in_xml <- xml2::read_xml("inst/app/www/images/svg/basic_route_schematic/HOR_CHP_bar_in.svg")
-TCJ_CHP_xml <- xml2::read_xml("inst/app/www/images/svg/basic_route_schematic/TCJ_CHP.svg")
-TCJ_CHP_bar_in_xml <- xml2::read_xml("inst/app/www/images/svg/basic_route_schematic/TCJ_CHP_bar_in.svg")
+# HOR_CHP_xml <- xml2::read_xml("inst/app/www/images/svg/basic_route_schematic/HOR_CHP.svg")
+# HOR_CHP_bar_in_xml <- xml2::read_xml("inst/app/www/images/svg/basic_route_schematic/HOR_CHP_bar_in.svg")
+# TCJ_CHP_xml <- xml2::read_xml("inst/app/www/images/svg/basic_route_schematic/TCJ_CHP.svg")
+# TCJ_CHP_bar_in_xml <- xml2::read_xml("inst/app/www/images/svg/basic_route_schematic/TCJ_CHP_bar_in.svg")
 surv_route_diagram_wtt_xml <- xml2::read_xml("inst/app/www/met_and_ref/surv_route_diagram_wtt.svg")
 
 barrier_opt <- c("In" = "In", "Out" = "Out")
 barrier_label <- "HOR Barrier:"
 loc_opt <- c('Head of Old River (HOR)' = "HOR",'Turner Cut Junction (TCJ)' = "TCJ")
 
-init_data_source <- "Previous year"
+
 

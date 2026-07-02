@@ -18,7 +18,7 @@ draw_sidebar_ui <- function() {
             tags$style(HTML(get_custom_css_txt(css_txt_content="sidebar"))
           )
         ),
-          collapsed = FALSE, # Set the sidebar to be collapsed by default
+          # collapsed = FALSE, # Set the sidebar to be collapsed by default
           shinydashboard::sidebarMenu(
       id = "tabs",
       shinydashboard::menuItem(
@@ -101,8 +101,8 @@ draw_sidebar_ui <- function() {
           textOutput("dyn_sidebar_txt")
         )
         ### FOR DEBUGGING ###
-        # ,
-        # verbatimTextOutput("sel_in_ls_text")
+        ,
+        verbatimTextOutput("sel_in_ls_text")
         # ,
         # actionButton("load_butt", "Load")
         )

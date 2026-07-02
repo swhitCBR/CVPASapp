@@ -40,6 +40,18 @@ app_ui <- function(request) {
       #   draw_sidebar_ui()
       # ),
       body = shinydashboard::dashboardBody(
+            tags$head(
+              tags$style(HTML("
+                /* Change the sidebar toggle icon */
+                .main-header .sidebar-toggle:before {
+                  content: '\\f7a5' !important;
+                  /*content: '\\f05f0db5' !important;  windows */
+                  /*content: '\\f055' !important;  plus sign */
+                  /* content: '\\f7a5' !important;  Example: arrow-circle-left */
+                  font-family: 'Font Awesome 5 Free' !important;
+                }
+              "))
+            ),
         ##ALT## {prevents the sidebar from scrollling with rest of page}
         ## {causes a seemingly minor error in the javascript that has to do with 'slim-slider'}
         tags$script(HTML("$('body').addClass('fixed');")),
@@ -47,7 +59,11 @@ app_ui <- function(request) {
         # adds CSS CBR global theme
         fresh::use_theme(CBRtheme),
         tagList(
-          h2("CVPAS - South Delta Central Valley Steelhead Survival and Routing Predictions",id="inputTop")
+          h2(
+            style="padding-left:15px;",
+            id="inputTop",
+            "CVPAS - South Delta Central Valley Steelhead Survival and Routing Predictions"
+          )
           ,
           hr()
           ,

@@ -32,7 +32,7 @@ app_server <- function(input, output, session) {
   })
 
   output$sel_in_ls_text = renderText({
-    RV_text_fun(
+    get_rv_ls_txt(
       heading = "Selected",
       RVls_in = shiny::reactiveValuesToList(in_selected_RV))
   })
@@ -101,7 +101,7 @@ app_server <- function(input, output, session) {
 
   # print global (i.e., locked-in values)
   output$glob_in_ls_text = renderText({
-    RV_text_fun(
+    get_rv_ls_txt(
       heading = "none",
       RVls_in = shiny::reactiveValuesToList(in_global_RV)
     )

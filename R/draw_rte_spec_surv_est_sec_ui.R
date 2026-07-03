@@ -7,9 +7,9 @@
 #'
 #' @export
 #' @examples
-#' draw_rte_spec_surv_est_sec_ui()
+#' draw_est_rte_spec_surv_div_ui()
 #' 
-draw_rte_spec_surv_est_sec_ui <- function(
+draw_est_rte_spec_surv_div_ui <- function(
   plots_in=list(
     "HOR_TCJ_pred_ggpplt_dup1b",
     "HOR_TCJ_pred_ggpplt_dup1a",

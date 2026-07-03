@@ -8,9 +8,9 @@
   #' @export
   #' 
   #' @examples
-  #' draw_inputs_panel_ui(init_data_source="Previous years")
+  #' draw_inputs_box_ui(init_data_source="Previous years")
   #' 
-draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse,init_data_source_in,collapsed_in=TRUE){
+draw_inputs_box_ui <- function(inputs_panel_collapse=inputs_panel_collapse,init_data_source_in,collapsed_in=TRUE){
     shinydashboardPlus::box(
       id = "input_box2",
       title = span(h2("Inputs",style="margin-top: 0px; margin-bottom: 0px;"),id="input_box2_title"),
@@ -119,33 +119,23 @@ draw_inputs_panel_ui <- function(inputs_panel_collapse=inputs_panel_collapse,ini
         width = 12,
         style = "margin:10px;",
         tagList(
-          # shiny::uiOutput("data_source_inputs_dynui")
         tagList(
-          # switch(
-            # data_source_selected(),
-            # "None" = NULL,
-            # "Previous year" = 
             conditionalPanel(
               condition = "input.data_source_picker == 'Previous year'",
-              # shiny::uiOutput("details_sel_data_bar")
               draw_details_sel_data_ui()
             ),
             conditionalPanel(
               condition = "input.data_source_picker == 'Uploaded file (.csv)'",
-
-            # "Uploaded file (.csv)" = 
-              draw_upload_details_ui() #shiny::uiOutput("upload_deet_ui")
+              draw_upload_details_ui()
           )
         )
           ,
-
-          # shiny::uiOutput("details_indiv_attrib_ui")
-          draw_details_indiv_attrib_ui()
+          draw_indiv_attribs_details_ui()
         )
       ),
       # footer = uiOutput("chk_input_ui")
       footer = div(
-        style = "display: none;",
+        # style = "display: none;",
         id="checkTop",
         draw_chk_input_ui()
       )

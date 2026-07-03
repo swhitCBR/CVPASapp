@@ -1,4 +1,12 @@
-draw_ann_summ_tab <- function(input_year=input$year_picker){
+#' Title
+#'
+#' @param input_year 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+draw_inputs_ann_summ_dt <- function(input_year=input$year_picker){
   # DT::renderDataTable(
     DT::datatable(
       ann_HORbar_WYT_data_TAB(),

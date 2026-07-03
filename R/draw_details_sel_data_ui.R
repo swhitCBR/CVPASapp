@@ -9,7 +9,7 @@
 draw_details_sel_data_ui <- function(){
   tags$details(
       id = "details_prev_yr",
-      open = TRUE, #ifelse(input$data_source_picker == "Previous year", TRUE, NULL),
+      open = TRUE, 
       style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white; ",
       tags$summary(
         title = "Click to open or close",
@@ -79,7 +79,6 @@ draw_details_sel_data_ui <- function(){
             div(
               shiny::uiOutput("start_date_entry_sep_ui"),
               div(
-                # style = "display: flex; gap:20px;",
                 shinyWidgets::dropMenu(
                   hideOnClick = FALSE,
                   placement = "bottom",
@@ -101,7 +100,6 @@ draw_details_sel_data_ui <- function(){
           div(
             # for resizing table height
             style = "border: solid 1px black; margin:10px;",
-            # style = "border: solid 2px black; margin:10px;height:525px;",
             span(
               style = "display:flex; justify-content: space-between;padding-left: 10px;padding-right: 10px; align-items:center; border-bottom: solid 1px black;",
               title = "summary table of characteristics across years (2011-2024)",
@@ -167,7 +165,6 @@ draw_details_sel_data_ui <- function(){
         )
       )
     )
-      # shiny::uiOutput("prev_yr_ui")
     )
 }
 

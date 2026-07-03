@@ -1,4 +1,10 @@
-draw_rte_use_est_sec_ui <- function(){
+#' Title
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+draw_est_rte_div_ui <- function(){
   tagList(
   div(
         style = "padding-left: 10px;",

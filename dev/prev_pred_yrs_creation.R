@@ -33,7 +33,7 @@ glmmTMB_mod_ls[["HOR_TCJ"]]
 HOR_TCJ_tmp <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w[600:700,],
                                 HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]])
 
-# draw_ann_summ_tab()
+# draw_inputs_ann_summ_dt()
 
 # glmmTMB_mod_ls[["HOR_TCJ"]]$HOR_TCJ_aictab
 

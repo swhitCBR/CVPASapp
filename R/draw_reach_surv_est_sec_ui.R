@@ -6,8 +6,9 @@
 #'
 #' @export
 #' @examples
+#' draw_est_rch_surv_div_ui
 #' 
-draw_reach_surv_est_sec_ui <- function(
+draw_est_rch_surv_div_ui <- function(
   plots_in=list("HOR_TCJ_pred_ggpplt_rs1","HOR_TCJ_pred_ggpplt_rs_2")){
   tagList(
       div(
@@ -40,8 +41,9 @@ draw_reach_surv_est_sec_ui <- function(
               draw_title_w_paren_hover_text_html(
                 title_in="Turner Cut Junction to Chipps Island",
                 paren_htext_in="all routes",
-                modal_text_in="Estimate accounts for the possibility that smolts remain
-                OR are diverted from the main San Joaquin River at Turner Cut Junction"
+                modal_text_in="Estimate accounts for all possible routes from Head of Old River
+                 to Chipps Island, including the mainstem San Joaquin River, Old and Middle 
+                 rivers, salvage via CVP and SWP, and other interior Delta routes."
               )
             )
           )

@@ -13,8 +13,8 @@
       tagList(
         conditionalPanel(
          condition = "input.tabs == 'inputs' || input.tabs == 'check' || input.tabs == 'estimates'",
-          draw_inputs_panel_ui(init_data_source_in=init_data_source_in),
-          draw_estimates_panel_ui(),
+          draw_inputs_box_ui(init_data_source_in=init_data_source_in),
+          draw_est_box_ui(),
          )
          ,
       switch(

@@ -70,8 +70,8 @@ app_ui <- function(request) {
           conditionalPanel(
             condition = "input.tabs == 'inputs' || input.tabs == 'check' || input.tabs == 'estimates'
              || input.tabs == 'overall_surv' || input.tabs == 'reach_surv'|| input.tabs == 'route_spec_surv' || input.tabs == 'route_usage' || input.tabs == 'more_info'",
-            draw_inputs_panel_ui(init_data_source="Previous years"),
-            draw_estimates_panel_ui(),
+            draw_inputs_box_ui(init_data_source="Previous years"),
+            draw_est_box_ui(),
           )
           ,
           conditionalPanel(

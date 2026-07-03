@@ -49,14 +49,23 @@ app_server <- function(input, output, session) {
 
   observeEvent(input$sidebarItemExpanded, {
     print(paste("expand",input$sidebarItemExpanded))
-    if(input$sidebarItemExpanded == "Inputs"){
+    if(input$sidebarItemExpanded == "inputs_title"){
     shinydashboard::updateTabItems(
       inputId = "tabs",
       session = session,
       selected = "inputs")
     }
   })
-
+  
+  observeEvent(input$sidebarItemExpanded, {
+    print(paste("expand",input$sidebarItemExpanded))
+    if(input$sidebarItemExpanded == "estimates_title"){
+    shinydashboard::updateTabItems(
+      inputId = "tabs",
+      session = session,
+      selected = "overall_surv")
+    }
+  })
 
   ### tab and navigation  ----
   observeEvent(input$data_source_picker, {
@@ -302,7 +311,7 @@ app_server <- function(input, output, session) {
   proxy <- DT::dataTableProxy("table_in_WY")
 
   output$table_in_WY <- DT::renderDataTable(
-    draw_ann_summ_tab(input_year = in_selected_RV$past_water_year
+    draw_inputs_ann_summ_dt(input_year = in_selected_RV$past_water_year
   ))
 
   

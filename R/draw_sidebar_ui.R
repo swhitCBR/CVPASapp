@@ -29,7 +29,8 @@ draw_sidebar_ui <- function() {
       ),
       shinydashboard::menuItem(
         "Inputs",
-        tabName = "inputs",
+        # tabName = "inputs",
+        expandedName ="inputs_title",
         icon = icon("sliders"),
         startExpanded = T,
         shinydashboard::menuSubItem(
@@ -38,16 +39,17 @@ draw_sidebar_ui <- function() {
           icon = HTML('<i class="fa-solid fa-location-dot"></i>'),
           selected = TRUE
         )
-          # ,
-          # shinydashboard::menuSubItem(
-          # "Check inputs",
-          # tabName = "check",
-          # icon = icon("check"),
-          # selected = F)
+          ,
+          shinydashboard::menuSubItem(
+          "Check inputs",
+          tabName = "check",
+          icon = icon("check"),
+          selected = F)
       ),
       shinydashboard::menuItem(
         text = "Estimates",
-        tabName = "estimates",
+        # tabName = "estimates",
+        expandedName ="estimates_title",
         icon = icon("chart-line"),
         startExpanded = T ,
         shinydashboard::menuSubItem(

@@ -15,6 +15,9 @@ names(glmmTMB_mod_ls)
 # usethis::use_data(glmmTMB_mod_ls,overwrite = TRUE)
 
 # pred_prev_yrs_ls
+getwd()
+write.csv(ann_HORbar_WYT_data,"CVPAS_annual_ref_tab.csv")
+
 
 devtools::load_all()
 glmmTMB_mod_ls
@@ -53,7 +56,7 @@ usethis::use_data(pred_prev_yrs_ls,overwrite=TRUE)
 
 glmmTMB_mod_ls[["HOR_TCJ"]]
 
-HOR_TCJ_mod_ls
+# HOR_TCJ_mod_ls
 
 
 HOR_TCJ_tmp2 <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w[600:700,],flength_in = 100,HOR_TCJ_mod_ls = HOR_TCJ_mod_d2_ls)

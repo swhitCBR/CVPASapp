@@ -4,9 +4,9 @@ get_rv_ls_txt <- function(heading="replace_me",RVls_in,sep_in="\n   "){
       heading,
       paste0(
         "start_day - end_day : \n\t",
-        RVls_in[["start_day"]], #global_reactive$start_day,
+        RVls_in[["start_day"]], 
         " - ",
-        RVls_in[["end_day"]] #global_reactive$end_day
+        RVls_in[["end_day"]] 
       ),
       paste0("flength : ", RVls_in[["flength"]]),
       paste0(
@@ -22,9 +22,9 @@ get_rv_ls_txt <- function(heading="replace_me",RVls_in,sep_in="\n   "){
      paste(
       paste0(
         "start_day - end_day : ",
-        RVls_in[["start_day"]], #global_reactive$start_day,
+        RVls_in[["start_day"]], 
         " - ",
-        RVls_in[["end_day"]] #global_reactive$end_day
+        RVls_in[["end_day"]] 
       ),
       paste0("flength : ", RVls_in[["flength"]]),
       paste0(

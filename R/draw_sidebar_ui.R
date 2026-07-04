@@ -51,7 +51,7 @@ draw_sidebar_ui <- function() {
         # tabName = "estimates",
         expandedName ="estimates_title",
         icon = icon("chart-line"),
-        startExpanded = T ,
+        startExpanded = F ,
         shinydashboard::menuSubItem(
           "Overall survival",
           tabName = "overall_surv",

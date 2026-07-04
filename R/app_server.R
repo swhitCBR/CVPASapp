@@ -47,25 +47,25 @@ app_server <- function(input, output, session) {
   })
 
 
-  observeEvent(input$sidebarItemExpanded, {
-    print(paste("expand",input$sidebarItemExpanded))
-    if(input$sidebarItemExpanded == "inputs_title"){
-    shinydashboard::updateTabItems(
-      inputId = "tabs",
-      session = session,
-      selected = "inputs")
-    }
-  })
+  # observeEvent(input$sidebarItemExpanded, {
+  #   print(paste("expand",input$sidebarItemExpanded))
+  #   if(input$sidebarItemExpanded == "inputs_title"){
+  #   shinydashboard::updateTabItems(
+  #     inputId = "tabs",
+  #     session = session,
+  #     selected = "inputs")
+  #   }
+  # })
   
-  observeEvent(input$sidebarItemExpanded, {
-    print(paste("expand",input$sidebarItemExpanded))
-    if(input$sidebarItemExpanded == "estimates_title"){
-    shinydashboard::updateTabItems(
-      inputId = "tabs",
-      session = session,
-      selected = "overall_surv")
-    }
-  })
+  # observeEvent(input$sidebarItemExpanded, {
+  #   print(paste("expand",input$sidebarItemExpanded))
+  #   if(input$sidebarItemExpanded == "estimates_title"){
+  #   shinydashboard::updateTabItems(
+  #     inputId = "tabs",
+  #     session = session,
+  #     selected = "overall_surv")
+  #   }
+  # })
 
   ### tab and navigation  ----
   observeEvent(input$data_source_picker, {
@@ -359,18 +359,7 @@ app_server <- function(input, output, session) {
     }
   )
 
-  # because this is within a renderUI, changing the input$tab value rewrites the sidebar content
-  output$sidebar_text <- renderUI({
-    shiny::HTML(
-      md_txt_extract(
-        md_addr = "inst/app/www/sidebar/sidebar.md",
-        header_ref = paste0("# ", tab_selected()),
-        asHTML_frag = TRUE
-      )
-    )
-    # draw_ibox_ui(box_content_in = "daily_values_box")
-    # box_content_in
-  })
+
 
   # if remaining static move to ui.R script
   output$met_ref_page_ui <- renderUI({

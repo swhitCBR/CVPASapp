@@ -1,15 +1,17 @@
 #' Title
 #'
 #' @param input_year 
+#' @param col_used 
 #'
 #' @returns
 #' @export
 #'
 #' @examples
-draw_inputs_ann_summ_dt <- function(input_year=input$year_picker){
-  # DT::renderDataTable(
+draw_inputs_ann_summ_dt <- function(
+  input_year=input$year_picker,
+  columns_used=c("Year", "WYT", "barrier", "Model")){
     DT::datatable(
-      ann_HORbar_WYT_data_TAB(),
+      CVPAS_prev_yr_ref_tab[,columns_used],
       selection = "none",
       colnames = c("Year", "Water Year Type", "HOR Barrier", "Used in Models"),
       rownames = FALSE,

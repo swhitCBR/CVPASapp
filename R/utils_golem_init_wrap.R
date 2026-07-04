@@ -25,7 +25,7 @@ golem_init_wrap <- function(
 
 default_AUTHORS <- c(
   person(
-    given = "Steven", # Your First Name
+    given = "Steve", # Your First Name
     family = "Whitlock", # Your Last Name
     email = "swhit@uw.edu", # Your email
     role = c("aut", "cre") # Your role (here author/creator)

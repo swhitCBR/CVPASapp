@@ -18,8 +18,8 @@ draw_sidebar_ui <- function() {
             tags$style(HTML(get_custom_css_txt(css_txt_content="sidebar"))
           )
         ),
-          # collapsed = FALSE, # Set the sidebar to be collapsed by default
-          shinydashboard::sidebarMenu(
+      # collapsed = FALSE, # Set the sidebar to be collapsed by default
+      shinydashboard::sidebarMenu(
       id = "tabs",
       shinydashboard::menuItem(
         "About",

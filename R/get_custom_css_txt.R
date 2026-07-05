@@ -15,7 +15,7 @@ get_custom_css_txt <- function(css_txt_content="sidebar"){
       /* TOP-LEVEL MENU  */
       /* gray highlight to blue-gray and blue to black text  */
       .skin-blue .main-sidebar .sidebar .sidebar-menu .active a { 
-        background-color: rgba(2, 76, 99, 0.5); 
+      /*   background-color: rgba(2, 76, 99, 0.5); */
         color: #0f0f0f; 
       }
 
@@ -25,12 +25,26 @@ get_custom_css_txt <- function(css_txt_content="sidebar"){
     }
     
     /* sidebar menu formatting  */
-    /* selected value  */
-    .skin-blue .main-sidebar .sidebar-menu .active a { 
+    .treeview-menu {
+        padding: 5px 5px 5px 25px !important;
+        display: block;
+        font-size: 10px !important
+    }
+
+    /* SUB-MENU  */
+    /* medium gray-blue on hover  */
+    .skin-blue .sidebar-menu .treeview-menu>li>a:hover  { 
+      color: #0f0f0f; 
       background-color: rgba(2, 76, 99, 0.5); 
-      }
-   
-    /* dynamic sidebar text color #024c63*/
+    }
+
+  .skin-blue .main-sidebar .sidebar .sidebar-menu a:hover {
+      /*color: #0f0f0f; */
+        color: #024c63;
+      background-color: rgba(2, 76, 99, 0.5); /* Change hover background color here */
+  }
+
+   /* dynamic sidebar text color #024c63*/
     #newsidebox{
       color: #024c63;
       font-size: 14px;
@@ -40,19 +54,6 @@ get_custom_css_txt <- function(css_txt_content="sidebar"){
       margin-right: 10px;
       text-wrap: auto;
       }
-
-    /* SUB-MENU  */
-    /* dark gray-blue on hover  */
-    .skin-blue .sidebar-menu .treeview-menu>li>a:hover  { 
-      /* color: #0f0f0f; */
-      background-color: rgba(2, 76, 99, 0.8); 
-    }
-
-    /* darker blue outline for selections within submenu  */
-    .skin-blue .sidebar-menu .treeview-menu>li>a:hover  { 
-      color: #0f0f0f;  
-      background-color: rgba(2, 76, 99, 0.8); 
-    }
 
     .box {
       border-top: 1px solid #ddd !important;

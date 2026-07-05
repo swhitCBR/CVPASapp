@@ -6,7 +6,6 @@
 #' @noRd
 app_server <- function(input, output, session) {
 
-  # output$dyn_sidebar_txt <- renderText({paste0("You are viewing tab \"", get_dyn_sidebar_txt(input$tabs), "\"")})
   output$dyn_sidebar_txt <- renderText({paste0(get_sidebar_txt(input$tabs))})
 
   # autoselect specify starting tab
@@ -46,26 +45,27 @@ app_server <- function(input, output, session) {
       )
   })
 
-
-  # observeEvent(input$sidebarItemExpanded, {
-  #   print(paste("expand",input$sidebarItemExpanded))
-  #   if(input$sidebarItemExpanded == "inputs_title"){
-  #   shinydashboard::updateTabItems(
-  #     inputId = "tabs",
-  #     session = session,
-  #     selected = "inputs")
-  #   }
-  # })
+  # Auto-switching to top option when sidebar menu items are expanded
   
-  # observeEvent(input$sidebarItemExpanded, {
-  #   print(paste("expand",input$sidebarItemExpanded))
-  #   if(input$sidebarItemExpanded == "estimates_title"){
-  #   shinydashboard::updateTabItems(
-  #     inputId = "tabs",
-  #     session = session,
-  #     selected = "overall_surv")
-  #   }
-  # })
+  observeEvent(input$sidebarItemExpanded, {
+    print(paste("expand",input$sidebarItemExpanded))
+    if(input$sidebarItemExpanded == "inputs_title"){
+    shinydashboard::updateTabItems(
+      inputId = "tabs",
+      session = session,
+      selected = "inputs")
+    }
+  })
+  
+  observeEvent(input$sidebarItemExpanded, {
+    print(paste("expand",input$sidebarItemExpanded))
+    if(input$sidebarItemExpanded == "estimates_title"){
+    shinydashboard::updateTabItems(
+      inputId = "tabs",
+      session = session,
+      selected = "overall_surv")
+    }
+  })
 
   ### tab and navigation  ----
   observeEvent(input$data_source_picker, {
@@ -611,8 +611,6 @@ app_server <- function(input, output, session) {
     ggplot_day_input_ref_hist(
       DOY_arvDF_l_in = DOY_arvDF_l,
       LOC_in = in_selected_RV$LOC,
-      # start_day_in = in_selected_RV$start_day,
-      # end_day_in = in_selected_RV$end_day
       start_day_in = input$DOYslider_rng[1],
       end_day_in = input$DOYslider_rng[2]
     )

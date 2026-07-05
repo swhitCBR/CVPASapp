@@ -1,3 +1,12 @@
+#' Title
+#'
+#' @param heading 
+#' @param RVls_in 
+#' @param sep_in 
+#'
+#' @returns
+#' @export
+#'
 get_rv_ls_txt <- function(heading="replace_me",RVls_in,sep_in="\n   "){
     if(heading!="none"){
     paste(

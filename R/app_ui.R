@@ -9,24 +9,21 @@ app_ui <- function(request) {
     # adding package that allows selectors to be disabled/enabled (i.e., grayed-out and non reactive)
     shinyjs::useShinyjs(),
     # adding 'subtext' on pickerInput
-    tags$head(
-    #   tags$script("
-    #   Shiny.addCustomMessageHandler('scroll-to', function(id) {
-    #     document.getElementById(id).scrollIntoView({behavior: 'smooth'});
-    #   });
-    # "),
-      tags$style(HTML("
-    .dropdown-menu span {width: 100%;} 
-    .text-muted {color: black !important; float: right;}
-    .bootstrap-select .dropdown-menu {
-    min-width: 150;
-    #schem_info_drop_div .dropdown:hover .dropdown-menu {
-        display: block;
-        margin-top: 0;
-      }
-    #date_end_sep { background-color: #f4f4f4 !important;}
-    "))
-    ),
+  #   tags$head(
+  #   #   tags$script("
+  #   #   Shiny.addCustomMessageHandler('scroll-to', function(id) {
+  #   #     document.getElementById(id).scrollIntoView({behavior: 'smooth'});
+  #   #   });
+  #   # "),
+  #     tags$style(HTML("
+  #   .dropdown-menu span {width: 100%;} 
+  #   .text-muted {color: black !important; float: right;}
+  #   .bootstrap-select .dropdown-menu {
+  #   min-width: 150;
+  #   }
+  #   ")
+  #   )
+  # ),
     # Leave this function for adding external resources
     golem_add_external_resources(),
     shinydashboardPlus::dashboardPage(

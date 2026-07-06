@@ -8,3 +8,4 @@ options( "golem.app.prod" = FALSE) # production mode vs development mode
 
 CVPASapp::run_app(inputs_box_collapsed=FALSE)
 
+

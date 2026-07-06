@@ -205,31 +205,9 @@ app_server <- function(input, output, session) {
     )
   })
 
-    # Interactive lattice plot
-  #  output$doy_latt_pltly <-  plotly::renderPlotly({
-  output$doy_latt_ggpplt <- renderPlot({
-    ggplot_doy_env_lattice_plt(
-      CVhelp_dat_l_plt = CVhelp_dat_l,
-      doy_rng_in = c(
-        in_selected_RV$start_day,
-        in_selected_RV$end_day
-      ),
-      pst_year_in = in_selected_RV$past_water_year
-    )
-  })
 
-  output$doy_var_ggpplt <- renderPlot({
-    ggplot_doy_env_plt(
-      CVhelp_dat_l_plt = CVhelp_dat_l,
-      doy_rng_in = c(
-        in_selected_RV$start_day,
-        in_selected_RV$end_day
-      ),
-      pst_year_in = in_selected_RV$past_water_year,
-      sub_var_in = input$radio_metric_view
-      # log_trans
-    )
-  })
+
+
 
   output$doy_ins_ggpplt <- renderPlot({
     ggplot_doy_ins_plt(
@@ -296,17 +274,7 @@ app_server <- function(input, output, session) {
     )
   })
 
-  output$yr_var_ggpplt <- renderPlot({
-    ggplot_yr_env_lattice_plt(
-      CVhelp_dat_l_plt = CVhelp_dat_l,
-      doy_rng_in = c(
-        in_selected_RV$start_day,
-        in_selected_RV$end_day
-      ),
-      pst_year_in = in_selected_RV$past_water_year,
-      sub_var_in = input$radio_metric_view
-    )
-  })
+
 
   proxy <- DT::dataTableProxy("table_in_WY")
 
@@ -608,20 +576,11 @@ app_server <- function(input, output, session) {
   )
 
   output$doy_ref_strt_loc <- renderPlot({
-    ggplot_day_input_ref_hist(
+    get_inputs_day_input_ref_hist_ggplot(
       DOY_arvDF_l_in = DOY_arvDF_l,
       LOC_in = in_selected_RV$LOC,
       start_day_in = input$DOYslider_rng[1],
       end_day_in = input$DOYslider_rng[2]
-    )
-  })
-
-  output$input_page_UI <- renderUI({
-    tagList(
-      # draw_inputs_panel_UI()
-      # ,
-      # uiOutput("inputs_panel_UI"),
-      # uiOutput("estimates_panel_ui")
     )
   })
 
@@ -666,34 +625,6 @@ app_server <- function(input, output, session) {
         zoom_max = 1.0
       )
   })
-
-  # output$start_loc_ui <- renderUI({
-  #   div(
-  #     style = "display: inline-flex; align-items: left;margin-top: 10px;",
-  #     div(
-  #       style = "height=25px; align-self:center",
-  #       shinyWidgets::pickerInput(
-  #         # label="Junction:",
-  #         label = "Starting Location:",
-  #         inline = T,
-  #         width = "fit",
-  #         'start_loc_in',
-  #         choices = loc_opt_nms,
-  #         selected = in_selected_RV$LOC,
-  #         ,
-  #         choicesOpt = list(
-  #           style = paste0(
-  #             "background-color:",
-  #             loc_opt_cols,
-  #             ";"
-  #           )
-  #         )
-  #       )
-  #     )
-  #   )
-  # })
-
-  # observeEvent(input$inputs_done, {
 
   observeEvent(input$generate_ests_butt, {
     # if (!input$input_box2$collapsed) {

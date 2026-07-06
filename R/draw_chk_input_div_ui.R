@@ -1,6 +1,7 @@
 
-draw_chk_input_ui <- function(){
-
+draw_chk_input_div_ui <- function(){
+  div(
+        id="checkTop",
   conditionalPanel(
          condition = "input.data_source_picker != 'None'",
     div(
@@ -85,4 +86,5 @@ draw_chk_input_ui <- function(){
       )
     )
   )
-  }
+)
+}

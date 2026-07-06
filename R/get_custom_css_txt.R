@@ -12,6 +12,17 @@
 get_custom_css_txt <- function(css_txt_content="sidebar"){
     if(css_txt_content=="sidebar"){
     tmp_txt <- "
+
+
+
+
+    #date_end_sep { background-color: #f4f4f4 !important;}
+    
+    #schem_info_drop_div .dropdown:hover .dropdown-menu {
+        display: block;
+        margin-top: 0;
+      }
+
       /* TOP-LEVEL MENU  */
       /* gray highlight to blue-gray and blue to black text  */
       .skin-blue .main-sidebar .sidebar .sidebar-menu .active a { 
@@ -25,11 +36,28 @@ get_custom_css_txt <- function(css_txt_content="sidebar"){
     }
     
     /* sidebar menu formatting  */
+
+    .fa-angle-left, .fa-angle-down {
+      display: none;
+    }
+
     .treeview-menu {
         padding: 5px 5px 5px 25px !important;
         display: block;
         font-size: 10px !important
     }
+    
+
+  .fa-angle-left:before{
+    content:'\f105';
+  }
+
+  .sidebar-menu li.active>a>.fa-angle-left, .sidebar-menu li.active>a>.pull-right-container>.fa-angle-left {
+    transform: rotate(90deg);
+}
+
+
+
 
     /* SUB-MENU  */
     /* medium gray-blue on hover  */

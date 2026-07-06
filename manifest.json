@@ -4569,10 +4569,13 @@
       "checksum": "8536c0b1b0a5a6da1637feed7ca91d43"
     },
     "app.R": {
-      "checksum": "caa78588af234431f16289d9957424d9"
+      "checksum": "4403acd2d758b1a0d35ba5d31540d267"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "d43c9ca5b4999c6e1ffc17ff8e80d2bc"
+    },
+    "data-raw/CVPAS_prev_yr_ref_tab.R": {
+      "checksum": "dd89774830594eff1e97c499f0d5d98a"
     },
     "data/ann_HORbar_WYT_data.rda": {
       "checksum": "84034991cb6c8a9939e42744490a5014"
@@ -4582,6 +4585,9 @@
     },
     "data/CVhelp_dat_w.rda": {
       "checksum": "374fd22e504eb12b4e8e882401d1bfe2"
+    },
+    "data/CVPAS_prev_yr_ref_tab.rda": {
+      "checksum": "35762c1cd6f40908eb65b042046dd04f"
     },
     "data/DOY_arvDF_l.rda": {
       "checksum": "6e8c6e66650f0266b26e0ed319ae875d"
@@ -4610,14 +4616,20 @@
     "dev/config_attachment.yaml": {
       "checksum": "ee1f6aaa2ef5dfcfc6db5a4b09d2cd2f"
     },
+    "dev/data_setup.R": {
+      "checksum": "64669f20eb5598b86ede9aaf6882f42d"
+    },
     "dev/HOR_CHP_dev.R": {
       "checksum": "d42756713d683851a0b1305d459fb56f"
     },
     "dev/prev_pred_yrs_creation.R": {
-      "checksum": "3df0574ae4e49dad8f540ae681097789"
+      "checksum": "6733c8b65b57d2b354da32329084187e"
     },
     "dev/run_dev.R": {
       "checksum": "e16497b4e7787e5fd1495f9e1aa81182"
+    },
+    "dev/tmp_glmm_fxns.R": {
+      "checksum": "9232367ec6d7c6ba68c4c062e6cc7a5e"
     },
     "inst/app/www/about/about_fig_cap.md": {
       "checksum": "f8fd3d59eec9690b915a2aea70c89d10"
@@ -4640,8 +4652,8 @@
     "inst/app/www/cbr_logo_horiz.png": {
       "checksum": "9008fcb8f0bb7469f7b7982211646858"
     },
-    "inst/app/www/custom.css": {
-      "checksum": "b404a8c3f154331623aad077fabc1847"
+    "inst/app/www/CVPAS_prev_yr_ref_tab.csv": {
+      "checksum": "081b3aff12ceed75c83aa4fc1aaedf9e"
     },
     "inst/app/www/favicon.ico": {
       "checksum": "c31cac31d4a7d7486da4364a57c6f248"
@@ -4649,28 +4661,28 @@
     "inst/app/www/HOR_CHP.svg": {
       "checksum": "142c04908029ceb8b7708f4b92300676"
     },
-    "inst/app/www/images/svg/basic route schematic/HOR_CHP.svg": {
+    "inst/app/www/images/svg/basic_route_schematic/HOR_CHP.svg": {
       "checksum": "142c04908029ceb8b7708f4b92300676"
     },
-    "inst/app/www/images/svg/basic route schematic/HOR_CHP_bar_in.svg": {
+    "inst/app/www/images/svg/basic_route_schematic/HOR_CHP_bar_in.svg": {
       "checksum": "0c404e6aede805e23b62d7ec45e34b73"
     },
-    "inst/app/www/images/svg/basic route schematic/HOR_In.svg": {
+    "inst/app/www/images/svg/basic_route_schematic/HOR_In.svg": {
       "checksum": "0c404e6aede805e23b62d7ec45e34b73"
     },
-    "inst/app/www/images/svg/basic route schematic/HOR_Out.svg": {
+    "inst/app/www/images/svg/basic_route_schematic/HOR_Out.svg": {
       "checksum": "142c04908029ceb8b7708f4b92300676"
     },
-    "inst/app/www/images/svg/basic route schematic/TCJ_CHP.svg": {
+    "inst/app/www/images/svg/basic_route_schematic/TCJ_CHP.svg": {
       "checksum": "0cd696a52e7d43a71dcd975fa0cc2615"
     },
-    "inst/app/www/images/svg/basic route schematic/TCJ_CHP_bar_in.svg": {
+    "inst/app/www/images/svg/basic_route_schematic/TCJ_CHP_bar_in.svg": {
       "checksum": "c1d579072f14f526a07562bf239b78e8"
     },
-    "inst/app/www/images/svg/basic route schematic/TCJ_In.svg": {
+    "inst/app/www/images/svg/basic_route_schematic/TCJ_In.svg": {
       "checksum": "c1d579072f14f526a07562bf239b78e8"
     },
-    "inst/app/www/images/svg/basic route schematic/TCJ_Out.svg": {
+    "inst/app/www/images/svg/basic_route_schematic/TCJ_Out.svg": {
       "checksum": "0cd696a52e7d43a71dcd975fa0cc2615"
     },
     "inst/app/www/met_and_ref/how_calc_pt2.md": {
@@ -4715,14 +4727,14 @@
     "inst/app/www/unused/page.md": {
       "checksum": "52eeb197a82b843c3521eeede9cc0df6"
     },
-    "inst/app/www/unused/welcome_modal_top - Copy.md": {
+    "inst/app/www/unused/welcome_modal_top-Copy.md": {
       "checksum": "d41d8cd98f00b204e9800998ecf8427e"
     },
     "inst/app/www/unused/welcome_modal_top.md": {
       "checksum": "636a7801d03fc379fe60645f5c9b0181"
     },
     "inst/global.R": {
-      "checksum": "728a6e27a388536d4d3b4eb1083db609"
+      "checksum": "daecb14f7b75cbd7b323075339df396d"
     },
     "inst/golem-config.yml": {
       "checksum": "abe08f0b0fc3106dffeb21d24badcddd"
@@ -4733,53 +4745,98 @@
     "man/CVhelp_dat_l.Rd": {
       "checksum": "21ca8bf8d728bee3b3d60cb4830f5713"
     },
-    "man/draw_dashboard_header_ui.Rd": {
-      "checksum": "7673702dc54d0a58c27ed1a578d522e8"
+    "man/draw_CBR_footer_ui.Rd": {
+      "checksum": "1b08dcfc3c5086a3dcb21a52fb9d6d74"
     },
-    "man/draw_estimates_panel_ui.Rd": {
-      "checksum": "29fcc8bd5add07b7bcd4226551508392"
+    "man/draw_dashboard_header_ui.Rd": {
+      "checksum": "bbf39d815bfb6c86f3019ae3d4f9e6de"
+    },
+    "man/draw_details_sel_data_ui.Rd": {
+      "checksum": "9a4edc3ce2014b1b546d0fd2a9f7631d"
+    },
+    "man/draw_est_box_ui.Rd": {
+      "checksum": "362fe453fed5f78100cacc28f3b60622"
+    },
+    "man/draw_est_more_info_div_ui.Rd": {
+      "checksum": "e75f0a096c708540512cf0567fda28a7"
+    },
+    "man/draw_est_ovr_surv_div_ui.Rd": {
+      "checksum": "5224beede93cade10d89454c23b7bd70"
+    },
+    "man/draw_est_rch_surv_div_ui.Rd": {
+      "checksum": "b4b36730e3047f3cacbbb74caea0a339"
+    },
+    "man/draw_est_rte_div_ui.Rd": {
+      "checksum": "3291fc8e8837d361647c4bf201a036cf"
+    },
+    "man/draw_est_rte_spec_surv_div_ui.Rd": {
+      "checksum": "1ac91ed92f104579f074581c3b878960"
+    },
+    "man/draw_ibox_ui.Rd": {
+      "checksum": "03b31a3039f64e2396ef136fb66207f6"
     },
     "man/draw_ibutt_dropdown_ui.Rd": {
-      "checksum": "dec9c8ef402da9356166d7a0e30f9cb2"
+      "checksum": "3500adc6f8d3df7f99f935431cd68016"
+    },
+    "man/draw_inputs_ann_summ_dt.Rd": {
+      "checksum": "a2e38b9e8f5b38ee23341a96ccfec0fc"
+    },
+    "man/draw_inputs_box_ui.Rd": {
+      "checksum": "ff1a08b658838a9d5f3e6147135503f4"
+    },
+    "man/draw_inputs_map_schematic_col_ui.Rd": {
+      "checksum": "3f09c8855b226af477518a476c29158b"
+    },
+    "man/draw_inputs_star_loc_datsrc_col_ui.Rd": {
+      "checksum": "153fe7302a14fdb10d67de771ef5f9dd"
     },
     "man/draw_main_page_content_dynui.Rd": {
-      "checksum": "ca6b7e480011a14f4c7bb8cf0cdd3ffd"
+      "checksum": "c40e671cc7fcbf05a68a9777f3c8259e"
     },
     "man/draw_met_ref_page_ui.Rd": {
-      "checksum": "fb36bbd191bdc2e8e4ab5162e176d35d"
+      "checksum": "f81c7bb6fd0c99fe2ebd6cf3b985e9be"
     },
     "man/draw_sidebar_ui.Rd": {
-      "checksum": "9f593cc0500fb4240b57909b2b65645f"
+      "checksum": "8c45644c6a944c138e27b4e8b8320cb4"
     },
     "man/draw_start_loc_ui.Rd": {
-      "checksum": "012baec17357b66d238135d493a84046"
+      "checksum": "425354857fdd7b8d45595c2f19937b06"
     },
-    "man/draw_upload_deet_ui.Rd": {
-      "checksum": "25e3066b20f14133bbabc1b50a9fe819"
+    "man/draw_title_w_paren_hover_text_html.Rd": {
+      "checksum": "e3862d274d72576b8d028a5ac2fa8939"
     },
-    "man/extract_glmmTMB_ests.Rd": {
-      "checksum": "3d039ba7066ef1d2a67c04dadb86bcfb"
-    },
-    "man/extract_glmmTMB_frame.Rd": {
-      "checksum": "0200e269cb642e4f97738611f4665f17"
+    "man/draw_upload_details_ui.Rd": {
+      "checksum": "9403443df2ef0b4e772be099e8e85591"
     },
     "man/get_custom_css_txt.Rd": {
-      "checksum": "8ac9273f897b905531dd77366904ef94"
+      "checksum": "3503bda7deb9d759b89bf152bf2f7235"
     },
-    "man/get_sidebar_dyntxt.Rd": {
-      "checksum": "92dcdc098305a5369f564edec42c4e07"
+    "man/get_glmmTMB_ests.Rd": {
+      "checksum": "a5ebc1056a15ea78c8a5dc60141c369c"
+    },
+    "man/get_mtch_WYT_txt.Rd": {
+      "checksum": "c54e96b28cff5ccbccaa6b348ea93973"
+    },
+    "man/get_rv_ls_txt.Rd": {
+      "checksum": "d371660c3f5a1177f9fda7a308aa3f88"
+    },
+    "man/get_sidebar_txt.Rd": {
+      "checksum": "9d736d3acc70ec7ed3b33814a0924da9"
+    },
+    "man/get_var_center_scale.Rd": {
+      "checksum": "f36c8006de1dcefb5df2cfae725a44cf"
     },
     "man/ggplot_doy_pred_plt.Rd": {
-      "checksum": "a6384cadbb1446fd277484b24885b503"
-    },
-    "man/HOR_TCJ_redef_fun.Rd": {
-      "checksum": "7e861811ec11fe78b67542627b6333e3"
+      "checksum": "78a4eed6d03444c86b1a89ee9b6cf99f"
     },
     "man/run_app.Rd": {
-      "checksum": "83ad9761fc4ffd131e53f9b0957ee3fa"
+      "checksum": "d86f17e16bb2a0f1aaf26d23affdc7ab"
+    },
+    "man/utils_get_WYT_cols_vec.Rd": {
+      "checksum": "feec5746b5421921cd27ee21c74a0e4c"
     },
     "NAMESPACE": {
-      "checksum": "37481d3c82d05adbb850f009e3e73e87"
+      "checksum": "04d948876fe6ecde54c01fc88006415d"
     },
     "R/_disable_autoload.R": {
       "checksum": "9d8f7f20e88b559c046ec1f59fe82cba"
@@ -4788,85 +4845,115 @@
       "checksum": "f9449395606b508d0215d74d5441533f"
     },
     "R/app_server.R": {
-      "checksum": "bc0b2089e334b60bc03b86dcf7947f52"
+      "checksum": "97333f590f8cc4e146a4c6fecd57fad0"
     },
     "R/app_ui.R": {
-      "checksum": "e18f964c6d30eaf9ee25ef08435a0345"
+      "checksum": "101c4fa62d13a114a05d0bc306f99ab4"
     },
     "R/data.R": {
       "checksum": "a3b1ac8cf8cc8b264127bb8d17372a9c"
     },
     "R/draw_about_page_ui.R": {
-      "checksum": "14148057ba1ed4fd7e48edcbd33611e0"
-    },
-    "R/draw_ann_summ_tab.R": {
-      "checksum": "eee2f6b2b3df984d02c632d6d016350a"
+      "checksum": "55c35257391164e4eebef582eaa557c2"
     },
     "R/draw_basic_route_schematic_svg.R": {
-      "checksum": "f67d54609ae6a82944b53a42aaba2175"
+      "checksum": "c013c3c7afb37967bcbb2e937125337b"
     },
-    "R/draw_chk_input_ui.R": {
-      "checksum": "70e7f98bd4a235b5110034fdecba746f"
+    "R/draw_CBR_footer_ui.R": {
+      "checksum": "d69551ad4294e1ef2d6cdafffd482484"
+    },
+    "R/draw_chk_input_div_ui.R": {
+      "checksum": "117cf1c2e393cc2b6757bf8b98df0c93"
     },
     "R/draw_dashboard_header_ui.R": {
-      "checksum": "40e8cac9bfe429628d5b9b0f754d2e6e"
-    },
-    "R/draw_details_indiv_attrib_ui.R": {
-      "checksum": "0807cb087c656ecbaf03d990bd48629d"
+      "checksum": "8eef1809b5b30b8113e5b2775416e3b5"
     },
     "R/draw_details_sel_data_ui.R": {
-      "checksum": "585b9491061b10c6d500885e87d78931"
+      "checksum": "6e03756367aca15d8ba1fddd5ca1be94"
     },
-    "R/draw_estimates_panel_ui.R": {
-      "checksum": "2b903e0e2674a26d02f075f3a70716a0"
+    "R/draw_est_box_ui.R": {
+      "checksum": "51314fbb77ceb40d10a20495b6f023c7"
     },
-    "R/draw_info_bttn_dropdown_ui.R": {
-      "checksum": "8fc08d82bc5a14e86806e0f413230448"
+    "R/draw_est_more_info_div_ui.R": {
+      "checksum": "8238db13db80dc451bd87bf594914e50"
     },
-    "R/draw_inputs_panel_UI.R": {
-      "checksum": "8167f1b5bc1628b3efdba01411c5f943"
+    "R/draw_est_ovr_surv_div_ui.R": {
+      "checksum": "26e724a229cb13d50be12d7624b02a24"
+    },
+    "R/draw_est_rch_surv_div_ui.R": {
+      "checksum": "b6e162e6f69f57ef2c645227faf04eda"
+    },
+    "R/draw_est_rte_div_ui.R": {
+      "checksum": "f50a5fc35619a92c16581a98ba1269e6"
+    },
+    "R/draw_est_rte_spec_surv_div_ui.R": {
+      "checksum": "fba906eb08dcbfab0ea34c4e47a6e484"
+    },
+    "R/draw_ibox_ui.R": {
+      "checksum": "731213ad95923d70c23180149a4b7765"
+    },
+    "R/draw_ibutt_dropdown_ui.R": {
+      "checksum": "30bac45d7a7521f99da0aa2be9721c07"
+    },
+    "R/draw_indiv_attribs_details_ui.R": {
+      "checksum": "975c6f7fb9cc40fc6f9219299a69250d"
+    },
+    "R/draw_inputs_ann_summ_dt.R": {
+      "checksum": "09765d1b54e304accee7d5a77faf84b5"
+    },
+    "R/draw_inputs_box_ui.R": {
+      "checksum": "98e1340065eff901c633359d539e46bd"
+    },
+    "R/draw_inputs_map_schematic_col_ui.R": {
+      "checksum": "045f9b1868c306a6505401985e88e0a9"
+    },
+    "R/draw_inputs_star_loc_datsrc_col_ui.R": {
+      "checksum": "7c177a7fbc53380e25505048e8c0a2de"
     },
     "R/draw_main_page_content_dynui.R": {
-      "checksum": "fc75ae828f72ef8ca3f3d6270139ffb8"
+      "checksum": "a95d5a8abfa69be9e7d765896d5d84a0"
     },
     "R/draw_met_ref_page_ui.R": {
-      "checksum": "355ea51c6e5c872cd96a312c02f41fd4"
+      "checksum": "ef7a53acca435e688e0d86148f6998ed"
     },
     "R/draw_sidebar_ui.R": {
-      "checksum": "8cfa87dd32887cf9629de7d08b61fd2e"
+      "checksum": "4b05764fba3651b7160c802476960612"
     },
     "R/draw_start_loc_ui.R": {
-      "checksum": "ac301dc3ce068d7bf12ef19d773d62fc"
+      "checksum": "6414dec04c6c82187e44d3b4f2477b81"
     },
-    "R/draw_upload_deet_ui.R": {
-      "checksum": "9c7d8db7b53ffd6425ed902f5526794e"
+    "R/draw_title_w_paren_hover_text_html.R": {
+      "checksum": "0c0c2c67c5a7cd26a762fcd5b8b5f192"
     },
-    "R/extract_glmmTMB.R": {
-      "checksum": "dc07ff18faddf0c19c5bafe32367070d"
-    },
-    "R/extract_glmmTMB_ests.R": {
-      "checksum": "d3c5dc6059e1d477ed75d8513132f27d"
+    "R/draw_upload_details_ui.R": {
+      "checksum": "0e092ab500223a690630d135eff3c015"
     },
     "R/get_custom_css_txt.R": {
-      "checksum": "fffc41cf7c6bd34a68ea1467a6dfe71a"
+      "checksum": "86715aa4cc7b4b82911e18ebed8189ca"
     },
-    "R/get_ibox_contents.R": {
-      "checksum": "b15661584ac9bcdff0c797aff4b1c657"
+    "R/get_glmmTMB_ests.R": {
+      "checksum": "05b894d018c5755ac7e3e9b833ec320a"
     },
-    "R/get_sidebar_dyntxt.R": {
-      "checksum": "83b329979e249b8d5dde02348ef0b5c3"
+    "R/get_inputs_day_input_ref_hist_ggplot.R": {
+      "checksum": "6aeacf097bbadd16f651bf84ba435f9f"
+    },
+    "R/get_mtch_WYT_txt.R": {
+      "checksum": "b1eccf67acecf948ee06578f1f7c1604"
+    },
+    "R/get_rv_ls_txt.R": {
+      "checksum": "82ffb7fb78e51ad6f84dca0128f1979b"
+    },
+    "R/get_sidebar_txt.R": {
+      "checksum": "8a110e6ce5c07d9f723e04415a86f937"
     },
     "R/get_var_center_scale.R": {
-      "checksum": "2234e78e343e85b55c1d0488bd2e7864"
-    },
-    "R/ggplot_doy_env__plt.R": {
-      "checksum": "3e176f6210d8b2a6912b1f4e7ca03dc1"
+      "checksum": "c7424987a4f03b208e81373194ffc9ac"
     },
     "R/ggplot_doy_ins_plt.R": {
       "checksum": "05da97322f2358562458dbe007d1358f"
     },
     "R/ggplot_doy_pred_plt.R": {
-      "checksum": "9a16e4d85bc126e7d79c6c34c55f7a70"
+      "checksum": "aa936919485b433dde85dc5c4e1cb7ca"
     },
     "R/ggplot_doy_pred_plt_mult.R": {
       "checksum": "d41d8cd98f00b204e9800998ecf8427e"
@@ -4877,9 +4964,6 @@
     "R/ggplot_input_flength_ref_hist.R": {
       "checksum": "6af1e9e0f358e88db47db8703a1869ef"
     },
-    "R/ggplt_day_input_ref_hist.R": {
-      "checksum": "8bd0807823e1659d63b1a4af479de838"
-    },
     "R/golem_add_external_resources.R": {
       "checksum": "363a344eea7775c63fc32843a4475eb3"
     },
@@ -4889,44 +4973,32 @@
     "R/golem_utils_ui.R": {
       "checksum": "1694775e681b1a4cf1ce4d2dda7e0316"
     },
-    "R/HOR_CHP_mod_wrap.R": {
-      "checksum": "fae71b011b91dfb901dd866bfdf07594"
-    },
-    "R/HOR_TCJ_mod_wrap.R": {
-      "checksum": "b2d0580c19328e678326621344e5bcfe"
-    },
-    "R/HOR_TCJ_redef_fun.R": {
-      "checksum": "2d00ef2d3c45c4552ae3aa0d54ac2785"
-    },
-    "R/mod_main_page.R": {
-      "checksum": "ff5b738035415e8cd75c02ba4cda44ea"
+    "R/past_year_tab_prep.R": {
+      "checksum": "3ceff30cfc8ce92db03be871e4edd88c"
     },
     "R/run_app.R": {
-      "checksum": "b75f3e1e4bf2b0269c74c76159712348"
+      "checksum": "c9fa9191c8019d58999afefdcf13d82c"
     },
     "R/utils_CBRtheme.R": {
       "checksum": "9548b86cf86838e826697edb354988b2"
     },
+    "R/utils_get_WYT_cols_vec.R": {
+      "checksum": "17c51da8f3707940618e841057cadab3"
+    },
     "R/utils_golem_init_wrap.R": {
-      "checksum": "11d647cec02c4c16848a4d6f0c8fe06b"
-    },
-    "R/utils_md_txt_extract.R": {
-      "checksum": "30d08237a5c997eefc230fb3267e640a"
-    },
-    "R/utils_plotting.R": {
-      "checksum": "38ac62363b4a4f47dd0800ae0652b543"
+      "checksum": "383b354af5666a25b57e2f15c4e2f701"
     },
     "R/utils_prep_datasets.R": {
-      "checksum": "404c9098b1f880286976d3f001036392"
+      "checksum": "d41d8cd98f00b204e9800998ecf8427e"
     },
     "README.html": {
       "checksum": "9a702b7310cf1ff4fb033951b688eaf9"
     },
     "README.md": {
-      "checksum": "538b841a8368ef6820bd273ea235f055"
+      "checksum": "3788953d4ec2359b3ed540f1e3ce6659"
     },
     "README.Rmd": {
-      "checksum": "713bef635a2ea459b8f25e466fbbca77"
+      "checksum": "194f80ebcb1198371d5bf71b34ad4c3c"
     },
     "tests/testthat.R": {
       "checksum": "c5ec65b13191b44286d84b6c3f332420"

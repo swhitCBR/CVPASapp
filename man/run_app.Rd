@@ -10,7 +10,7 @@ run_app(
   enableBookmarking = NULL,
   uiPattern = "/",
   start_tab = "inputs",
-  inputs_panel_collapse = FALSE,
+  inputs_box_collapsed = FALSE,
   ...
 )
 }

@@ -4,11 +4,7 @@
 \alias{draw_inputs_box_ui}
 \title{Title}
 \usage{
-draw_inputs_box_ui(
-  inputs_panel_collapse = inputs_panel_collapse,
-  init_data_source_in,
-  collapsed_in = FALSE
-)
+draw_inputs_box_ui(init_data_source_in, collapsed_in)
 }
 \arguments{
 \item{init_data_source_in}{data source object}

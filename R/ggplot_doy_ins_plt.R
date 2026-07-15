@@ -1,3 +1,14 @@
+#' Title
+#'
+#' @param CVhelp_dat_l_plt
+#' @param doy_rng_in
+#' @param pst_year_in
+#' @param sub_var_in
+#'
+#' @returns
+#'
+#' @export
+#' @examples ggplot_doy_ins_plt
 ggplot_doy_ins_plt <- function(
     CVhelp_dat_l_plt=CVhelp_dat_l,
     doy_rng_in=c(10,100),

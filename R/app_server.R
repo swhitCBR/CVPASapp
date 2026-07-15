@@ -206,7 +206,18 @@ app_server <- function(input, output, session) {
   })
 
 
-
+  output$doy_var_ggpplt <- renderPlot({
+    ggplot_doy_env_plt(
+      CVhelp_dat_l_plt = CVhelp_dat_l,
+      doy_rng_in = c(
+        in_selected_RV$start_day,
+        in_selected_RV$end_day
+      ),
+      pst_year_in = in_selected_RV$past_water_year,
+      sub_var_in = input$radio_metric_view
+      # log_trans
+    )
+  })
 
 
   output$doy_ins_ggpplt <- renderPlot({

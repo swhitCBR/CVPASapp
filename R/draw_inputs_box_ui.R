@@ -1,15 +1,15 @@
-  #' Title
-  #'
-  #' @param input_tab_in input$tabs
-  #' @param init_data_source_in data source object
-  #'
-  #' @returns a `shiny.tag` object inside a `shinydashboardPlus::box()``
-  #'
-  #' @export
-  #' 
-  #' @examples
-  #' draw_inputs_box_ui(init_data_source="Previous years")
-  #' 
+#' Title
+#'
+#' @param input_tab_in sidebar selection from object 'input$tabs'
+#' @param init_data_source_in data source object
+#'
+#' @returns a `shiny.tag` object inside a `shinydashboardPlus::box()``
+#'
+#' @export
+#' 
+#' @examples
+#' draw_inputs_box_ui(init_data_source="Previous years")
+#' 
 draw_inputs_box_ui <- function(
   init_data_source_in,
   collapsed_in){

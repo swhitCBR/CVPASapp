@@ -13,7 +13,7 @@ draw_dashboard_header_ui <- function(){
 tags$header(
   class = "main-header",
       tags$a(
-      title="click to open or close left sidebar menu",
+      title="open/close sidebar",
       style = "color: #F8F8F8; background-color: #024c63;",
       href = "#",
       class = "sidebar-toggle",

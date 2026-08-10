@@ -18,12 +18,13 @@
 get_glmmTMB_ests <- function(glmmTMB_res_ls_in,
                                  mods_obj_nm='HOR_TCJ_d2_mods',
                                  sel_data_in=sel_rows_tmp4,
-                                 aic_avg_tb_wts_in=aic_avg_tb_wts){
+                                 aic_avg_tb_wts_in=aic_avg_tb_wts,
+                                  sub_estimate_in="HOR_TCJ"){
   require(glmmTMB)
   frm_ls <- lapply(1:length(glmmTMB_res_ls_in),
                    function(ii){
                      data.frame(
-                       sub_estimate="HOR_TCJ",
+                       sub_estimate=sub_estimate_in,
                        tmp_rw_ind=1:nrow(sel_data_in),
                        mod_form=names(glmmTMB_res_ls_in[[mods_obj_nm]])[ii],
                        AICwt=aic_avg_tb_wts_in[names(glmmTMB_res_ls_in[[mods_obj_nm]])[ii],]$"AICwt",

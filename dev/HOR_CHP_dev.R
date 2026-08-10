@@ -3,8 +3,12 @@
 devtools::load_all()
 
 # bad credentials
-devtools::install_github("https://github.com/swhitCBR/CVhelp",auth_token = "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")
-devtools::install_github("https://github.com/swhitCBR/TMBhelp",auth_token = "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")
+# devtools::install_github("https://github.com/swhitCBR/CVhelp",auth_token = "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")
+# devtools::install_github("https://github.com/swhitCBR/TMBhelp",auth_token = "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")
+
+devtools::load_all("../CVhelp")
+devtools::load_all("../TMBhelp")
+
 
 # devtools::install_github("https://github.com/swhitCBR/CVhelp")
 # devtools::install_github("https://github.com/swhitCBR/TMBhelp")
@@ -16,8 +20,10 @@ HOR_CHP_comp_ls_unscl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/
 HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_s[1:10,]
 
 HOR_CHP_TMB_all_mods <- readRDS("../CVPAS_beta/src/HOR_CHP_TMB_all_mods.rds")
+str(HOR_CHP_TMB_all_mods)
+names(HOR_CHP_TMB_all_mods)
 HOR_CHP_TMB_mod_fits_ls <- readRDS("../CVPAS_beta/src/HOR_CHP_TMB_mod_fits_ls.rds")
-
+names(HOR_CHP_TMB_mod_fits_ls)
 
 AIC_DF_d2 <- HOR_CHP_TMB_all_mods$"AIC_DF_full" %>% dplyr::filter(dAIC<=2)
 AIC_DF_d2 <- AIC_DF_d2 %>% dplyr::mutate(candmodID=match(dm,HOR_CHP_TMB_all_mods$allint_DMs))
@@ -26,36 +32,42 @@ AIC_DF_d2 <- AIC_DF_d2 %>% dplyr::select(-iterations,-message)
 head(AIC_DF_d2)
 
 
+# CVhelp_dat_w <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide")
 
-source("R/HOR_CHP_mod_wrap.R")
-
+source("dev/tmp_glmm_fxns.R")
+# 
+# source("R/HOR_CHP_mod_wrap.R")
 head(CVhelp_dat_w)
 
+
+# create design matrix based on rows in wide format data environmental and operational data
 xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_unscl,
                  sel_rows_tmp1=CVhelp_dat_w[1:5,],
                  flength_in=240)
 
 xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
-                 sel_rows_tmp1=CVhelp_dat_w[1:5,],
+                 sel_rows_tmp1=CVhelp_dat_w[1:250,],
                  flength_in=240)
 
 attributes(HOR_CHP_comp_ls_scl$XX_in)[[c("scaled_vars")]]
 
+# source("R/get_var_center_scale.R")
 
-
-source("R/get_var_center_scale.R")
-
+#extract center and scale for relevent parameters
 scl_var_by_tmpDF <- get_var_center_scale(TMB_mod_ls=HOR_CHP_comp_ls_scl)
 
-xpred_tmp
+# xpred_tmp
 # xpred_tmp_wcols
 
-xpred_tmp
+# xpred_tmp
+# column names for design matrix
 xpred_tmp_nms <- names(xpred_tmp)
 
 # only main effects
-# head(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat[,1:11])
+head(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat[,1:11])
 # tmb_bs_nm <- colnames(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat[,1:11])
+
+# full set of predictors
 tmb_bs_nm <- colnames(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat)
 
 xpred_tmp_wcols <- xpred_tmp[,match(tmb_bs_nm,xpred_tmp_nms)]
@@ -65,23 +77,23 @@ xpred_tmp_wcols <- xpred_tmp[,match(tmb_bs_nm,xpred_tmp_nms)]
 # xpred_tmp
 
 TMB:::getUserDLL()
+# unload glmmTMB if currently loaded
 pth2glmmTMB <- file.path(system.file("libs", package = "glmmTMB"),"x64")
-dyn.unload(TMB::dynlib(file.path(pth2glmmTMB,"glmmTMB")))
+if(TMB:::getUserDLL()=="glmmTMB") {dyn.unload(TMB::dynlib(file.path(pth2glmmTMB,"glmmTMB")))}
 dyn.load(TMB::dynlib("../CVPAS_beta/src/TMB/CVPASbeta_TMBExports"))
+
 
 # getting unscaled predictions
 ii=1
-
-
 # HOR_CHP_TMB_all_mods$allint_DMs
 # which(HOR_CHP_TMB_all_mods$allint_DMs=="111111111110000000000")
 predDF_ls <- list()
 bt=proc.time()
 for(ii in 1:nrow(AIC_DF_d2)){
+  # extract design matrix index vector
   dm_str_val <- AIC_DF_d2$dm[ii]
+  # split binary index vector
   inclu_IND_pred <- which(as.numeric(strsplit(dm_str_val,"")[[1]])!=0)
-
-  head(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat)
 
   TMB_data_tmp <- HOR_CHP_comp_ls_scl$"TMB_data_baseline"
   TMB_data_tmp$"XX_s" <- TMB_data_tmp$"XX_s"[,inclu_IND_pred]
@@ -95,10 +107,14 @@ for(ii in 1:nrow(AIC_DF_d2)){
   head(TMB_data_tmp$"XX_pred_mat")
   head(xpred_tmp_wcols[,inclu_IND_pred])
 
-  # HOR_CHP_TMB_all_mods$
+  # HOR_CHP_TMB_all_mods
+  # starting values
   par_tmp=subset(HOR_CHP_TMB_all_mods$pt_estsDF,dm==dm_str_val)$coeff_param
+  # survival parameters
   Spar_tmp=subset(HOR_CHP_TMB_all_mods$pt_estsDF,dm==dm_str_val & !is.na(S_parID))$coeff_param
+  # detection and lambda parameters
   Ppar_tmp=subset(HOR_CHP_TMB_all_mods$pt_estsDF,dm==dm_str_val & par_nm=="P_pars")$coeff_param
+  # random error term
   logSD_RELGRP_tmp=subset(HOR_CHP_TMB_all_mods$pt_estsDF,dm==dm_str_val & par_nm=="logSD_RELGRP")$coeff_param
   # TMB_data_baseline_pred_tmp
   parm_in_ls <- list(
@@ -112,6 +128,8 @@ for(ii in 1:nrow(AIC_DF_d2)){
                        DLL = "CVPASbeta_TMBExports",
                        silent=TRUE,random='RELGRP_err',
                        inner.control = list(maxit=20000))
+  # OBJ_pred$gr()
+  # OBJ_pred$fn()
   summ_out_for_pred <- summary(TMB::sdreport(obj = OBJ_pred,
                                              getReportCovariance = T,
                                              bias.correct = F,
@@ -131,8 +149,6 @@ for(ii in 1:nrow(AIC_DF_d2)){
   predDF$LCLadj=predDF$lo_pred-1.96*predDF$lo_SEadj
   predDF$UCLadj=predDF$lo_pred+1.96*predDF$lo_SEadj
   predDF$EST=predDF$EST_lp
-  # predDF$pLCL=predDF$EST_lp-1.96*predDF$SEcomb_lp
-  # predDF$pUCL=predDF$EST_lp+1.96*predDF$SEcomb_lp
   predDF_ls[[ii]] <- predDF
 } # 30 seconds to compute all preds
 proc.time()-bt # 16 seconds 
@@ -142,9 +158,8 @@ predDF_ls
 
 
 #unscaled version older
-
 bt=proc.time()
-# for(ii in 1:nrow(AIC_DF_d2)){
+for(ii in 1:nrow(AIC_DF_d2)){
   dm_str_val <- AIC_DF_d2$dm[ii]
   inclu_IND_pred <- which(as.numeric(strsplit(dm_str_val,"")[[1]])!=0)
 
@@ -200,7 +215,7 @@ bt=proc.time()
   predDF$pUCL=plogis(predDF$EST_lp+1.96*predDF$SEcomb_lp)
   
   predDF_ls[[ii]] <- predDF
-# } # 30 seconds to compute all preds
+} # 30 seconds to compute all preds
 proc.time()-bt # 22 seconds remotely
 
 

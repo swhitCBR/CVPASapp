@@ -21,9 +21,6 @@ ggplot_doy_env_plt <- function(
     CVhelp_dat_l_plt$Year==pst_year_in
 )
  
-
-      # plt_tmp <- 
-      # ggplot2::geom_line(data=subset(CVhelp_dat_l_plt,!Year %in% c("2011","2012","2013","2014","2015","2016")),
   plt_tmp <- ggplot2::ggplot() +
         ggplot2::facet_wrap(~site) +
         ggplot2::geom_line(data=subset(CVhelp_dat_l_plt,!Year %in% c("2011","2012","2013","2014","2015","2016")),

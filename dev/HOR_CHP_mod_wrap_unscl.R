@@ -24,8 +24,8 @@ HOR_CHP_comp_ls_unscl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/
 # head(HOR_CHP_comp_ls_scl$XX_in)
 head(HOR_CHP_comp_ls_unscl$XX_in)
 
-HOR_CHP_d2_unscl_supp_ls <- readRDS("../CVPAS_STH_app/output/HOR_CHP_d2_unscl_supp_ls.rds")
-str(HOR_CHP_d2_unscl_supp_ls)
+# HOR_CHP_d2_unscl_supp_ls <- readRDS("../CVPAS_STH_app/output/HOR_CHP_d2_unscl_supp_ls.rds")
+# str(HOR_CHP_d2_unscl_supp_ls)
 
 devtools::load_all()
 # source("dev/tmp_glmm_fxns.R")
@@ -49,7 +49,7 @@ unscl_var_by_tmpDF <- get_var_center_scale(TMB_mod_ls=HOR_CHP_comp_ls_unscl)
 xpred_tmp_nms <- names(xpred_tmp)
 
 # only main effects
-head(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat[,1:11])
+# head(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat[,1:11])
 # tmb_bs_nm <- colnames(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat[,1:11])
 
 # full set of predictors
@@ -76,22 +76,37 @@ TMB:::getUserDLL()
 mtch_col_v <- c('(Intercept)','WYT_wet','WYT_drought','route.facB','barrier.facTRUE','flength','Tmsd.hor.7dadm','log.VNS.hor.5','SWP.hor.5','CVP.hor.5','Qomt.hor.1net','B_x_Temp','B_x_VNS','B_x_SWP','B_x_CVP','B_x_OMT','R_x_Temp','R_x_VNS','R_x_SWP','R_x_CVP','R_x_OMT')
 
 dim(xpred_tmp[,match(mtch_col_v,colnames(xpred_tmp))])
-dim(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat)
+
+# HOR_CHP_comp_ls_unscl
+# dim(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat)
 
 str(xpred_tmp[,match(mtch_col_v,colnames(xpred_tmp))])
 
-str(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat)
-str(xpred_tmp[1:6,match(mtch_col_v,colnames(xpred_tmp))])
+# HOR_CHP_comp_ls_unscl$TMB_data_baseline
+# str(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat)
+# str(xpred_tmp[1:6,match(mtch_col_v,colnames(xpred_tmp))])
 
-str(as.matrix(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat))
+HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat <- as.matrix(xpred_tmp[1:5,match(mtch_col_v,colnames(xpred_tmp))])
+
+str(as.matrix(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat))
+# str(as.matrix(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat))
 # HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat <- xpred_tmp[1:6,match(mtch_col_v,colnames(xpred_tmp))]
 
-HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat <- as.matrix(xpred_tmp[1:6,match(mtch_col_v,colnames(xpred_tmp))])
-
+# HOR_CHP_comp_ls_unscl$
 # HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat <- as.matrix(xpred_tmp[1:6,match(mtch_col_v,colnames(xpred_tmp))])
+
+HOR_CHP_TMB_all_mods_unscl <- readRDS("../CVPAS_STH_app/output/HOR_CHP_TMB_all_mods_unscl.rds")
+
+AIC_DF_d2 <- HOR_CHP_TMB_all_mods_unscl$AIC_DF_d2_full
+
+
+HOR_CHP_TMB_all_mods <- HOR_CHP_TMB_all_mods_unscl
 
 # getting unscaled predictions
 ii=1
+
+HOR_CHP_TMB_mod_fits_ls <- readRDS("../CVPAS_beta/src/HOR_CHP_TMB_mod_fits_ls.rds")
+# length(HOR_CHP_TMB_mod_fits_ls)
 # HOR_CHP_TMB_all_mods$allint_DMs
 # which(HOR_CHP_TMB_all_mods$allint_DMs=="111111111110000000000")
 predDF_ls <- list()
@@ -102,13 +117,13 @@ for(ii in 1:nrow(AIC_DF_d2)){
   # split binary index vector
   inclu_IND_pred <- which(as.numeric(strsplit(dm_str_val,"")[[1]])!=0)
   
-  TMB_data_tmp <- HOR_CHP_comp_ls_scl$"TMB_data_baseline"
+  TMB_data_tmp <- HOR_CHP_comp_ls_unscl$"TMB_data_baseline"
   # TMB_data_tmp <- HOR_CHP_comp_ls_unscl$"TMB_data_baseline"
   TMB_data_tmp$"XX_s" <- TMB_data_tmp$"XX_s"[,inclu_IND_pred]
   TMB_data_tmp$"XX_pred_mat" <- TMB_data_tmp$"XX_pred_mat"[,inclu_IND_pred]
   
   head(TMB_data_tmp$"XX_pred_mat")
-  head(xpred_tmp_wcols[,inclu_IND_pred])
+  # head(xpred_tmp_wcols[,inclu_IND_pred])
   
   # HOR_CHP_TMB_all_mods
   # starting values
@@ -122,10 +137,11 @@ for(ii in 1:nrow(AIC_DF_d2)){
   # TMB_data_baseline_pred_tmp
   parm_in_ls <- list(
     "S_pars"=c(Spar_tmp),
-    "RELGRP_err"=HOR_CHP_TMB_mod_fits_ls[[ii]]$RELGRP_err_v,
+    "RELGRP_err"=HOR_CHP_TMB_all_mods$HOR_CHP_comp_ls[[ii]]$RELGRP_err_v,
     "logSD_RELGRP"=logSD_RELGRP_tmp,
     "P_pars"=matrix(Ppar_tmp,nrow=length(HOR_CHP_TMB_all_mods$TMB_data_baseline$col_P11),
                     ncol=HOR_CHP_TMB_all_mods$TMB_data_baseline$P_lc_n))
+  
   OBJ_pred = TMB::MakeADFun(data=c(model="HOR_CHP_global_pred",TMB_data_tmp),
                             parameters=parm_in_ls,
                             DLL = "CVPASbeta_TMBExports",
@@ -138,7 +154,7 @@ for(ii in 1:nrow(AIC_DF_d2)){
                                              bias.correct = F,
                                              skip.delta.method = F,
                                              ignore.parm.uncertainty = F))
-  predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_pred_mat),
+  predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat),
                        summ_out_for_pred[rownames(summ_out_for_pred)=="lp_Spred_uncond",])
   
   # predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat),

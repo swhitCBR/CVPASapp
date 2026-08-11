@@ -8,10 +8,8 @@ devtools::load_all()
 devtools::load_all("../CVhelp")
 devtools::load_all("../TMBhelp")
 
-
 # devtools::install_github("https://github.com/swhitCBR/CVhelp")
 # devtools::install_github("https://github.com/swhitCBR/TMBhelp")
-
 
 HOR_CHP_comp_ls_scl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/HOR_CHP_mod_dat_ls.RData",z_scale_vars = TRUE)
 HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_s[1:10,]
@@ -31,8 +29,6 @@ AIC_DF_d2$AICwt <- exp(-0.5*AIC_DF_d2$dAIC)/sum(exp(-0.5*AIC_DF_d2$dAIC))
 AIC_DF_d2 <- AIC_DF_d2 %>% dplyr::select(-iterations,-message)
 head(AIC_DF_d2)
 
-<<<<<<< HEAD
-
 # CVhelp_dat_w <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide")
 
 source("dev/tmp_glmm_fxns.R")
@@ -40,13 +36,10 @@ source("dev/tmp_glmm_fxns.R")
 # source("R/HOR_CHP_mod_wrap.R")
 head(CVhelp_dat_w)
 
-
 # create design matrix based on rows in wide format data environmental and operational data
-=======
 source("R/HOR_CHP_mod_wrap.R")
 
 head(CVhelp_dat_w)
->>>>>>> 1900f35 (minor)
 xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_unscl,
                  sel_rows_tmp1=CVhelp_dat_w[1:5,],
                  flength_in=240)

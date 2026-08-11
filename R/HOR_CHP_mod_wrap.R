@@ -74,7 +74,7 @@ HOR_CHP_mod_wrap <- function(HOR_CHP_mod_ls,
   return(sel_rows_tmp4)
 
   # aic_avg_tb <- HOR_TCJ_mod_ls$HOR_TCJ_aictab[names(HOR_TCJ_mod_ls$HOR_TCJ_d2_mods),]
-  # # print(aic_avg_tb)
+  # print(aic_avg_tb)
   # aic_avg_tb_wts <- aic_avg_tb |> dplyr::mutate(AICwt=exp(-0.5*dAIC)/sum(exp(-0.5*aic_avg_tb$dAIC)))
   
   # # tmp_ls <- get_glmmTMB_ests()

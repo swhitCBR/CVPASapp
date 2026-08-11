@@ -7,28 +7,67 @@ load_all()
 data("CVhelp_dat_w")
 # data("CVhelp_dat_l")
 
-str(HOR_TCJ_mod_d2_ls)
+HOR_TCJ_mod_d2_ls <- readRDS("../CVPAS_beta/src/HOR_TCJ_d2_mods.rds")
+# old
+# HOR_mod_d2_ls <- readRDS("../CVPAS_STH_app/output/HOR_mod_d2_ls.rds")
+HOR_mod_d2_ls <- readRDS("../CVPAS_STH_app/output/HOR_d2_mods_ls.rds")
+
+# str(HOR_TCJ_mod_d2_ls)
 names(HOR_TCJ_mod_d2_ls)
 HOR_TCJ_mod_d2_ls$HOR_TCJ_aictab
 HOR_TCJ_mod_d2_ls$HOR_TCJ_d2_mods
 
-HOR_TCJ_mod_d2_ls <- readRDS("../CVPAS_beta/src/HOR_TCJ_d2_mods.rds")
-HOR_mod_d2_ls <- readRDS("../CVPAS_STH_app/output/HOR_mod_d2_ls.rds")
-
+HOR_TCJ_mod_d2_ls
+head(HOR_mod_d2_ls$HOR_d2_mods$`14`$frame)
+head(glmmTMB_mod_ls$HOR$HOR_d2_mods$`14`$frame)
 names(HOR_TCJ_mod_d2_ls)
+
+########################## #
+# Saving glmmTMB models
+########################## #
+
 glmmTMB_mod_ls <- list("HOR_TCJ"= HOR_TCJ_mod_d2_ls,
                        "HOR"= HOR_mod_d2_ls)
 names(glmmTMB_mod_ls)
-# usethis::use_data(glmmTMB_mod_ls,overwrite = TRUE)
+usethis::use_data(glmmTMB_mod_ls,overwrite = TRUE)
+
+HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+                                     HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+                                     flength_in=244) 
+HOR_pred_tab <- HOR_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+                                    HOR_mod_ls=glmmTMB_mod_ls[["HOR"]])
+
+
+
+
+pred_prev_yrs_ls <- list(  "HOR_TCJ_pred_tab" = HOR_TCJ_pred_tab,
+                           "HOR_pred_tab" = HOR_pred_tab
+                           )
+
+usethis::use_data(pred_prev_yrs_ls,overwrite = TRUE)
+
+
+
+########################## #
+
+
+
 # pred_prev_yrs_ls
 getwd()
 # write.csv(ann_HORbar_WYT_data,"CVPAS_annual_ref_tab.csv")
 
 devtools::load_all()
-glmmTMB_mod_ls
+# glmmTMB_mod_ls
+
+
 
 TMB:::getUserDLL()
-dyn.unload(TMB::dynlib("../CVPAS_beta/src/TMB/CVPASbeta_TMBExports"))
+str(getLoadedDLLs()$glmmTMB)
+#$path
+
+# tools::file_path_sans_ext(getLoadedDLLs()$glmmTMB[[2]])
+# dyn.unload(TMB::dynlib("C:/Users/swhit/AppData/Local/R/win-library/4.5/glmmTMB/libs/x64/glmmTMB"))
+# dyn.unload(TMB::dynlib("../CVPAS_beta/src/TMB/CVPASbeta_TMBExports"))
 pth2glmmTMB <- file.path(system.file("libs", package = "glmmTMB"),"x64")
 dyn.load(TMB::dynlib(file.path(pth2glmmTMB,"glmmTMB")))
 
@@ -40,7 +79,6 @@ extract_glmmTMB_frame(glmmTMB_res_ls_in=glmmTMB_mod_ls[["HOR_TCJ"]])
 file.exists("dev/tmp_glmm_fxns.R")
 source("dev/tmp_glmm_fxns.R")
 
-HOR_CHP_mod_wrap
 
 
 devtools::load_all("../CVhelp")
@@ -82,13 +120,10 @@ aic_avg_tb <- HOR_TCJ_mod_ls$HOR_TCJ_aictab[names(HOR_TCJ_mod_ls$HOR_TCJ_d2_mods
   
   dplyr::bind_cols(sel_rows_tmp4,tmp_HOR_TCJ_preds2)
 
-
-
-
-
 HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
                                      flength_in=244) 
+
 pred_prev_yrs_ls <- list(  "HOR_TCJ_pred_tab" = HOR_TCJ_pred_tab)
 
 # strange warning

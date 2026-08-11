@@ -9,15 +9,22 @@ devtools::load_all()
 devtools::load_all("../CVhelp")
 devtools::load_all("../TMBhelp")
 
-
 # devtools::install_github("https://github.com/swhitCBR/CVhelp")
 # devtools::install_github("https://github.com/swhitCBR/TMBhelp")
 
 HOR_CHP_comp_ls_scl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/HOR_CHP_mod_dat_ls.RData",z_scale_vars = TRUE)
 HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_s[1:10,]
 
-HOR_CHP_comp_ls_unscl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/HOR_CHP_mod_dat_ls.RData",z_scale_vars = FALSE)
-HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_s[1:10,]
+str(HOR_CHP_comp_ls_scl)
+names(HOR_CHP_comp_ls_scl)
+
+HOR_CHP_d2_unscl_supp_ls <- readRDS("../CVPAS_STH_app/output/HOR_CHP_d2_unscl_supp_ls.rds")
+str(HOR_CHP_d2_unscl_supp_ls)
+# HOR_CHP_comp_ls_unscl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_STH_app/output/HOR_CHP_d2_unscl_supp_ls.rds",z_scale_vars = FALSE)
+# HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_s[1:10,]
+
+# HOR_CHP_comp_ls_unscl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/HOR_CHP_mod_dat_ls.RData",z_scale_vars = FALSE)
+# HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_s[1:10,]
 
 HOR_CHP_TMB_all_mods <- readRDS("../CVPAS_beta/src/HOR_CHP_TMB_all_mods.rds")
 str(HOR_CHP_TMB_all_mods)
@@ -32,6 +39,8 @@ AIC_DF_d2 <- AIC_DF_d2 %>% dplyr::select(-iterations,-message)
 head(AIC_DF_d2)
 
 
+
+
 # CVhelp_dat_w <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide")
 
 source("dev/tmp_glmm_fxns.R")
@@ -44,12 +53,20 @@ head(CVhelp_dat_w)
 xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_unscl,
                  sel_rows_tmp1=CVhelp_dat_w[1:5,],
                  flength_in=240)
+# 
+# xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
+#                  sel_rows_tmp1=CVhelp_dat_w[1:250,],
+#                  flength_in=240)
 
+# all of it!
 xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
-                 sel_rows_tmp1=CVhelp_dat_w[1:250,],
-                 flength_in=240)
+                              sel_rows_tmp1=CVhelp_dat_w,#[1:250,],
+                              flength_in=240)
+View(CVhelp_dat_w)
+View(xpred_tmp)
 
 attributes(HOR_CHP_comp_ls_scl$XX_in)[[c("scaled_vars")]]
+attributes(HOR_CHP_comp_ls_scl$XX_in)
 
 # source("R/get_var_center_scale.R")
 
@@ -81,7 +98,29 @@ TMB:::getUserDLL()
 pth2glmmTMB <- file.path(system.file("libs", package = "glmmTMB"),"x64")
 if(TMB:::getUserDLL()=="glmmTMB") {dyn.unload(TMB::dynlib(file.path(pth2glmmTMB,"glmmTMB")))}
 dyn.load(TMB::dynlib("../CVPAS_beta/src/TMB/CVPASbeta_TMBExports"))
+TMB:::getUserDLL()
 
+# paste0(c("c('",paste0(colnames(xpred_tmp),collapse="','"),"')"),collapse="")
+# paste0(c("c('",paste0(colnames(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat),collapse="','"),"')"),collapse="")
+# mtch_col_v <-   c('(Intercept)','date','Year','DOY','WYT','ORB','MID','Qomt.hor.1net','barrier.facTRUE','OUT','EXPORTS','X2','CLC','log.VNS.hor.5','SWP.hor.5','CVP.hor.5','Tmsd.hor.7dadm','WYT_drought','WYT_wet','flength','route.facB','YrRel','B_x_Temp','B_x_VNS','B_x_SWP','B_x_CVP','B_x_OMT','R_x_Temp','R_x_VNS','R_x_SWP','R_x_CVP','R_x_OMT')
+# match(colnames(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat),colnames(xpred_tmp))
+
+mtch_col_v <- c('(Intercept)','WYT_wet','WYT_drought','route.facB','barrier.facTRUE','flength','Tmsd.hor.7dadm','log.VNS.hor.5','SWP.hor.5','CVP.hor.5','Qomt.hor.1net','B_x_Temp','B_x_VNS','B_x_SWP','B_x_CVP','B_x_OMT','R_x_Temp','R_x_VNS','R_x_SWP','R_x_CVP','R_x_OMT')
+
+dim(xpred_tmp[,match(mtch_col_v,colnames(xpred_tmp))])
+dim(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat)
+
+str(xpred_tmp[,match(mtch_col_v,colnames(xpred_tmp))])
+
+str(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat)
+str(xpred_tmp[1:6,match(mtch_col_v,colnames(xpred_tmp))])
+
+str(as.matrix(HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat))
+# HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat <- xpred_tmp[1:6,match(mtch_col_v,colnames(xpred_tmp))]
+
+HOR_CHP_comp_ls_scl$"TMB_data_baseline"$XX_pred_mat <- as.matrix(xpred_tmp[1:6,match(mtch_col_v,colnames(xpred_tmp))])
+
+# HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat <- as.matrix(xpred_tmp[1:6,match(mtch_col_v,colnames(xpred_tmp))])
 
 # getting unscaled predictions
 ii=1
@@ -96,14 +135,10 @@ for(ii in 1:nrow(AIC_DF_d2)){
   inclu_IND_pred <- which(as.numeric(strsplit(dm_str_val,"")[[1]])!=0)
 
   TMB_data_tmp <- HOR_CHP_comp_ls_scl$"TMB_data_baseline"
+  # TMB_data_tmp <- HOR_CHP_comp_ls_unscl$"TMB_data_baseline"
   TMB_data_tmp$"XX_s" <- TMB_data_tmp$"XX_s"[,inclu_IND_pred]
   TMB_data_tmp$"XX_pred_mat" <- TMB_data_tmp$"XX_pred_mat"[,inclu_IND_pred]
   
-  # attributes(HOR_CHP_comp_ls_scl$XX_in)
-  # HOR_CHP_comp_ls_scl
-  # substitution
-  # TMB_data_tmp$"XX_pred_mat" <-xpred_tmp_wcols[,inclu_IND_pred]
-
   head(TMB_data_tmp$"XX_pred_mat")
   head(xpred_tmp_wcols[,inclu_IND_pred])
 
@@ -135,8 +170,11 @@ for(ii in 1:nrow(AIC_DF_d2)){
                                              bias.correct = F,
                                              skip.delta.method = F,
                                              ignore.parm.uncertainty = F))
-  predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat),
+  predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_pred_mat),
                        summ_out_for_pred[rownames(summ_out_for_pred)=="lp_Spred_uncond",])
+  
+  # predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat),
+  #                      summ_out_for_pred[rownames(summ_out_for_pred)=="lp_Spred_uncond",])
   names(predDF) <- c("id","rw","EST_lp","SE_lp"); rownames(predDF) <- NULL
   # head(predDF)
   predDF$SigmaREL_lp=exp(OBJ_pred$par["logSD_RELGRP"])
@@ -154,6 +192,75 @@ for(ii in 1:nrow(AIC_DF_d2)){
 proc.time()-bt # 16 seconds 
 
 predDF_ls
+
+
+predDFcomb <- do.call(rbind,predDF_ls)
+predDFcomb$wt=AIC_DF_d2$AICwt[predDFcomb$id]
+predDFwtavgDF <-  predDFcomb %>% 
+  group_by(rw) %>%
+  summarize(
+    EST_lp=sum(EST_lp*wt),
+    EST=sum(EST*wt),
+    LCL=min(LCL),
+    UCL=max(UCL),
+    lo_SEadj=mean(lo_SEadj), # fix later
+    # pLCL=min(pLCL),
+    # pUCL=max(pUCL),
+    wtsum=sum(wt)) %>% mutate(
+      pEST=plogis(EST_lp),
+      pSE=pEST*(1-pEST)*lo_SEadj,
+      pLCL=plogis(LCL),
+      pUCL=plogis(UCL)
+    )
+
+nrow(predDFcomb)
+
+predDFwtavgDF_comb <- data.frame(xpred_tmp[1:6,],predDFwtavgDF)
+
+ggplot2::ggplot() + 
+  # ggplot2::geom_ribbon(data=new_predDFests,ggplot2::aes(y=EST,x=date,ymin=pLCL,ymax=pUCL),fill="gray60") +  
+  ggplot2::geom_ribbon(data=predDFwtavgDF_comb,ggplot2::aes(y=EST,x=date,ymin=LCL,ymax=UCL),fill="gray30") +  
+  ggplot2::geom_line(data=predDFwtavgDF_comb,ggplot2::aes(y=EST,x=date,color=factor(id)))
+
+
+
+predDFcomb_modsub <-  data.frame(new_predDF[predDFcomb$rw,],predDFcomb,env_tmp[predDFcomb$rw,])
+new_predDFests <- data.frame(new_predDF,predDFwtavgDF,env_tmp)
+ggplot2::ggplot() + 
+  # ggplot2::geom_ribbon(data=new_predDFests,ggplot2::aes(y=EST,x=date,ymin=pLCL,ymax=pUCL),fill="gray60") +  
+  ggplot2::geom_ribbon(data=new_predDFests,ggplot2::aes(y=EST,x=date,ymin=LCL,ymax=UCL),fill="gray30") +  
+  ggplot2::geom_line(data=predDFcomb_modsub,ggplot2::aes(y=EST,x=date,color=factor(id))) +
+  ggplot2::geom_ribbon(data=predDFcomb_modsub,ggplot2::aes(y=EST,x=date,color=factor(id),ymin=LCL,ymax=UCL),fill=NA) +  
+  ggplot2::geom_point(data=new_predDFests,ggplot2::aes(y=EST,x=date,ymin=LCL,ymax=UCL)) + 
+  ggplot2::facet_wrap(~Year,scale="free_x") + ggplot2::theme(legend.position = "none")
+
+usethis::use_data(new_predDFests)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

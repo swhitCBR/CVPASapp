@@ -34,8 +34,11 @@ usethis::use_data(glmmTMB_mod_ls,overwrite = TRUE)
 HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
                                      flength_in=244) 
+
 HOR_pred_tab <- HOR_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
                                     HOR_mod_ls=glmmTMB_mod_ls[["HOR"]])
+
+
 
 
 

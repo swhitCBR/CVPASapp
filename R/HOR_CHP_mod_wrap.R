@@ -1,6 +1,6 @@
 #' Title
 #'
-#' @details wrapper for generating HOR-TCJ survival predictions
+#' @details wrapper for generating HOR-CHP survival predictions
 #'
 #' @param HOR_CHP_mod_ls named list with aic table and list of models
 #' @param sel_rows_tmp1 rows of 'CVhelp_dat_w' to use
@@ -16,6 +16,7 @@ HOR_CHP_mod_wrap <- function(HOR_CHP_mod_ls,
                              SJL_route_in=TRUE) {
   
   stopifnot(flength_in >= 100 & flength_in <= 400)
+  unscaledTF <- !all(attributes(HOR_CHP_mod_ls$XX_in)$center==0)
 
   # tmp_ls=extract_glmmTMB_frame(glmmTMB_res_ls_in=HOR_TCJ_mod_ls)
   # HOR_CHP_mod_ls$TMB_data_baseline$XX_pred_mat <- HOR_CHP_mod_ls$TMB_data_baseline$XX_s[1:10,]
@@ -30,7 +31,7 @@ HOR_CHP_mod_wrap <- function(HOR_CHP_mod_ls,
                                                   CVP.hor.5=CVP,
                                                   Qomt.hor.1net=OMT)
   
-   if(!all(attributes(HOR_CHP_mod_ls$XX_in)$center==0)){
+   if(unscaledTF){
     message("using scaled version")
      
      scl_var_tb <- get_var_center_scale(TMB_mod_ls=HOR_CHP_mod_ls)
@@ -40,9 +41,11 @@ HOR_CHP_mod_wrap <- function(HOR_CHP_mod_ls,
         SWP.hor.5=(SWP.hor.5-scl_var_tb$center[scl_var_tb$scaled_vars=="SWP.hor.5"])/scl_var_tb$scale[scl_var_tb$scaled_vars=="SWP.hor.5"],
         Tmsd.hor.7dadm=(Tmsd.hor.7dadm-scl_var_tb$center[scl_var_tb$scaled_vars=="Tmsd.hor.7dadm"])/scl_var_tb$scale[scl_var_tb$scaled_vars=="Tmsd.hor.7dadm"],
         CVP.hor.5=(CVP.hor.5-scl_var_tb$center[scl_var_tb$scaled_vars=="CVP.hor.5"])/scl_var_tb$scale[scl_var_tb$scaled_vars=="CVP.hor.5"],
-        Qomt.hor.1net=(Qomt.hor.1net-scl_var_tb$center[scl_var_tb$scaled_vars=="Qomt.hor.1net"])/scl_var_tb$scale[scl_var_tb$scaled_vars=="Qomt.hor.1net"]
+        Qomt.hor.1net=(Qomt.hor.1net-scl_var_tb$center[scl_var_tb$scaled_vars=="Qomt.hor.1net"])/scl_var_tb$scale[scl_var_tb$scaled_vars=="Qomt.hor.1net"],
+        flength=(flength_in-scl_var_tb$center[scl_var_tb$scaled_vars=="flength"])/scl_var_tb$scale[scl_var_tb$scaled_vars=="flength"]
       )
-     
+     # print("ha")
+     # return(sel_rows_tmp2)
    }
   
  sel_rows_tmp3 <- sel_rows_tmp2 |> dplyr::mutate(
@@ -52,7 +55,8 @@ HOR_CHP_mod_wrap <- function(HOR_CHP_mod_ls,
 
   sel_rows_tmp4 <- sel_rows_tmp3 |> 
     dplyr::mutate(
-      flength=flength_in,
+      # flength=flength_in,
+      flength=ifelse(unscaledTF,flength,flength_in),
       route.facB=ifelse(SJL_route_in,0,1),
       YrRel=NA) |>
     dplyr::relocate(Intercept) |>
@@ -69,6 +73,7 @@ HOR_CHP_mod_wrap <- function(HOR_CHP_mod_ls,
       R_x_OMT=route.facB*Qomt.hor.1net
       )
   
+
   names(sel_rows_tmp4)[1] <- "(Intercept)"
   
   return(sel_rows_tmp4)

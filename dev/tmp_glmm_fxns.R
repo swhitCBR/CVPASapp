@@ -14,7 +14,7 @@
 #' 
 #' @export
 #' 
-HOR_CHP_mod_wrap <- function(HOR_CHP_mod_ls,
+HOR_CHP_mod_wrap_ALT <- function(HOR_CHP_mod_ls,
                              sel_rows_tmp1=CVhelp_dat_w,
                              flength_in=240,
                              SJL_route_in=TRUE) {

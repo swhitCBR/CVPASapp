@@ -5,17 +5,28 @@ devtools::load_all()
 # bad credentials
 # devtools::install_github("https://github.com/swhitCBR/CVhelp",auth_token = "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")
 # devtools::install_github("https://github.com/swhitCBR/TMBhelp",auth_token = "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")
+
 devtools::load_all("../CVhelp")
 devtools::load_all("../TMBhelp")
+
+
 
 # devtools::install_github("https://github.com/swhitCBR/CVhelp")
 # devtools::install_github("https://github.com/swhitCBR/TMBhelp")
 
 HOR_CHP_comp_ls_scl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/HOR_CHP_mod_dat_ls.RData",z_scale_vars = TRUE)
-HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_s[1:10,]
+# HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_s[1:10,]
 
 HOR_CHP_comp_ls_unscl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/HOR_CHP_mod_dat_ls.RData",z_scale_vars = FALSE)
-HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_s[1:10,]
+# HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_s[1:10,]
+
+
+dim(HOR_CHP_comp_ls_scl$XX_in_w_int_WYT)
+colnames(HOR_CHP_comp_ls_scl$XX_in_w_int_WYT)
+
+
+
+
 
 HOR_CHP_TMB_all_mods <- readRDS("../CVPAS_beta/src/HOR_CHP_TMB_all_mods.rds")
 str(HOR_CHP_TMB_all_mods)
@@ -29,6 +40,7 @@ AIC_DF_d2$AICwt <- exp(-0.5*AIC_DF_d2$dAIC)/sum(exp(-0.5*AIC_DF_d2$dAIC))
 AIC_DF_d2 <- AIC_DF_d2 %>% dplyr::select(-iterations,-message)
 head(AIC_DF_d2)
 
+
 # CVhelp_dat_w <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide")
 
 source("dev/tmp_glmm_fxns.R")
@@ -36,18 +48,22 @@ source("dev/tmp_glmm_fxns.R")
 # source("R/HOR_CHP_mod_wrap.R")
 head(CVhelp_dat_w)
 
+devtools::load_all()
+
 # create design matrix based on rows in wide format data environmental and operational data
-source("R/HOR_CHP_mod_wrap.R")
+# xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_unscl,
+#                  sel_rows_tmp1=CVhelp_dat_w[1:5,],
+#                  flength_in=240)
+# 
+# xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
+#                  sel_rows_tmp1=CVhelp_dat_w[1:250,],
+#                  flength_in=240)
 
-head(CVhelp_dat_w)
-xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_unscl,
-                 sel_rows_tmp1=CVhelp_dat_w[1:5,],
-                 flength_in=240)
-
+attributes(HOR_CHP_comp_ls_scl$XX_in)$center
 
 xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
-                 sel_rows_tmp1=CVhelp_dat_w[1:250,],
-                 flength_in=240)
+                              sel_rows_tmp1=CVhelp_dat_w,
+                              flength_in=240)
 
 attributes(HOR_CHP_comp_ls_scl$XX_in)[[c("scaled_vars")]]
 
@@ -60,17 +76,33 @@ scl_var_by_tmpDF <- get_var_center_scale(TMB_mod_ls=HOR_CHP_comp_ls_scl)
 # xpred_tmp_wcols
 
 # xpred_tmp
+
+# HOR_CHP_comp_ls_scl$TMB_data_baseline
+
+
+
 # column names for design matrix
 xpred_tmp_nms <- names(xpred_tmp)
 
 # only main effects
-head(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat[,1:11])
+# head(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat[,1:11])
 # tmb_bs_nm <- colnames(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat[,1:11])
 
 # full set of predictors
-tmb_bs_nm <- colnames(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat)
+# tmb_bs_nm <- colnames(HOR_CHP_comp_ls_unscl$"TMB_data_baseline"$XX_pred_mat)
+tmb_bs_nm <- colnames(HOR_CHP_comp_ls_scl$XX_in_w_int_WYT)
 
+setdiff(tmb_bs_nm,xpred_tmp_nms)
 xpred_tmp_wcols <- xpred_tmp[,match(tmb_bs_nm,xpred_tmp_nms)]
+
+
+# this doesn't work
+# HOR_CHP_comp_ls_scl$"TMB_data_baseline"$"xpred_tmp" <- xpred_tmp
+
+# HOR_CHP_comp_ls_scl$"TMB_data_baseline"$"xpred_tmp" <- xpred_tmp_wcols
+
+HOR_CHP_comp_ls_scl$"TMB_data_baseline"$"XX_pred_mat" <- as.matrix(xpred_tmp_wcols)
+
 
 # scl_var_by_tmpDF
 # xpred_tmp_wcols
@@ -97,7 +129,8 @@ for(ii in 1:nrow(AIC_DF_d2)){
 
   TMB_data_tmp <- HOR_CHP_comp_ls_scl$"TMB_data_baseline"
   TMB_data_tmp$"XX_s" <- TMB_data_tmp$"XX_s"[,inclu_IND_pred]
-  TMB_data_tmp$"XX_pred_mat" <- TMB_data_tmp$"XX_pred_mat"[,inclu_IND_pred]
+  # TMB_data_tmp$"XX_pred_mat" <- TMB_data_tmp$"XX_pred_mat"[,inclu_IND_pred]
+  TMB_data_tmp$"XX_pred_mat" <- TMB_data_tmp$"XX_pred_mat"
   
   # attributes(HOR_CHP_comp_ls_scl$XX_in)
   # HOR_CHP_comp_ls_scl
@@ -135,8 +168,10 @@ for(ii in 1:nrow(AIC_DF_d2)){
                                              bias.correct = F,
                                              skip.delta.method = F,
                                              ignore.parm.uncertainty = F))
-  predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat),
+  predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_pred_mat),
                        summ_out_for_pred[rownames(summ_out_for_pred)=="lp_Spred_uncond",])
+  # predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat),
+  #                      summ_out_for_pred[rownames(summ_out_for_pred)=="lp_Spred_uncond",])
   names(predDF) <- c("id","rw","EST_lp","SE_lp"); rownames(predDF) <- NULL
   # head(predDF)
   predDF$SigmaREL_lp=exp(OBJ_pred$par["logSD_RELGRP"])
@@ -154,6 +189,118 @@ for(ii in 1:nrow(AIC_DF_d2)){
 proc.time()-bt # 16 seconds 
 
 predDF_ls
+
+library(dplyr)
+AIC_DF_d2$AICwt <- get_aic_wts(AIC_DF_d2,"AIC")
+predDFcomb <- do.call(rbind,predDF_ls)
+predDFcomb$wt=AIC_DF_d2$AICwt[predDFcomb$id]
+
+ggplot(data=predDFcomb_wVars %>% filter(!(id %in% c(3,5,6)))
+       ,aes(y=plogis(EST),x=DOY,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))) +
+  geom_ribbon(alpha=0.25,color=NA) +# geom_point() +
+  geom_line() +
+  facet_wrap(~Year)
+
+in_avg_tb <-  predDFcomb |>
+  dplyr::group_by(rw) |>
+  filter(!(id %in% c(3,5,6))) |>
+  dplyr::summarize(
+  wt_lp_EST=sum(EST_lp*wt))
+
+# adding the model selection uncertainty to the estimate
+predDFcomb2 <- predDFcomb |> left_join(in_avg_tb) |> 
+  filter(!(id %in% c(3,5,6))) |>
+  mutate(SS_modavg=(lo_pred-wt_lp_EST)^2,
+         lo_SE_modavg=sqrt(SS_modavg+(lo_SEadj)^2))
+
+full_var_predDF <- predDFcomb2 |>
+  filter(!(id %in% c(3,5,6))) |> # dumb models
+  select(id,rw,lo_pred,wt,wt_lp_EST,lo_SE_modavg) |>
+  dplyr::group_by(rw) |>
+  dplyr::summarize(
+    var_modavg=sum(wt*lo_SE_modavg),
+    se_moderr=sqrt(var_modavg))
+
+avg_est_tmp <- in_avg_tb |> left_join(full_var_predDF)
+xpred_tmp$rw=1:nrow(xpred_tmp)
+avg_est_tmp_wVars <- xpred_tmp %>% left_join(avg_est_tmp)
+
+predDFwtavgDF_wVars <- data.frame(predDFwtavgDF,CVhelp_dat_w)
+ggplot(data=avg_est_tmp_wVars,
+       aes(y=plogis(wt_lp_EST),
+           x=DOY,ymin=plogis(wt_lp_EST-(1.96*se_moderr)),
+           ymax=plogis(wt_lp_EST+(1.96*se_moderr)))) + 
+  geom_ribbon() + geom_point() + facet_wrap(~Year)
+
+
+
+# ggplot() + 
+#   geom_line(data=avg_est_tmp_wVars,
+#        aes(y=plogis(wt_lp_EST),
+#            x=DOY,ymin=plogis(wt_lp_EST-(1.96*se_moderr)),
+#            ymax=plogis(wt_lp_EST+(1.96*se_moderr)))) #+ 
+  # geom_ribbon() + geom_point() + facet_wrap(~Year)
+
+
+# combination
+
+# Combined estimates
+ggplot() +
+  geom_ribbon(data=avg_est_tmp_wVars,
+              aes(y=plogis(wt_lp_EST),
+                  x=DOY,ymin=plogis(wt_lp_EST-(1.96*se_moderr)),
+                  ymax=plogis(wt_lp_EST+(1.96*se_moderr))))+
+  geom_ribbon(data=predDFcomb_wVars %>% filter(!(id %in% c(3,5,6)))
+              ,aes(y=plogis(EST),x=DOY,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id)),alpha=0.25,color=NA) +# geom_point() +
+  geom_line(data=predDFcomb_wVars %>% filter(!(id %in% c(3,5,6)))
+          ,aes(y=plogis(EST),x=DOY,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))) +
+  geom_line(data=avg_est_tmp_wVars,
+            aes(y=plogis(wt_lp_EST),
+                x=DOY,ymin=plogis(wt_lp_EST-(1.96*se_moderr)),
+                ymax=plogis(wt_lp_EST+(1.96*se_moderr))),linewidth=2) +
+  facet_wrap(~Year)
+
+
+
+predDFwtavgDF <-  predDFcomb |> 
+  dplyr::group_by(rw) |>
+  dplyr::summarize(
+    EST_lp=sum(EST_lp*wt),
+    EST=sum(EST*wt),
+    LCL=min(LCL),
+    UCL=max(UCL),
+    lo_SEadj=mean(lo_SEadj), # fix later
+    # pLCL=min(pLCL),
+    # pUCL=max(pUCL),
+    wtsum=sum(wt)) |> 
+  dplyr::mutate(
+    pEST=plogis(EST_lp),
+    pSE=pEST*(1-pEST)*lo_SEadj,
+    pLCL=plogis(LCL),
+    pUCL=plogis(UCL)
+  )
+
+nrow(predDFcomb)
+
+library(ggplot2)
+
+# predDFcomb_wVars <- data.frame(predDFcomb,CVhelp_dat_w)
+
+ggplot(data=predDFcomb_wVars %>% filter(!(id %in% c(3,5,6)))
+       ,aes(y=plogis(EST),x=DOY,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))) +
+  geom_ribbon(alpha=0.25,color=NA) +# geom_point() +
+  geom_line() +
+  facet_wrap(~Year)
+
+ggplot(data=predDFcomb_wVars %>% filter(!(id %in% c(3,5,6)))
+       ,aes(y=plogis(EST),x=DOY,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))) +
+  geom_ribbon(alpha=0.25,color=NA) +# geom_point() +
+  geom_line() +
+  facet_wrap(~Year)
+
+predDFwtavgDF_wVars <- data.frame(predDFwtavgDF,CVhelp_dat_w)
+ggplot(data=predDFwtavgDF_wVars,aes(y=pEST,x=DOY,ymin=pLCL,ymax=pUCL)) + geom_ribbon() + geom_point() + facet_wrap(~Year)
+
 
 
 

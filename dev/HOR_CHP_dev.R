@@ -2,17 +2,12 @@
 
 devtools::load_all()
 
-# bad credentials
-# devtools::install_github("https://github.com/swhitCBR/CVhelp",auth_token = "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")
-# devtools::install_github("https://github.com/swhitCBR/TMBhelp",auth_token = "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")
-
 devtools::load_all("../CVhelp")
 devtools::load_all("../TMBhelp")
 
 
+HOR_CHP_comp_ls_scl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/HOR_CHP_mod_dat_ls.RData",z_scale_vars = TRUE)
 
-# devtools::install_github("https://github.com/swhitCBR/CVhelp")
-# devtools::install_github("https://github.com/swhitCBR/TMBhelp")
 
 HOR_CHP_comp_ls_scl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/HOR_CHP_mod_dat_ls.RData",z_scale_vars = TRUE)
 # HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_pred_mat <- HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_s[1:10,]
@@ -23,9 +18,6 @@ HOR_CHP_comp_ls_unscl <- CVhelp::HOR_CHP_comp(RData_pth_in = "../CVPAS_beta/src/
 
 dim(HOR_CHP_comp_ls_scl$XX_in_w_int_WYT)
 colnames(HOR_CHP_comp_ls_scl$XX_in_w_int_WYT)
-
-
-
 
 
 HOR_CHP_TMB_all_mods <- readRDS("../CVPAS_beta/src/HOR_CHP_TMB_all_mods.rds")
@@ -49,26 +41,47 @@ source("dev/tmp_glmm_fxns.R")
 head(CVhelp_dat_w)
 
 devtools::load_all()
-
-# create design matrix based on rows in wide format data environmental and operational data
-# xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_unscl,
-#                  sel_rows_tmp1=CVhelp_dat_w[1:5,],
-#                  flength_in=240)
-# 
-# xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
-#                  sel_rows_tmp1=CVhelp_dat_w[1:250,],
-#                  flength_in=240)
-
 attributes(HOR_CHP_comp_ls_scl$XX_in)$center
 
+CVhelp_dat_w_alt <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide",DOY_rng = 1:365)
+CVhelp_dat_w_alt <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide",DOY_rng = 1:250)
+
+nrow(CVhelp_dat_w_alt)
+CVhelp_dat_w_alt <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide",DOY_rng = 1:251)
+
+# # View(CVhelp_dat_w_alt)
+# # table(is.na(CVhelp_dat_w_alt$date))
+# nrow(CVhelp_dat_w_alt)
+# CVhelp_dat_w_alt[which(is.na(predDFcomb_wVars$EST_lp)),]
+# # table(is.na(CVhelp_dat_w_alt$OMT))
+# # length(is.na(CVhelp_dat_w_alt$OMT))
+# 
+# CVhelp_dat_l_alt <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "long",DOY_rng = 1:365)
+# CVhelp_dat_l_alt
+# CVhelp::get_env_plot(CVhelp_dat_l_alt)
+# 
+
 xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
-                              sel_rows_tmp1=CVhelp_dat_w,
+                              sel_rows_tmp1=CVhelp_dat_w_alt,
                               flength_in=240)
 
-xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
-                 sel_rows_tmp1=CVhelp_dat_w[1:250,],
-                 flength_in=240)
 
+# CVhelp_dat_w_alt[5200:5206,]
+
+# CVhelp_dat_w_alt[which(is.na(predDFcomb_wVars$EST_lp)),]
+# xpred_tmp[which(is.na(predDFcomb_wVars$EST_lp)),]
+
+
+# View(CVhelp_dat_w)
+# View(xpred_tmp)
+# 
+# xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
+#                  sel_rows_tmp1=CVhelp_dat_w,#[1:250,],
+#                  flength_in=240)#,SJL_route_in = F)
+
+# xpred_tmp <- HOR_CHP_mod_wrap(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
+#                               sel_rows_tmp1=CVhelp_dat_w,
+#                               flength_in=240)
 
 attributes(HOR_CHP_comp_ls_scl$XX_in)[[c("scaled_vars")]]
 
@@ -76,14 +89,6 @@ attributes(HOR_CHP_comp_ls_scl$XX_in)[[c("scaled_vars")]]
 
 #extract center and scale for relevent parameters
 scl_var_by_tmpDF <- get_var_center_scale(TMB_mod_ls=HOR_CHP_comp_ls_scl)
-
-# xpred_tmp
-# xpred_tmp_wcols
-
-# xpred_tmp
-
-# HOR_CHP_comp_ls_scl$TMB_data_baseline
-
 
 
 # column names for design matrix
@@ -125,6 +130,7 @@ ii=1
 # HOR_CHP_TMB_all_mods$allint_DMs
 # which(HOR_CHP_TMB_all_mods$allint_DMs=="111111111110000000000")
 predDF_ls <- list()
+sigma_beta_ls <- list()
 bt=proc.time()
 for(ii in 1:nrow(AIC_DF_d2)){
   # extract design matrix index vector
@@ -137,14 +143,16 @@ for(ii in 1:nrow(AIC_DF_d2)){
   # TMB_data_tmp$"XX_pred_mat" <- TMB_data_tmp$"XX_pred_mat"[,inclu_IND_pred]
   TMB_data_tmp$"XX_pred_mat" <- TMB_data_tmp$"XX_pred_mat"
   
+  
   # attributes(HOR_CHP_comp_ls_scl$XX_in)
   # HOR_CHP_comp_ls_scl
   # substitution
   # TMB_data_tmp$"XX_pred_mat" <-xpred_tmp_wcols[,inclu_IND_pred]
 
   head(TMB_data_tmp$"XX_pred_mat")
+  head(xpred_tmp_wcols)
+  # full set
   head(xpred_tmp_wcols[,inclu_IND_pred])
-
   # HOR_CHP_TMB_all_mods
   # starting values
   par_tmp=subset(HOR_CHP_TMB_all_mods$pt_estsDF,dm==dm_str_val)$coeff_param
@@ -172,9 +180,81 @@ for(ii in 1:nrow(AIC_DF_d2)){
                                              getReportCovariance = T,
                                              bias.correct = F,
                                              skip.delta.method = F,
-                                             ignore.parm.uncertainty = F))
+                                             ignore.parm.uncertainty = F)
+                               )
   predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_pred_mat),
                        summ_out_for_pred[rownames(summ_out_for_pred)=="lp_Spred_uncond",])
+  
+  SD_obj <- TMB::sdreport(obj = OBJ_pred,
+                          getReportCovariance = T,
+                          bias.correct = F,
+                          skip.delta.method = F,
+                          ignore.parm.uncertainty = F,
+                          getJointPrecision = TRUE)
+  
+  
+  betas <- OBJ_pred$env$par
+  new_X <- HOR_CHP_comp_ls_scl$TMB_data_baseline$XX_pred_mat[1:4,inclu_IND_pred]
+  head(TMB_data_tmp$"XX_pred_mat"[,inclu_IND_pred] %*% Spar_tmp)
+  head(TMB_data_tmp$"XX_pred_mat"[,inclu_IND_pred] %*% Spar_tmp)
+  
+  # (new_X %*% Spar_tmp) + 
+    
+  # parametric bootstrap
+  cov_matrix <- solve(SD_obj$jointPrecision)
+  fixed_ind <- which(rownames(cov_matrix)=="S_pars")
+  sigma_beta <- cov_matrix[fixed_ind,fixed_ind]
+
+  sigma_beta_ls[[ii]] <- sigma_beta
+  sqrt(rowSums((new_X %*% sigma_beta) * new_X))
+  head(predDF)
+  
+  # mu_joint <-  OBJ_pred$env$par
+  # L <- Matrix::Cholesky(SD_obj$jointPrecision, LDL = FALSE)
+  # n_boot <- 1000
+  # p <- length(mu_joint)
+  # library(Matrix)
+  # Z <- matrix(rnorm(p * n_boot), nrow = p, ncol = n_boot)
+  # boot_perturbations <- as.matrix(Matrix::solve(L, Z, system = "Lt"))
+  # boot_samples_joint <- t(mu_joint + boot_perturbations)
+  # 
+  # S_pars_boot <- boot_samples_joint[,which(dimnames(boot_samples_joint)[[2]]=="S_pars")]
+  # S_pars_boot
+  # 
+  # tmp_mat<- matrix(NA,nrow=nrow(S_pars_boot),ncol=nrow(TMB_data_tmp$"XX_pred_mat"))
+  # for(ii in 1:1000){
+  #   tmp_mat[ii,] <- as.vector(TMB_data_tmp$"XX_pred_mat"[,inclu_IND_pred] %*% S_pars_boot[ii,])}
+  # matplot(tmp_mat)
+  # matplot(plogis(tmp_mat))
+  # 
+  # # tmpDF <- data.frame(S_pars_boot[1,],Spar_tmp)
+  # 
+  # TMB_data_tmp$"XX_pred_mat"[1:4,inclu_IND_pred]  %*% tmpDF[,2]
+  # 
+  # as.numeric(S_pars_boot[1,])
+  # TMB_data_tmp$"XX_pred_mat"[1:4,inclu_IND_pred] %*% Spar_tmp
+  # 
+  # betas
+  # # apply(S_pars_boot,1,function(x) {x} ,simplify = F)
+  # # S_pars_boot %*% new_X
+  # 
+  # sum(S_pars_boot[1,]*new_X[1,])
+  # sum(S_pars_boot[1,]*new_X[1,])
+  # 
+  #   head(predDF)
+  
+  # vcov(SD_obj)
+  # checking convergence
+  # all(eigen(cov_matrix)$values > 0)
+  # OBJ_pred$env$par
+  # str(SD_obj$jointPrecision)
+  # SD_obj$par.random
+  # SD_obj$diag.cov.random
+  # dim(SD_obj$cov)
+  # SD_obj$cov.fixed
+
+  
+  
   # predDF <- data.frame(id=ii,rw=1:nrow(HOR_CHP_comp_ls_unscl$TMB_data_baseline$XX_pred_mat),
   #                      summ_out_for_pred[rownames(summ_out_for_pred)=="lp_Spred_uncond",])
   names(predDF) <- c("id","rw","EST_lp","SE_lp"); rownames(predDF) <- NULL
@@ -193,7 +273,7 @@ for(ii in 1:nrow(AIC_DF_d2)){
 } # 30 seconds to compute all preds
 proc.time()-bt # 16 seconds 
 
-predDF_ls
+# predDF_ls
 
 library(dplyr)
 AIC_DF_d2$AICwt <- get_aic_wts(AIC_DF_d2,"AIC")
@@ -202,7 +282,19 @@ predDFcomb$wt=AIC_DF_d2$AICwt[predDFcomb$id]
 
 library(ggplot2)
 
-predDFcomb_wVars <- data.frame(predDFcomb,CVhelp_dat_w)
+xpred_tmp$rw=xpred_tmp$DOY
+
+# predDFcomb_wVars <- predDFcomb  |> left_join(xpred_tmp)
+
+# predDFcomb_wVars <- data.frame(predDFcomb,CVhelp_dat_w)
+
+predDFcomb_wVars <- data.frame(predDFcomb,xpred_tmp)
+
+head(CVhelp_dat_w_alt)
+View(CVhelp_dat_w_alt)
+predDFcomb_wVars[which(is.na(predDFcomb_wVars$EST_lp)),]
+
+xpred_tmp[which(is.na(predDFcomb_wVars$EST_lp)),]
 
 ggplot(data=predDFcomb_wVars #%>% filter(!(id %in% c(3,5,6)))
        ,aes(y=plogis(EST),x=DOY,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))) +
@@ -210,6 +302,11 @@ ggplot(data=predDFcomb_wVars #%>% filter(!(id %in% c(3,5,6)))
   geom_line() +
   facet_wrap(~Year)
 
+
+
+table(is.na(predDFcomb$EST_lp))
+head(predDFcomb)
+table(table(predDFcomb$rw))
 in_avg_tb <-  predDFcomb |>
   dplyr::group_by(rw) |>
   # filter(!(id %in% c(3,5,6))) |>
@@ -243,29 +340,27 @@ avg_est_tmp_wVars <- xpred_tmp |> left_join(avg_est_tmp)# |> left_join(predDFcom
 
 predDFcomb3 <- predDFcomb2  |> left_join(avg_est_tmp_wVars)
 
-ggplot(data=predDFcomb3 #%>% filter(!(id %in% c(3,5,6)))
-       ,aes(y=plogis(EST),x=DOY,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))) +
-  geom_ribbon(alpha=0.15,color=NA) +# geom_point() +
-  geom_line() +
-  facet_wrap(~Year)
-
-
+# ggplot(data=predDFcomb3 #%>% filter(!(id %in% c(3,5,6)))
+#        ,aes(y=plogis(EST),x=DOY,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))) +
+#   geom_ribbon(alpha=0.15,color=NA) +# geom_point() +
+#   geom_line() +
+#   facet_wrap(~Year)
 
 ggplot(data=predDFcomb3 #%>% filter(!(id %in% c(3,5,6)))
        ,aes(y=plogis(EST),x=DOY,color=factor(id))) +#,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))
-  geom_line() +
+  geom_line() + ggtitle("prob_scale") +
   facet_wrap(~Year) + scale_y_continuous(limits=c(0,1))
 
 ggplot(data=predDFcomb3 #%>% filter(!(id %in% c(3,5,6)))
        ,aes(y=lo_pred,x=DOY,color=factor(id))) +#,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))
-  geom_line() +
+  geom_line() + ggtitle("logit_scale") +
   facet_wrap(~Year) #+ scale_y_continuous(limits=c(0,1))
 
 
-ggplot(data=predDFcomb3 #%>% filter(!(id %in% c(3,5,6)))
-       ,aes(y=diff_modavg,x=DOY,color=factor(id))) +#,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))
-  geom_line() +
-  facet_wrap(~Year) #+ scale_y_continuous(limits=c(0,1))
+# ggplot(data=predDFcomb3 #%>% filter(!(id %in% c(3,5,6)))
+#        ,aes(y=diff_modavg,x=DOY,color=factor(id))) +#,ymin=plogis(LCL),ymax=plogis(UCL),color=factor(id),fill=factor(id))
+#   geom_line() +
+#   facet_wrap(~Year) #+ scale_y_continuous(limits=c(0,1))
 
 
 # predDFcomb2

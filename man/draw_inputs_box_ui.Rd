@@ -9,7 +9,7 @@ draw_inputs_box_ui(init_data_source_in, collapsed_in)
 \arguments{
 \item{init_data_source_in}{data source object}
 
-\item{input_tab_in}{input$tabs}
+\item{input_tab_in}{sidebar selection from object 'input$tabs'}
 }
 \value{
 a \code{shiny.tag} object inside a `shinydashboardPlus::box()``

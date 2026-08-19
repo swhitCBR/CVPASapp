@@ -47,7 +47,9 @@ CVhelp_dat_w_alt <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output 
 CVhelp_dat_w_alt <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide",DOY_rng = 1:250)
 
 nrow(CVhelp_dat_w_alt)
-CVhelp_dat_w_alt <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide",DOY_rng = 1:251)
+CVhelp_dat_w_alt <- CVhelp::env_comp(dt_rng=c("2011-01-01","2024-12-31"),output = "wide",DOY_rng = 1:300)
+nrow(CVhelp_dat_w_alt)==300*13
+
 
 # # View(CVhelp_dat_w_alt)
 # # table(is.na(CVhelp_dat_w_alt$date))
@@ -312,6 +314,8 @@ in_avg_tb <-  predDFcomb |>
   # filter(!(id %in% c(3,5,6))) |>
   dplyr::summarize(
   wt_lp_EST=sum(EST_lp*wt))
+
+
 
 # adding the model selection uncertainty to the estimate
 predDFcomb2 <- predDFcomb |> left_join(in_avg_tb) |> 

@@ -1,0 +1,56 @@
+---
+title: "HOR_CHP_predict"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{HOR_CHP_predict}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, eval=T,echo=T}
+library(CVPASapp)
+
+# the confidence sets parameter estimates and joint covariance matrix
+HOR_CHP_comp_ls_scl <- HOR_CHP_comp_alt(
+  HOR_CHP_data_inputs_ls_in=HOR_CHP_pred_comp_ls$"data_inputs_ls",
+                 z_scale_vars=T)
+
+CVPASapp:::get_var_center_scale(TMB_mod_ls=HOR_CHP_comp_ls_scl)
+# create a new design matrix for HOR_CHP model where all covariates are scaled according to the fitted model
+xpred_tmp <- CVPASapp:::HOR_CHP_DM_scl(HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
+                                         sel_rows_tmp1=CVhelp_dat_w,
+                                         flength_in=240)
+
+# pred_DF <- CVPASapp:::HOR_CHP_pred_get_pred_all(HOR_CHP_pred_comp_ls_in=HOR_CHP_pred_comp_ls,
+#                                      xpred_tmp_in=xpred_tmp,avg_onlyTF = TRUE)[,c("Year","DOY","wt_lp_EST","se_moderr")]
+# head(pred_DF)
+
+pred_DF_ls <- CVPASapp:::HOR_CHP_get_pred(
+  HOR_CHP_pred_comp_ls_in=HOR_CHP_pred_comp_ls,
+   xpred_tmp_in=xpred_tmp,
+   avg_onlyTF = FALSE)
+
+pred_DF_mult_flength <- do.call(rbind,sapply(c(200,300,400),CVPASapp:::HOR_CHP_mod_wrap,simplify = F))
+pred_DF_mult_flength <- do.call(rbind,sapply(c(200,300,400),CVPASapp:::HOR_CHP_mod_wrap,simplify = F,years_in=2011))
+
+
+ggplot2::ggplot(data=pred_DF_mult_flength |> dplyr::filter(flength!=300),
+       ggplot2::aes(y=plogis(wt_lp_EST),
+           x=DOY,ymin=plogis(wt_lp_EST-(1.96*se_moderr)),
+           ymax=plogis(wt_lp_EST+(1.96*se_moderr)),
+           color=factor(flength),
+           fill=factor(flength))) + 
+  ggplot2::geom_ribbon(alpha=0.25,color=NA) + 
+  ggplot2::geom_line(linewidth=.75) +
+  ggplot2::geom_point(shape=21) +
+  ggplot2::facet_wrap(~Year) #+ ggplot2::theme_minimal()
+
+
+```

@@ -8,7 +8,8 @@ get_glmmTMB_ests(
   glmmTMB_res_ls_in,
   mods_obj_nm = "HOR_TCJ_d2_mods",
   sel_data_in = sel_rows_tmp4,
-  aic_avg_tb_wts_in = aic_avg_tb_wts
+  aic_avg_tb_wts_in = aic_avg_tb_wts,
+  sub_estimate_in = "HOR_TCJ"
 )
 }
 \arguments{

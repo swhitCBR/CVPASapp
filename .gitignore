@@ -4,3 +4,4 @@
 .Rbuildignore
 
 /.quarto/
+inst/doc

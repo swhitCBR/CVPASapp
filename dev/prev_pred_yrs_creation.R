@@ -1,36 +1,111 @@
-# generate predictions aand plot from HOR_TCJ glmmTMB models
+# generate predictions and plot from HOR_TCJ glmmTMB models
 
 library(devtools)
 load_all()
 
 
-data("CVhelp_dat_w")
-# data("CVhelp_dat_l")
+############################# #
+
+############ #
+### HOR
+############ #
+
+HOR_pred_tab <- HOR_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+                             HOR_mod_ls=glmmTMB_mod_ls[["HOR"]])
+
+############ #
+### TCJ
+############ #
+
+
+
+######## #
+
+
+
+head(HOR_pred_tab)
+
+########## #
+# HOR-CHP
+########## #
+HOR_CHP_pred_tab <- HOR_CHP_mod_wrap(flength_in = 244,years_in = 2012,DOY_in = 1:250)
+
+
+########## #
+# HOR-TCJ
+########## #
+HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+                                     HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
+                                     flength_in=244) 
+
+head(HOR_TCJ_pred_tab)
+
+########## #
+# TCJ-CHP
+########## #
+
+devtools::load_all()
+
+
+
+TCJ_CHP_pred_tab <- TCJ_CHP_mod_wrap(TCJ_CHP_pred_comp_ls_in=TCJ_CHP_pred_comp_ls,
+                                     flength_in=244)
+
+head(TCJ_CHP_pred_tab)
+
+pred_tab_ls<- list(
+  # "TCJ"=HOR_pred_tab,
+  "HOR"=HOR_pred_tab,
+  "HOR_TCJ_pred_tab"=HOR_TCJ_pred_tab,
+  "HOR_CHP"=HOR_CHP_pred_tab,
+  "TCJ_CHP"=TCJ_CHP_pred_tab
+  )
+
+
+
+
+
 
 # old
-# HOR_mod_d2_ls <- readRDS("../CVPAS_STH_app/output/HOR_mod_d2_ls.rds")
-HOR_TCJ_mod_d2_ls <- readRDS("../CVPAS_beta/src/HOR_TCJ_d2_mods.rds")
-
-HOR_mod_d2_ls <- readRDS("../CVPAS_STH_app/output/HOR_d2_mods_ls.rds")
-HOR_TCJ_mod_d2_ls_b <- readRDS("../CVPAS_STH_app/output/HOR_TCJ_d2_mods.rds")
-
-length(HOR_TCJ_mod_d2_ls_b)
-length(HOR_TCJ_mod_d2_ls)
-
-str(HOR_TCJ_mod_d2_ls_b)
-str(HOR_TCJ_mod_d2_ls)
-
-
-
+# HOR_TCJ_mod_d2_ls <- readRDS("../CVPAS_beta/src/HOR_TCJ_d2_mods.rds")
+# HOR_mod_d2_ls <- readRDS("../CVPAS_STH_app/output/HOR_d2_mods_ls.rds")
+# HOR_TCJ_mod_d2_ls_b <- readRDS("../CVPAS_STH_app/output/HOR_TCJ_d2_mods.rds")
+# 
+# length(HOR_TCJ_mod_d2_ls_b)
+# length(HOR_TCJ_mod_d2_ls)
+# 
+# str(HOR_TCJ_mod_d2_ls_b)
 # str(HOR_TCJ_mod_d2_ls)
+# HOR_CHP_pred_tab
+# head(HOR_CHP_pred_tab)
+
+
+
+# TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls$"1111110010101"$COV_mat
+# SD_obj <- TCJ_CHP_mod_fits_d2_ls$`1111110010101`$COV_mat
+# cov_matrix <- solve(SD_obj$jointPrecision)
+# 
+# ii=1
+# TCJ_CHP_COVMAT_ls <- TCJ_CHP_pars_ls <- list()
+# for(ii in 1:length(TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls)){
+#   TCJ_CHP_pars_ls[[ii]] <-  TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls[[ii]]$est_tab |> 
+#     dplyr::filter(Parameter=="S_pars") |> dplyr::pull(Estimate)
+#   TCJ_CHP_COVMAT_ls[[ii]] <- solve(TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls[[ii]]$COV_mat$jointPrecision)
+# }
+# 
+# # TCJ_CHP_pred_comp_ls$
+# # TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls$`1111110010100`$est_tab
+# TCJ_CHP_pars_ls
+# TCJ_CHP_get_pred(xpred_tmp_in = xpred_tmp_init,
+#                  TCJ_CHP_pred_comp_ls_in =TCJ_CHP_pred_comp_ls )
+# str(HOR_TCJ_mod_d2_ls)
+
 names(HOR_TCJ_mod_d2_ls)
 HOR_TCJ_mod_d2_ls$HOR_TCJ_aictab
 HOR_TCJ_mod_d2_ls$HOR_TCJ_d2_mods
 
 HOR_TCJ_mod_d2_ls
 head(HOR_mod_d2_ls$HOR_d2_mods$`14`$frame)
-# head(glmmTMB_mod_ls$HOR$HOR_d2_mods$`14`$frame)
-# names(HOR_TCJ_mod_d2_ls)
 
 ########################## #
 # Saving glmmTMB models
@@ -48,33 +123,16 @@ names(glmmTMB_mod_ls)
 # xpred_tmp <- HOR_CHP_DM_scl(sel_rows_tmp1=CVhelp_dat_w,
 #                                      HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
 #                                      flength_in=240)
-# 
 # HOR_CHP_pred_tab <- HOR_CHP_get_pred(
 #   HOR_CHP_pred_comp_ls_in=HOR_CHP_pred_comp_ls,
 #   xpred_tmp_in=xpred_tmp,avg_onlyTF = TRUE)[,c("Year","DOY","wt_lp_EST","se_moderr")]
-
-
 # HOR_CHP_mod_wrap
 
-HOR_CHP_pred_tab <- HOR_CHP_mod_wrap(flength_in = 244,years_in = 2011,DOY_in = 50:70)
-
-head(HOR_CHP_pred_tab)
-
-
-HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
-                                     HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
-                                     flength_in=244) 
-
-HOR_pred_tab <- HOR_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
-                                    HOR_mod_ls=glmmTMB_mod_ls[["HOR"]])
 
 
 
+CVhelp_dat_w$DOY
 
-
-
-head(HOR_TCJ_pred_tab)
-head(HOR_pred_tab)
 
 
 

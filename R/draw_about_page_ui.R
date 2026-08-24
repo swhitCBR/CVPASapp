@@ -47,7 +47,7 @@ draw_about_page_ui <- function(){
         solidHeader = TRUE,
         status = "primary",
         column(
-          width = 5, 
+          width = 7, 
           style="display:inline"
           # ,
           # shiny::includeMarkdown(system.file("app/www/about/about_left_col_text.md", package = "CVPASapp"))
@@ -105,14 +105,28 @@ draw_about_page_ui <- function(){
         )
         ,
         column(
-          width = 7,
+          width = 5,
+          # ORIGINAL SCHEMATIC
+          # tags$img(
+          #   src = "www/about/simple_route_image.png",
+          #   style = "width: 80%; height: 80%;",# border: 2px solid #024c63;",
+          #   name = "Schematic view of junctions and routes through the south Delta ",
+          #   alt = "Routes bifurcate at the Head of Old River and with the path along the San Joaquin River splitting again at Turner Cut junction; all paths converge prior to reaching Chipps Island"
+          # ),
           tags$img(
-            src = "www/about/simple_route_image.png",
+            src = "www/images/svg/overall_survival_schematic_abbrev.svg",
             style = "width: 80%; height: 80%;",# border: 2px solid #024c63;",
             name = "Schematic view of junctions and routes through the south Delta ",
             alt = "Routes bifurcate at the Head of Old River and with the path along the San Joaquin River splitting again at Turner Cut junction; all paths converge prior to reaching Chipps Island"
           )
           ,
+          # tags$img(
+          #   src = "www/images/svg/overall_survival_schematic_full_nms.svg",
+          #   style = "width: 80%; height: 80%;",# border: 2px solid #024c63;",
+          #   name = "Schematic view of junctions and routes through the south Delta ",
+          #   alt = "Routes bifurcate at the Head of Old River and with the path along the San Joaquin River splitting again at Turner Cut junction; all paths converge prior to reaching Chipps Island"
+          # )
+          # ,
           tags$caption(
             shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/about_fig_cap.md",
                                                                   package = "CVPASapp"))

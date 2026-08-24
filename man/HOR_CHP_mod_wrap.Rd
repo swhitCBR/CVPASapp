@@ -4,7 +4,12 @@
 \alias{HOR_CHP_mod_wrap}
 \title{Title}
 \usage{
-HOR_CHP_mod_wrap(flength_in = 240, DOY_in = 50:100, years_in = NULL)
+HOR_CHP_mod_wrap(
+  flength_in = 240,
+  DOY_in = 50:100,
+  years_in = NULL,
+  CVhelp_dat_w_in = CVhelp_dat_w
+)
 }
 \arguments{
 \item{flength_in}{}

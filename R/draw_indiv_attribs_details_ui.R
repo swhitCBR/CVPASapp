@@ -13,7 +13,7 @@ draw_indiv_attribs_details_ui <- function(){
           fluidRow(
             style = "padding-inline-start: 15px;",
             column(
-              width = 6,
+              width = 4,
               h5(strong("Fork Length")),
               tags$ul(
                 style = "padding-inline-start: 20px;",
@@ -22,7 +22,7 @@ draw_indiv_attribs_details_ui <- function(){
                 )
               )
             ),
-            column(width = 6, shiny::uiOutput("flength_sel_ui"))
+            column(width = 8, shiny::uiOutput("flength_sel_ui"))
           )
         )
       )

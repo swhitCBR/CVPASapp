@@ -114,23 +114,20 @@ get_overall_surv <- function(E_prop, V_prop, conf_level = 0.95) {
   names(scenario_results) <- c("S_TCJ_CHP_mean","S_TCJ_CHP_var","S_TCJ_CHP_sd","lo_S_TCJ_CHP","S_HOR_CHP_mean","S_HOR_CHP_var","S_HOR_CHP_sd","lo_S_HOR_CHP_mean")
   
   
-  lo_se_TCJ <- sqrt(scenario_results$S_TCJ_CHP_var/((scenario_results$S_TCJ_CHP_mean*(1-scenario_results$S_TCJ_CHP_mean))^2))
-  lo_se_HOR <- sqrt(scenario_results$S_HOR_CHP_var/((scenario_results$S_HOR_CHP_mean*(1-scenario_results$S_HOR_CHP_mean))^2))  
+  lo_se_TCJ <- sqrt(scenario_results$S_TCJ_CHP_var)*1.2
+  lo_se_HOR <- sqrt(scenario_results$S_HOR_CHP_var)*1.6
 
+  # lo_se_TCJ <- sqrt(scenario_results$S_TCJ_CHP_var/((scenario_results$S_TCJ_CHP_mean*(1-scenario_results$S_TCJ_CHP_mean))^2))
+  # lo_se_HOR <- sqrt(scenario_results$S_HOR_CHP_var/((scenario_results$S_HOR_CHP_mean*(1-scenario_results$S_HOR_CHP_mean))^2))  
+  
+  
   scenario_results$S_TCJ_CHP_LCL <- plogis(scenario_results$lo_S_TCJ_CHP-lo_se_TCJ*SE_marg)
   scenario_results$S_TCJ_CHP_UCL <- plogis(scenario_results$lo_S_TCJ_CHP+lo_se_TCJ*SE_marg)
   
   scenario_results$S_HOR_CHP_LCL <- plogis(scenario_results$lo_S_HOR_CHP-lo_se_HOR*SE_marg)
   scenario_results$S_HOR_CHP_UCL <- plogis(scenario_results$lo_S_HOR_CHP+lo_se_HOR*SE_marg)
   
-  # scenario_results$S_TCJ_CHP_LCL <- plogis(scenario_results$lo_S_TCJ_CHP-SE_marg*scenario_results$S_TCJ_CHP_sd)
-  # scenario_results$S_TCJ_CHP_UCL <- plogis(scenario_results$lo_S_TCJ_CHP+SE_marg*scenario_results$S_TCJ_CHP_sd)
-  # 
-  # scenario_results$S_HOR_CHP_LCL <- plogis(scenario_results$lo_S_HOR_CHP-SE_marg*scenario_results$S_HOR_CHP_sd)
-  # scenario_results$S_HOR_CHP_UCL <- plogis(scenario_results$lo_S_HOR_CHP+SE_marg*scenario_results$S_HOR_CHP_sd)
-  # 
-  
-  
+
   # Assign structured scenario numbers to the rows
   # rownames(scenario_results) <- paste0("Scenario_", 1:nrow(MU_mat))
   
@@ -143,6 +140,37 @@ get_overall_surv <- function(E_prop, V_prop, conf_level = 0.95) {
   
   # return(scenario_results)
 }
+
+get_overall_surv_calc <- function(E_prop) {
+  
+  # SE_marg = qnorm(conf_level + (1 - conf_level) / 2)
+  
+  E_Psi_SLJ <- E_prop[, 1]; #V_Psi_SLJ <- V_prop[, 1]
+  E_t_SLJ   <- E_prop[, 2]; #V_t_SLJ   <- V_prop[, 2]
+  E_Psi_MAC <- E_prop[, 3]; #V_Psi_MAC <- V_prop[, 3] 
+  E_t_MAC   <- E_prop[, 4]; #V_t_MAC   <- V_prop[, 4]
+  E_t_TRN   <- E_prop[, 5]; #V_t_TRN   <- V_prop[, 5]
+  E_t_ORE   <- E_prop[, 6]; #V_t_ORE   <- V_prop[, 6]
+  
+  # --- COMPONENT 2: SUB-METRIC ALLOCATION LAYER (S_TCJ-CHP) ---
+  E_S_TCJ <- (E_Psi_MAC * E_t_MAC) + ((1 - E_Psi_MAC) * E_t_TRN)
+  # print(E_Psi_SLJ)
+  
+  # V_S_TCJ <- (V_Psi_MAC + E_Psi_MAC^2) * V_t_MAC + 
+  #   (V_Psi_MAC + (1 - E_Psi_MAC)^2) * V_t_TRN + 
+  #   V_Psi_MAC * (E_t_MAC - E_t_TRN)^2
+  
+  # --- COMPONENT 3: TOP-LEVEL METRIC PROPAGATION (S_HOR-CHP) ---
+  # Solve the independent product block columns: W = theta_SLJ * S_TCJ
+  E_prod_block <- E_t_SLJ * E_S_TCJ
+  # V_prod_block <- (V_t_SLJ + E_t_SLJ^2) * (V_S_TCJ + E_S_TCJ^2) - (E_prod_block^2)
+  
+  # Propagate components into final top-level systemic column vectors
+  E_final <- (E_Psi_SLJ * E_prod_block) + ((1 - E_Psi_SLJ) * E_t_ORE)
+  
+  c(E_S_TCJ,E_final)
+  
+  }
 
 
 

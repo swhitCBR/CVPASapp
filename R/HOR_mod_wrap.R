@@ -5,6 +5,8 @@
 #' @param HOR_mod_ls named list with aic table and list of models
 #' @param sel_rows_tmp1 rows of 'CVhelp_dat_w' to use
 #' @param flength_in fork length input scalar
+#' @param DOY_in day of year subset
+#' @param years_in years to subset
 #'
 #' @returns dataframe with logit-scale predictions for survival model
 #' 
@@ -13,8 +15,16 @@
 HOR_mod_wrap <- function(HOR_mod_ls,
                              sel_rows_tmp1=CVhelp_dat_w,
                              flength_in=240,
+                             DOY_in=1:250,
+                             years_in=NULL,
                              route="ORE"
                             ) {
+  
+  if(is.null(years_in)){
+    years_in=unique(sel_rows_tmp1$Year)
+  }
+    sel_rows_tmp1 <- sel_rows_tmp1 |> dplyr::filter(Year %in% years_in & DOY %in% DOY_in)
+  
   
   stopifnot(flength_in >= 100 & flength_in <= 400)
   # # renaming wide-format daily measures to match glmmTMB() model design matrices

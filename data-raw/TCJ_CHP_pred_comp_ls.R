@@ -1,5 +1,5 @@
 ## code to prepare `TCJ_CHP_pred_comp_ls` dataset goes here
-
+setwd("C:/repos/CVPASapp")
 devtools::load_all("../TMBhelp")
 # devtools::load_all("../CVhelp")
 TCJ_CHP_TMB_all_mods <- readRDS("../CVPAS_STH_app/output/TCJ_CHP_TMB_all_mods.rds")
@@ -11,7 +11,7 @@ load("../CVPAS_STH_app/data/TCJ_CHP_mod_dat_ls.RData")
 
 # rlang::env_get_list()
 # rlang::env_get(nm = ".dll")
-# TMB:::getUserDLL()
+TMB:::getUserDLL()
 # dyn.load(dyn.unload("TMB/TCJ_CHP_global"))
 # 20 to 30
 # TCJ_CHP_TMB_all_mods$AIC_DF_full[which(TCJ_CHP_TMB_all_mods$AIC_DF_full$dm=="111111111110000000000"),]
@@ -93,6 +93,7 @@ cov_mat_ls <- lapply(TCJ_CHP_mod_fits_d2_ls,function(xx) solve(xx$COV_mat$jointP
 # dyn.load(dyn.unload("TMB/TCJ_CHP_global"))
 # saveRDS(S_conf_ls,"output/TCJ_CHP_S_conf_ls.rds")
 TCJ_CHP_pred_comp_ls <- list(
+  "S_conf_ls"=S_conf_ls,
   "AIC_DF_d2"=AIC_DF_d2,
   "logSD_RELGRP_v"=logSD_RELGRP_v,
   "TCJ_CHP_mod_fits_d2_ls"=TCJ_CHP_mod_fits_d2_ls,

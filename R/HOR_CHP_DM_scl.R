@@ -78,26 +78,5 @@ HOR_CHP_DM_scl <- function(HOR_CHP_mod_ls,
   
   return(sel_rows_tmp4)
 
-  # aic_avg_tb <- HOR_TCJ_mod_ls$HOR_TCJ_aictab[names(HOR_TCJ_mod_ls$HOR_TCJ_d2_mods),]
-  # print(aic_avg_tb)
-  # aic_avg_tb_wts <- aic_avg_tb |> dplyr::mutate(AICwt=exp(-0.5*dAIC)/sum(exp(-0.5*aic_avg_tb$dAIC)))
-  
-  # # tmp_ls <- get_glmmTMB_ests()
-  
-  # tmp_HOR_TCJ_preds1 <- get_glmmTMB_ests(sel_data_in = sel_rows_tmp4,
-  #                                            aic_avg_tb_wts_in=aic_avg_tb_wts,
-  #                                            glmmTMB_res_ls_in=HOR_TCJ_mod_ls)
-  
-  # tmp_HOR_TCJ_preds2 <- dplyr::bind_rows(tmp_HOR_TCJ_preds1) |> 
-  #   dplyr::group_by(sub_estimate,tmp_rw_ind) |> 
-  #   dplyr::summarize(lo_pred=sum(fit*AICwt),
-  #                    lo_SE=sum(AICwt*sqrt((se.fit^2)+(fit-lo_pred)^2)),
-  #                    lo_SEadj=sum(AICwt*sqrt((SEadj^2)+(fit-lo_pred)^2))) |>
-  #   dplyr::mutate(LCL=lo_pred-1.96*lo_SE,
-  #                 UCL=lo_pred+1.96*lo_SE,
-  #                 LCLadj=lo_pred-1.96*lo_SEadj,
-  #                 UCLadj=lo_pred+1.96*lo_SEadj)
-  
-  # dplyr::bind_cols(sel_rows_tmp4,tmp_HOR_TCJ_preds2)
 }
 

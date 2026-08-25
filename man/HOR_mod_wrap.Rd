@@ -8,6 +8,8 @@ HOR_mod_wrap(
   HOR_mod_ls,
   sel_rows_tmp1 = CVhelp_dat_w,
   flength_in = 240,
+  DOY_in = 1:250,
+  years_in = NULL,
   route = "ORE"
 )
 }
@@ -17,6 +19,10 @@ HOR_mod_wrap(
 \item{sel_rows_tmp1}{rows of 'CVhelp_dat_w' to use}
 
 \item{flength_in}{fork length input scalar}
+
+\item{DOY_in}{day of year subset}
+
+\item{years_in}{years to subset}
 }
 \value{
 dataframe with logit-scale predictions for survival model

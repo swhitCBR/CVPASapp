@@ -3,8 +3,99 @@
 library(devtools)
 load_all()
 
+# options(digits = 3,scipen = 99)
+pred_tab_ls <- all_mod_preds(,DOY_in = 1:250,years_in = NULL,flength_in = 200)
+pred_tab_ls2 <- all_mod_preds_fun2(pred_tab_ls_in = pred_tab_ls,predict_int = T,conf_level = 0.95)
+# pred_tab_ls2$"beta_parm_df"
+get_pred_plts_dev(pred_pDF_comb_in = pred_tab_ls2$"pred_pDF_comb")
 
-############################# #
+TCJ_CHP_pred_comp_ls$AIC_DF_d2
+TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls
+# TCJ_CHP_pred_comp_ls$TCJ_CHP_TMB_all_mods$pt_estsDF |> 
+#   dplyr::filter(dm %in% c(TCJ_CHP_pred_comp_ls$AIC_DF_d2$dm)) |>
+#   tidyr::pivot_wider(names_from = par_nm,values_from = S_coef)
+
+TCJ_CHP_pred_comp_ls$S_conf_ls$S_coef_confset_DF
+# kinda cool!
+TCJ_CHP_pred_comp_ls$TCJ_CHP_TMB_all_mods$pt_estsDF |> 
+  dplyr::filter(dm %in% c(TCJ_CHP_pred_comp_ls$AIC_DF_d2$dm)) |> 
+  dplyr::select(-dmID,-S_parID) |>
+  tidyr::pivot_wider(names_from = par_nm,values_from = S_coef)
+
+TCJ_CHP_pred_comp_ls$S_conf_ls$S_coef_confset_DF |> 
+  # dplyr::filter(dm %in% c(TCJ_CHP_pred_comp_ls$AIC_DF_d2$dm)) |> 
+  dplyr::select(-S_parID,-AICrank,-candmodID,-estimate,-SE) |>
+  tidyr::pivot_wider(names_from = par_nm,values_from = S_coef)
+
+TCJ_CHP_pred_comp_ls$TCJ_CHP_TMB_all_mods$pt_estsDF |> 
+  dplyr::filter(dm %in% c(TCJ_CHP_pred_comp_ls$AIC_DF_d2$dm)) |> 
+  dplyr::select(-dmID,-S_parID) |>
+  tidyr::pivot_wider(names_from = par_nm,values_from = S_coef) |>
+
+
+
+# TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls$`1111110010101`
+
+############################################################# #
+# Recreating periods in figures 6 and 9 of Buchanan (2024)
+############################################################# #
+tmpDOY <- as.numeric(format(as.Date("2011-05-01"),"%j")):as.numeric(format(as.Date("2011-05-05"),"%j"))
+pred_tab_ls <- all_mod_preds(DOY_in = tmpDOY,years_in = 2011)
+pred_tab_ls2 <- all_mod_preds_fun2(pred_tab_ls_in = pred_tab_ls,predict_int = T,conf_level = 0.95)
+# pred_tab_ls2$"beta_parm_df"
+get_pred_plts_dev(pred_pDF_comb_in = pred_tab_ls2$"pred_pDF_comb")
+
+tmpDOY <- as.numeric(format(as.Date("2015-04-01"),"%j")):as.numeric(format(as.Date("2015-04-05"),"%j"))
+pred_tab_ls <- all_mod_preds(DOY_in = tmpDOY,years_in = 2015)
+pred_tab_ls2 <- all_mod_preds_fun2(pred_tab_ls_in = pred_tab_ls,predict_int = T,conf_level = 0.95)
+# pred_tab_ls2$"beta_parm_df"
+get_pred_plts_dev(pred_pDF_comb_in = pred_tab_ls2$"pred_pDF_comb")
+
+
+
+
+# pred_tab_ls2$
+# plot.new()
+# matplot(pred_tab_ls2$beta_parm_df,type="l",add=T)
+# abline(h=0)
+table(apply(pred_tab_ls2$beta_parm_df,1,function(x) any(x<0)))
+
+
+nrow(pred_tab_ls2$pred_pDF_comb_w)
+# looking at beta dists
+ind_pos <- which(apply(pred_tab_ls2$beta_parm_df,1,function(x) all(x>0)))
+pred_tab_ls2$beta_parm_df[ind_pos,]
+
+pred_tab_ls2$beta_parm_df[-ind_pos,]
+
+
+pred_tab_ls2$pred_pDF_comb_w[ind_pos,]
+pred_tab_ls2$pred_pDF_comb_w[-ind_pos,]
+
+
+
+get_pred_plts_dev(pred_pDF_comb_in = pred_tab_ls2$"pred_pDF_comb")
+
+pred_tab_ls2$overall_DF
+
+head(pred_tab_ls2$overall_DF)
+0.8*0.2
+0.5*0.5
+
+0.95*0.05
+# ((1-0.2491214)*0.2491214)
+# 0.4991207/((1-0.2491214)*0.2491214)
+
+
+
+# head(pred_tab_ls2$overall_DF)
+
+pred_tab_ls2$pred_pDF_comb
+
+# pred_tab_ls2$
+
+
+pred_tab_ls2 |> tidyr::pivot_longer(names(pred_tab_ls2)[!names(pred_tab_ls2) %in% c("Year","DOY")])
 
 ############ #
 ### HOR
@@ -17,294 +108,171 @@ HOR_pred_tab <- HOR_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
 ### TCJ
 ############ #
 
+# TCJ_mod_wrap()
 
-
-######## #
-
-
-
-head(HOR_pred_tab)
-
-########## #
-# HOR-CHP
-########## #
-HOR_CHP_pred_tab <- HOR_CHP_mod_wrap(flength_in = 244,years_in = 2012,DOY_in = 1:250)
-
-
+TCJ_pred_tab <- TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
+                             TCJ_mod_ls=glmmTMB_mod_ls[["TCJ"]])
 ########## #
 # HOR-TCJ
 ########## #
+
 HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
                                      flength_in=244) 
+########## #
+# HOR-CHP
+########## #
 
-head(HOR_TCJ_pred_tab)
+HOR_CHP_viaSJL_pred_tab <- HOR_CHP_mod_wrap(flength_in = 244,SJL_route_in = TRUE
+                                     # years_in = 2012,
+                                     # DOY_in = 1:250
+                                     )
+
+HOR_CHP_viaORE_pred_tab <- HOR_CHP_mod_wrap(flength_in = 244,SJL_route_in = FALSE
+                                     # years_in = 2012,
+                                     # DOY_in = 1:250
+                                    )
 
 ########## #
 # TCJ-CHP
 ########## #
 
-devtools::load_all()
+TCJ_CHP_viaMAC_pred_tab <- TCJ_CHP_mod_wrap(#
+                                     flength_in=244,SJL_route_in = TRUE)
 
+TCJ_CHP_viaTRN_pred_tab <- TCJ_CHP_mod_wrap(
+                                            flength_in=244,SJL_route_in = FALSE)
 
+########################## #
+# Combination
+########################## #
 
-TCJ_CHP_pred_tab <- TCJ_CHP_mod_wrap(TCJ_CHP_pred_comp_ls_in=TCJ_CHP_pred_comp_ls,
-                                     flength_in=244)
-
-head(TCJ_CHP_pred_tab)
 
 pred_tab_ls<- list(
-  # "TCJ"=HOR_pred_tab,
+  "TCJ"=TCJ_pred_tab,
   "HOR"=HOR_pred_tab,
-  "HOR_TCJ_pred_tab"=HOR_TCJ_pred_tab,
-  "HOR_CHP"=HOR_CHP_pred_tab,
-  "TCJ_CHP"=TCJ_CHP_pred_tab
+  "HOR_TCJviaSJL"=HOR_TCJ_pred_tab,
+  "HOR_CHPviaSJL"=HOR_CHP_viaSJL_pred_tab,
+  "HOR_CHPviaORE"=HOR_CHP_viaORE_pred_tab,
+  "TCJ_CHPviaMAC"=TCJ_CHP_viaMAC_pred_tab,
+  "TCJ_CHPviaTRN"=TCJ_CHP_viaTRN_pred_tab
   )
 
 
 
+# sapply(pred_tab_ls,function(xx){"lo_pred" %in% names(xx)})
+# sapply(pred_tab_ls,function(xx){"lo_SEadj" %in% names(xx)})
+# sapply(pred_tab_ls,nrow)
 
 
+pred_lp <- do.call(rbind,
+  lapply(1:length(pred_tab_ls),function(ii){
+    pred_lp <- data.frame(param=names(pred_tab_ls)[ii],pred_tab_ls[[ii]][c("Year","DOY","lo_pred","lo_SEadj")])
+    }))
 
-# old
-# HOR_TCJ_mod_d2_ls <- readRDS("../CVPAS_beta/src/HOR_TCJ_d2_mods.rds")
-# HOR_mod_d2_ls <- readRDS("../CVPAS_STH_app/output/HOR_d2_mods_ls.rds")
-# HOR_TCJ_mod_d2_ls_b <- readRDS("../CVPAS_STH_app/output/HOR_TCJ_d2_mods.rds")
+pred_pDF <- pred_lp |> 
+  dplyr::mutate(
+    type=ifelse(param %in% c("TCJ","HOR"),"route","survival"),
+    loLCL=lo_pred-1.96*lo_SEadj,
+    loUCL=lo_pred+1.96*lo_SEadj,
+    pr_pred=plogis(lo_pred),
+    pLCL=plogis(loLCL),
+    pUCL=plogis(loUCL),
+    p_SEadj=plogis(lo_pred)*lo_SEadj
+    )
+
+library(ggplot2)
+# ggplot(data=pred_pDF,
+#        aes(y=pr_pred,x=DOY,ymin=pLCL,ymax=pUCL,color=type)) +
+#   facet_grid(Year~param) + 
+#   geom_ribbon(fill="gray",color=NA) +
+#   geom_line()
 # 
-# length(HOR_TCJ_mod_d2_ls_b)
-# length(HOR_TCJ_mod_d2_ls)
-# 
-# str(HOR_TCJ_mod_d2_ls_b)
-# str(HOR_TCJ_mod_d2_ls)
-# HOR_CHP_pred_tab
-# head(HOR_CHP_pred_tab)
+# ggplot(data=pred_pDF |> dplyr::filter(Year==2011),
+#        aes(y=pr_pred,x=DOY,ymin=pLCL,ymax=pUCL,color=type)) +
+#   facet_grid(Year~param) + 
+#   geom_ribbon(fill="gray",color=NA) +
+#   geom_line()
+
+
+# pred_lo_DF_w1 <- pred_pDF |> #dplyr::filter(Year==2011 & DOY %in% 20:24) |> 
+#   dplyr::select(Year,DOY,param,lo_pred) |> 
+#   tidyr::pivot_wider(names_from=param,values_from = lo_pred) |> 
+#   dplyr::rename(Psi_ORE=HOR,
+#                 Psi_TRN=TCJ) |> 
+#   dplyr::mutate(Psi_SJL=1-Psi_ORE,
+#                 Psi_MAC=1-Psi_TRN) |>
+#   dplyr::select(-HOR_CHPviaSJL,-Psi_TRN,-Psi_ORE) |>
+#   dplyr::relocate(Year,DOY,Psi_SJL,HOR_TCJviaSJL,Psi_MAC,TCJ_CHPviaMAC,TCJ_CHPviaTRN,HOR_CHPviaORE) 
+
+
+# pred_lo_SE_DF_w1 <- pred_pDF |> #dplyr::filter(Year==2011 & DOY %in% 20:24) |> 
+#   dplyr::select(Year,DOY,param,lo_SEadj) |> 
+#   tidyr::pivot_wider(names_from=param,values_from = lo_SEadj) |> 
+#   dplyr::rename(Psi_ORE=HOR,
+#                 Psi_TRN=TCJ) |> 
+#   dplyr::mutate(Psi_SJL=1-Psi_ORE,
+#                 Psi_MAC=1-Psi_TRN) |>
+#   dplyr::select(-HOR_CHPviaSJL,-Psi_TRN,-Psi_ORE) |>
+#   dplyr::relocate(Year,DOY,Psi_SJL,HOR_TCJviaSJL,Psi_MAC,TCJ_CHPviaMAC,TCJ_CHPviaTRN,HOR_CHPviaORE) 
 
 
 
-# TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls$"1111110010101"$COV_mat
-# SD_obj <- TCJ_CHP_mod_fits_d2_ls$`1111110010101`$COV_mat
-# cov_matrix <- solve(SD_obj$jointPrecision)
-# 
-# ii=1
-# TCJ_CHP_COVMAT_ls <- TCJ_CHP_pars_ls <- list()
-# for(ii in 1:length(TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls)){
-#   TCJ_CHP_pars_ls[[ii]] <-  TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls[[ii]]$est_tab |> 
-#     dplyr::filter(Parameter=="S_pars") |> dplyr::pull(Estimate)
-#   TCJ_CHP_COVMAT_ls[[ii]] <- solve(TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls[[ii]]$COV_mat$jointPrecision)
-# }
-# 
-# # TCJ_CHP_pred_comp_ls$
-# # TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls$`1111110010100`$est_tab
-# TCJ_CHP_pars_ls
-# TCJ_CHP_get_pred(xpred_tmp_in = xpred_tmp_init,
-#                  TCJ_CHP_pred_comp_ls_in =TCJ_CHP_pred_comp_ls )
-# str(HOR_TCJ_mod_d2_ls)
-
-names(HOR_TCJ_mod_d2_ls)
-HOR_TCJ_mod_d2_ls$HOR_TCJ_aictab
-HOR_TCJ_mod_d2_ls$HOR_TCJ_d2_mods
-
-HOR_TCJ_mod_d2_ls
-head(HOR_mod_d2_ls$HOR_d2_mods$`14`$frame)
-
-########################## #
-# Saving glmmTMB models
-########################## #
-
-glmmTMB_mod_ls <- list("HOR_TCJ"= HOR_TCJ_mod_d2_ls,
-                       "HOR"= HOR_mod_d2_ls)
-names(glmmTMB_mod_ls)
-# usethis::use_data(glmmTMB_mod_ls,overwrite = TRUE)
+pred_pDF_w1 <- pred_pDF |> #dplyr::filter(Year==2011 & DOY %in% 20:24) |> 
+  dplyr::select(Year,DOY,param,pr_pred) |> 
+  tidyr::pivot_wider(names_from=param,values_from = pr_pred) |> 
+  dplyr::rename(Psi_ORE=HOR,
+                Psi_TRN=TCJ) |> 
+  dplyr::mutate(Psi_SJL=1-Psi_ORE,
+                Psi_MAC=1-Psi_TRN) |>
+  dplyr::select(-HOR_CHPviaSJL,-Psi_TRN,-Psi_ORE) |>
+  dplyr::relocate(Year,DOY,Psi_SJL,HOR_TCJviaSJL,Psi_MAC,TCJ_CHPviaMAC,TCJ_CHPviaTRN,HOR_CHPviaORE) 
 
 
-# HOR_CHP_comp_ls_scl <- HOR_CHP_comp_alt(
-#   HOR_CHP_data_inputs_ls_in=HOR_CHP_pred_comp_ls$"data_inputs_ls",
-#   z_scale_vars=T)
-# xpred_tmp <- HOR_CHP_DM_scl(sel_rows_tmp1=CVhelp_dat_w,
-#                                      HOR_CHP_mod_ls=HOR_CHP_comp_ls_scl,
-#                                      flength_in=240)
-# HOR_CHP_pred_tab <- HOR_CHP_get_pred(
-#   HOR_CHP_pred_comp_ls_in=HOR_CHP_pred_comp_ls,
-#   xpred_tmp_in=xpred_tmp,avg_onlyTF = TRUE)[,c("Year","DOY","wt_lp_EST","se_moderr")]
-# HOR_CHP_mod_wrap
+pred_pSE_DF_w1 <- pred_pDF |> #dplyr::filter(Year==2011 & DOY %in% 20:24) |> 
+  dplyr::select(Year,DOY,param,p_SEadj) |> 
+  tidyr::pivot_wider(names_from=param,values_from = p_SEadj) |> 
+  dplyr::rename(Psi_ORE=HOR,
+                Psi_TRN=TCJ) |> 
+  dplyr::mutate(Psi_SJL=1-Psi_ORE,
+                Psi_MAC=1-Psi_TRN) |>
+  dplyr::select(-HOR_CHPviaSJL,-Psi_TRN,-Psi_ORE) |>
+  dplyr::relocate(Year,DOY,Psi_SJL,HOR_TCJviaSJL,Psi_MAC,TCJ_CHPviaMAC,TCJ_CHPviaTRN,HOR_CHPviaORE) 
 
 
+p_mat <- pred_pDF_w1[,which(!names(pred_pDF_w1) %in% c("Year","DOY"))]
+pSE_mat <- pred_pSE_DF_w1[,which(!names(pred_pSE_DF_w1) %in% c("Year","DOY"))]
+
+comb_out <- get_overall_surv(E_prop = p_mat,V_prop = pSE_mat^2,conf_level = 0.8)
+overall_DF_full <- data.frame(pred_pDF_w1[,which(names(pred_pDF_w1) %in% c("Year","DOY"))],comb_out)
+overall_DF <- overall_DF_full |> dplyr::select(Year,DOY,S_TCJ_CHP_mean,S_TCJ_CHP_LCL,S_TCJ_CHP_UCL,S_HOR_CHP_mean,S_HOR_CHP_LCL,S_HOR_CHP_UCL)
+
+TCH_CHP_overall_DF <- overall_DF |> dplyr::select(Year,DOY,S_TCJ_CHP_mean,S_TCJ_CHP_LCL,S_TCJ_CHP_UCL) |> 
+  dplyr::rename(pr_pred=S_TCJ_CHP_mean,pLCL=S_TCJ_CHP_LCL,pUCL=S_TCJ_CHP_UCL) |>
+  dplyr::mutate(param="S_TCJ_CHP",type="overall_survival")
+
+HOR_CHP_overall_DF <- overall_DF |> dplyr::select(Year,DOY,S_HOR_CHP_mean,S_HOR_CHP_LCL,S_HOR_CHP_UCL) |> 
+  dplyr::rename(pr_pred=S_HOR_CHP_mean,pLCL=S_HOR_CHP_LCL,pUCL=S_HOR_CHP_UCL) |>
+  dplyr::mutate(param="S_HOR_CHP",type="overall_survival")
+
+pred_pDF_comb <- dplyr::bind_rows(pred_pDF,TCH_CHP_overall_DF,HOR_CHP_overall_DF)
+
+pred_pDF_comb_w <- pred_pDF_comb |> 
+  dplyr::select(Year,DOY,param,pr_pred) |> 
+  tidyr::pivot_wider(names_from=param,values_from = pr_pred) |>
+  dplyr::mutate(
+    Psi_SJL=1-HOR,Psi_MAC=1-TCJ,S_TCJ_CHP_calc=TCJ*TCJ_CHPviaTRN+TCJ_CHPviaMAC*(1-TCJ))
 
 
-CVhelp_dat_w$DOY
+ggplot(data=pred_pDF_comb |> dplyr::filter(Year==2011),
+       aes(y=pr_pred,x=DOY,ymin=pLCL,ymax=pUCL,color=type)) +
+  facet_grid(Year~param) + 
+  geom_ribbon(fill="gray",color=NA) +
+  geom_line()
 
-
-
-
-
-pred_prev_yrs_ls <- list(  "HOR_TCJ_pred_tab" = HOR_TCJ_pred_tab,
-                           "HOR_pred_tab" = HOR_pred_tab
-                           )
-
-usethis::use_data(pred_prev_yrs_ls,overwrite = TRUE)
-
-
-
-########################## #
-
-
-
-# pred_prev_yrs_ls
-getwd()
-# write.csv(ann_HORbar_WYT_data,"CVPAS_annual_ref_tab.csv")
-
-devtools::load_all()
-# glmmTMB_mod_ls
-
-
-
-TMB:::getUserDLL()
-str(getLoadedDLLs()$glmmTMB)
-#$path
-
-# tools::file_path_sans_ext(getLoadedDLLs()$glmmTMB[[2]])
-# dyn.unload(TMB::dynlib("C:/Users/swhit/AppData/Local/R/win-library/4.5/glmmTMB/libs/x64/glmmTMB"))
-# dyn.unload(TMB::dynlib("../CVPAS_beta/src/TMB/CVPASbeta_TMBExports"))
-pth2glmmTMB <- file.path(system.file("libs", package = "glmmTMB"),"x64")
-dyn.load(TMB::dynlib(file.path(pth2glmmTMB,"glmmTMB")))
-
-names(glmmTMB_mod_ls)
-glmmTMB_mod_ls[["HOR_TCJ"]]
-extract_glmmTMB_frame(glmmTMB_res_ls_in=glmmTMB_mod_ls[["HOR_TCJ"]])
-# tmp <- CVhelp_dat_w[600:700,]
-
-file.exists("dev/tmp_glmm_fxns.R")
-source("dev/tmp_glmm_fxns.R")
-
-
-
-devtools::load_all("../CVhelp")
-
-
-# relabels wide format variables so that they match up with HOR_TCJ model
-HOR_TCJ_tmp <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w[600:700,],
-                                HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]])
-
-# draw_inputs_ann_summ_dt()
-glmmTMB_mod_ls[["HOR_TCJ"]]$HOR_TCJ_aictab
-glmmTMB_mod_ls[["HOR_TCJ"]]
-
-
- tmp_HOR_TCJ_preds1 <- get_glmmTMB_ests(sel_data_in = sel_rows_tmp4,
-                                             aic_avg_tb_wts_in=aic_avg_tb_wts,
-                                             glmmTMB_res_ls_in=HOR_TCJ_mod_ls)
-
-
-aic_avg_tb <- HOR_TCJ_mod_ls$HOR_TCJ_aictab[names(HOR_TCJ_mod_ls$HOR_TCJ_d2_mods),]
-  # print(aic_avg_tb)
-  aic_avg_tb_wts <- aic_avg_tb |> dplyr::mutate(AICwt=exp(-0.5*dAIC)/sum(exp(-0.5*aic_avg_tb$dAIC)))
-  
-  # tmp_ls <- get_glmmTMB_ests()
-  
-  tmp_HOR_TCJ_preds1 <- get_glmmTMB_ests(sel_data_in = sel_rows_tmp4,
-                                             aic_avg_tb_wts_in=aic_avg_tb_wts,
-                                             glmmTMB_res_ls_in=HOR_TCJ_mod_ls)
-  
-  tmp_HOR_TCJ_preds2 <- dplyr::bind_rows(tmp_HOR_TCJ_preds1) |> 
-    dplyr::group_by(sub_estimate,tmp_rw_ind) |> 
-    dplyr::summarize(lo_pred=sum(fit*AICwt),
-                     lo_SE=sum(AICwt*sqrt((se.fit^2)+(fit-lo_pred)^2)),
-                     lo_SEadj=sum(AICwt*sqrt((SEadj^2)+(fit-lo_pred)^2))) |>
-    dplyr::mutate(LCL=lo_pred-1.96*lo_SE,
-                  UCL=lo_pred+1.96*lo_SE,
-                  LCLadj=lo_pred-1.96*lo_SEadj,
-                  UCLadj=lo_pred+1.96*lo_SEadj)
-  
-  dplyr::bind_cols(sel_rows_tmp4,tmp_HOR_TCJ_preds2)
-
-HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
-                                     HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
-                                     flength_in=244) 
-
-pred_prev_yrs_ls <- list(  "HOR_TCJ_pred_tab" = HOR_TCJ_pred_tab)
-
-# strange warning
-# Error in .Call("FreeADFunObject", ptr, PACKAGE = DLL) : 
-#   "FreeADFunObject" not available for .Call() for package "CVPASbeta_TMBExports"
-# Error in .Call("FreeADFunObject", ptr, PACKAGE = DLL) : 
-#   "FreeADFunObject" not available for .Call() for package "CVPASbeta_TMBExports"
-
-usethis::use_data(pred_prev_yrs_ls,overwrite=TRUE)
-
-
-glmmTMB_mod_ls[["HOR_TCJ"]]
-
-# HOR_TCJ_mod_ls
-
-
-HOR_TCJ_tmp2 <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w[600:700,],flength_in = 100,HOR_TCJ_mod_ls = HOR_TCJ_mod_d2_ls)
-HOR_TCJ_tmp3 <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w[600:700,],flength_in = 400,HOR_TCJ_mod_ls = HOR_TCJ_mod_d2_ls)
-
-ggplot2::ggplot() +
-  ggplot2::geom_ribbon(data=HOR_TCJ_tmp,ggplot2::aes(x=DOY,ymin=plogis(LCL),ymax=plogis(UCL)),fill="gray40") +
-  ggplot2::geom_line(data=HOR_TCJ_tmp,ggplot2::aes(x=DOY,y=plogis(lo_pred))) +
-  ggplot2::facet_wrap(~Year)
-
-ggplot2::ggplot() +
-  ggplot2::geom_ribbon(data=HOR_TCJ_tmp,ggplot2::aes(x=DOY,ymin=plogis(LCL),ymax=plogis(UCL)),alpha=0.2,fill="gray40") +
-  ggplot2::geom_ribbon(data=HOR_TCJ_tmp2,ggplot2::aes(x=DOY,ymin=plogis(LCL),ymax=plogis(UCL)),alpha=0.2,,fill="gray40") +
-  ggplot2::geom_ribbon(data=HOR_TCJ_tmp3,ggplot2::aes(x=DOY,ymin=plogis(LCL),ymax=plogis(UCL)),alpha=0.2,,fill="gray40") +
-  ggplot2::geom_line(data=HOR_TCJ_tmp,ggplot2::aes(x=DOY,y=plogis(lo_pred))) +
-  ggplot2::geom_line(data=HOR_TCJ_tmp2,ggplot2::aes(x=DOY,y=plogis(lo_pred))) +
-  ggplot2::geom_line(data=HOR_TCJ_tmp3,ggplot2::aes(x=DOY,y=plogis(lo_pred))) +
-  ggplot2::facet_wrap(~Year)
-
-ggplot2::ggplot() +
-  # ggplot2::geom_ribbon(data=HOR_TCJ_tmp,ggplot2::aes(x=DOY,ymin=plogis(LCL),ymax=plogis(UCL)),fill="gray40") +
-  ggplot2::geom_line(data=HOR_TCJ_tmp,ggplot2::aes(x=DOY,y=plogis(lo_pred))) +
-  ggplot2::facet_wrap(~Year)
-
-
-# HOR_TCJ_pred_tab <-
-# HOR_TCJ_pred_tab <-
-# ggplot2::ggplot() +
-#   ggplot2::geom_ribbon(data=HOR_TCJ_pred_tab,ggplot2::aes(x=DOY,ymin=plogis(LCL),ymax=plogis(UCL))) +
-#   ggplot2::geom_line(data=HOR_TCJ_pred_tab,ggplot2::aes(x=DOY,y=plogis(lo_pred))) +
-#   ggplot2::facet_wrap(~Year) 
-
-# history snippet
-# HOR_TCJ_pred_tab <- dplyr::bind_cols(sel_rows_tmp4,tmp_HOR_TCJ_preds2)
-
-
-pred_prev_yrs_ls <- list(  "HOR_TCJ_pred_tab" = HOR_TCJ_pred_tab)
-usethis::use_data(pred_prev_yrs_ls)
-# 
-# # glmmTMB:::predict.glmmTMB(HOR_TCJ_mod_d2_ls$HOR_TCJ_d2_mods[[1]],newdata = tmp_ls[[2]][1:10,],se.fit = T)
-# # # HOR_TCJ_mod_d2_ls$HOR_TCJ_d2_mods$
-# # str(HOR_TCJ_mod_d2_ls$HOR_TCJ_d2_mods$`drought+flength+barrier*(VNS+flength+temp+SWP`)
-# # HOR_TCJ_mod_d2_ls$HOR_TCJ_d2_mods$`drought+flength+barrier*(VNS+flength+temp+SWP`
-# 
-# # estimates and SEs
-# lapply(glmmTMB:::predict.glmmTMB(HOR_TCJ_mod_d2_ls$HOR_TCJ_d2_mods[[ii]],newdata = sel_rows_tmp4,se.fit = T))
-# 
-# # extracting fixed model matrix
-# tmp$modelInfo$terms$cond$fixed
-# # RE sigma
-# tmp$obj$report()$sd[[1]]
-# # intercepts
-# tmp$obj$report()$b 
-# tmp$obj$report()
-# # WYT_year_ref <- data.frame(
-# #   year=c(2011,2012,2013,2014,2015,2016),
-# #   WYT=c("wet","dry","drought","drought","drought","dry"),
-# #   SJ_CDEC_WYT=c("Wet","Dry","Critical","Critical","Critical","Dry"))
-# 
-# 
-# glmmTMB:::predict.glmmTMB(HOR_TCJ_mod_d2_ls$HOR_TCJ_d2_mods[[1]],newdata = sel_rows_tmp2,se.fit = F)
-# 
-# 
-
-# footer
-
-# not needed 
-WYT_to_altCAT <- function(WYT_in){
-  official_WYTs <- c("Wet","Dry","Critical","Below Normal","Above Normal")
-  stopifnot(all(WYT_in %in% official_WYTs))
-  c("wet","dry","drought","dry","wet")[match(WYT_in,official_WYTs)]
-}
+ggplot(data=pred_pDF_comb, #|> #dplyr::filter(Year==2011),
+       aes(y=pr_pred,x=DOY,ymin=pLCL,ymax=pUCL,color=type)) +
+  facet_grid(Year~param) + 
+  geom_ribbon(fill="gray",color=NA) +
+  geom_line()
 

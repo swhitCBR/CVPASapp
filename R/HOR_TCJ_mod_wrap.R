@@ -5,13 +5,26 @@
 #' @param HOR_TCJ_mod_ls named list with aic table and list of models
 #' @param sel_rows_tmp1 rows of 'CVhelp_dat_w' to use
 #' @param flength_in fork length input scalar
+#' @param DOY_in day of year subset
+#' @param years_in years to subset
 #'
 #' @returns dataframe with logit-scale predictions for survival model
 #' @export
 HOR_TCJ_mod_wrap <- function(HOR_TCJ_mod_ls,
                              sel_rows_tmp1=CVhelp_dat_w,
-                             flength_in=240){
+                             flength_in=240,
+                             DOY_in=1:250,
+                             years_in=NULL
+                             ){
   stopifnot(flength_in >= 100 & flength_in <= 400)
+  
+  
+  if(is.null(years_in)){
+    years_in=unique(sel_rows_tmp1$Year)
+  }
+  
+  sel_rows_tmp1 <- sel_rows_tmp1 |> dplyr::filter(Year %in% years_in & DOY %in% DOY_in)# |>
+    # dplyr::rename(wyt=WYT)
   
   tmp_ls=extract_glmmTMB_frame(glmmTMB_res_ls_in=HOR_TCJ_mod_ls)
   
@@ -25,13 +38,11 @@ HOR_TCJ_mod_wrap <- function(HOR_TCJ_mod_ls,
   sel_rows_tmp3 <- sel_rows_tmp2 |> dplyr::mutate(drought=WYT=="Critical")# special drought category
   sel_rows_tmp4 <- sel_rows_tmp3 |> dplyr::mutate(flength=flength_in ,YrRel=NA) # flength
 
-  # sel_rows_tmp4 <- HOR_TCJ_redef_fun(sel_rows_tmp1_in=sel_rows_tmp1)
-  
   aic_avg_tb <- HOR_TCJ_mod_ls$HOR_TCJ_aictab[names(HOR_TCJ_mod_ls$HOR_TCJ_d2_mods),]
-  # print(aic_avg_tb)
   aic_avg_tb_wts <- aic_avg_tb |> dplyr::mutate(AICwt=exp(-0.5*dAIC)/sum(exp(-0.5*aic_avg_tb$dAIC)))
   
-  # tmp_ls <- get_glmmTMB_ests()
+
+  sel_rows_tmp4$WYT <- c("wet","dry","drought","dry","wet")[match(sel_rows_tmp4$WYT,c("Above Normal","Below Normal","Critical","Dry","Wet"))]
   
   tmp_HOR_TCJ_preds1 <- get_glmmTMB_ests(sel_data_in = sel_rows_tmp4,
                                              aic_avg_tb_wts_in=aic_avg_tb_wts,

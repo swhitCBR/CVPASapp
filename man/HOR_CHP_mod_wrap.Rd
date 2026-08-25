@@ -6,9 +6,10 @@
 \usage{
 HOR_CHP_mod_wrap(
   flength_in = 240,
-  DOY_in = 50:100,
+  DOY_in = 1:250,
   years_in = NULL,
-  CVhelp_dat_w_in = CVhelp_dat_w
+  CVhelp_dat_w_in = CVhelp_dat_w,
+  SJL_route_in = TRUE
 )
 }
 \arguments{
@@ -17,6 +18,10 @@ HOR_CHP_mod_wrap(
 \item{DOY_in}{}
 
 \item{years_in}{}
+
+\item{CVhelp_dat_w_in}{}
+
+\item{SJL_route_in}{logical, SJL route as opposed to ORE}
 }
 \description{
 Title

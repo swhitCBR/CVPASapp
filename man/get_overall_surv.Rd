@@ -4,13 +4,13 @@
 \alias{get_overall_surv}
 \title{Analytical Logit-Normal Network Approximation for Matrices (Simulation-Free)}
 \usage{
-get_overall_surv(MU_mat, SIGMA2_mat, conf_level = 0.95)
+get_overall_surv(E_prop, V_prop, conf_level = 0.95)
 }
 \arguments{
-\item{MU_mat}{A matrix where each row is a scenario and the 6 columns are logit-scale means in order:
+\item{E_prop}{A matrix where each row is a scenario and the 6 columns are logit-scale means in order:
 \link{,1} Psi_SLJ, \link{,2} theta_HOR-TCJ|SLJ, \link{,3} Psi_MAC, \link{,4} theta_TCJ-CHP|MAC, \link{,5} theta_TCJ-CHP|TRN, \link{,6} theta_HOR-CHP|ORE}
 
-\item{SIGMA2_mat}{A matrix of the same dimensions containing logit-scale variances.}
+\item{V_prop}{A matrix of the same dimensions containing logit-scale variances.}
 
 \item{conf_level}{A numeric value between 0 and 1 indicating the target confidence interval width (default = 0.95).}
 }

@@ -85,14 +85,17 @@ TCJ_CHP_get_pred <- function(
     dplyr::mutate(
       diff_modavg=(EST-wt_lp_EST),
       SS_modavg=(EST-wt_lp_EST)^2,
-      lo_SE_modavg=sqrt(SS_modavg+(SEadj)^2))
+      lo_SE_modavg=sqrt(SS_modavg+(SEadj)^2),
+      lo_SE_modavg_noadj=sqrt(SS_modavg+(SE)^2))
   
   full_var_predDF <- predDFcomb2 |>
-    dplyr::select(id,rw,EST,wt,wt_lp_EST,lo_SE_modavg) |>
+    dplyr::select(id,rw,EST,wt,wt_lp_EST,lo_SE_modavg,lo_SE_modavg_noadj) |>
     dplyr::group_by(rw) |>
     dplyr::summarize(
       var_modavg=sum(wt*lo_SE_modavg),
-      se_moderr=sqrt(var_modavg))
+      se_moderr=sqrt(var_modavg),
+      var_modavg_noadj=sum(wt*lo_SE_modavg_noadj),
+      se_moderr_noadj=sqrt(var_modavg_noadj))
   
   avg_est_tmp <- in_avg_tb |> dplyr::left_join(full_var_predDF,by = "rw")
   xpred_tmp$rw=1:nrow(xpred_tmp)
@@ -100,7 +103,7 @@ TCJ_CHP_get_pred <- function(
   
   
   
-  predDFcomb3 <- predDFcomb2  |> dplyr::left_join(avg_est_tmp_wVars |> dplyr::select(rw,wt_lp_EST,se_moderr),by = "rw")
+  predDFcomb3 <- predDFcomb2  |> dplyr::left_join(avg_est_tmp_wVars |> dplyr::select(rw,wt_lp_EST,se_moderr,se_moderr_noadj),by = "rw")
   
   if(avg_onlyTF){return(avg_est_tmp_wVars)}
   

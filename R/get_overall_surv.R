@@ -88,8 +88,8 @@ get_overall_surv <- function(E_prop, V_prop, conf_level = 0.95) {
     # Sub-Metric Layer Outputs (S_TCJ_CHP)
     S_TCJ_CHP_mean     = E_S_TCJ,
     S_TCJ_CHP_variance = V_S_TCJ,
-    S_TCJ_CHP_sd       = sqrt(V_S_TCJ/((E_S_TCJ*(1-E_S_TCJ))^2)),
-    # S_TCJ_CHP_sd       = sqrt(V_S_TCJ),
+    # S_TCJ_CHP_sd       = sqrt(V_S_TCJ/((E_S_TCJ*(1-E_S_TCJ))^2)),
+    S_TCJ_CHP_sd       = sqrt(V_S_TCJ),
     # S_TCJ_CHP_sd       = sqrt(V_S_TCJ/((E_S_TCJ^2)*((1-E_S_TCJ)^2))),
     # S_TCJ_CHP_sd       = sqrt(V_S_TCJ)/(E_S_TCJ*(1-E_S_TCJ)),
     lo_S_TCJ_CHP=log((E_S_TCJ)/(1-E_S_TCJ)),
@@ -100,8 +100,8 @@ get_overall_surv <- function(E_prop, V_prop, conf_level = 0.95) {
     # Top-Level Propagation Outputs (S_HOR_CHP)
     S_HOR_CHP_mean     = E_final,
     S_HOR_CHP_variance = V_final,
-    S_HOR_CHP_sd       = sqrt(V_final/((E_final*(1-E_final))^2)),
-    # S_HOR_CHP_sd       = sqrt(V_final),
+    # S_HOR_CHP_sd       = sqrt(V_final/((E_final*(1-E_final))^2)),
+    S_HOR_CHP_sd       = sqrt(V_final),
     # S_HOR_CHP_sd       = sqrt(V_final/((E_final^2)*((1-E_final)^2))),
     # S_HOR_CHP_sd       = sqrt(V_final)/(E_final*(1-E_final)),
     lo_S_HOR_CHP_mean=log((E_final)/(1-E_final))
@@ -114,12 +114,21 @@ get_overall_surv <- function(E_prop, V_prop, conf_level = 0.95) {
   names(scenario_results) <- c("S_TCJ_CHP_mean","S_TCJ_CHP_var","S_TCJ_CHP_sd","lo_S_TCJ_CHP","S_HOR_CHP_mean","S_HOR_CHP_var","S_HOR_CHP_sd","lo_S_HOR_CHP_mean")
   
   
-  scenario_results$S_TCJ_CHP_LCL <- plogis(scenario_results$lo_S_TCJ_CHP-SE_marg*scenario_results$S_TCJ_CHP_sd)
-  scenario_results$S_TCJ_CHP_UCL <- plogis(scenario_results$lo_S_TCJ_CHP+SE_marg*scenario_results$S_TCJ_CHP_sd)
+  lo_se_TCJ <- sqrt(scenario_results$S_TCJ_CHP_var/((scenario_results$S_TCJ_CHP_mean*(1-scenario_results$S_TCJ_CHP_mean))^2))
+  lo_se_HOR <- sqrt(scenario_results$S_HOR_CHP_var/((scenario_results$S_HOR_CHP_mean*(1-scenario_results$S_HOR_CHP_mean))^2))  
+
+  scenario_results$S_TCJ_CHP_LCL <- plogis(scenario_results$lo_S_TCJ_CHP-lo_se_TCJ*SE_marg)
+  scenario_results$S_TCJ_CHP_UCL <- plogis(scenario_results$lo_S_TCJ_CHP+lo_se_TCJ*SE_marg)
   
-  scenario_results$S_HOR_CHP_LCL <- plogis(scenario_results$lo_S_HOR_CHP-SE_marg*scenario_results$S_HOR_CHP_sd)
-  scenario_results$S_HOR_CHP_UCL <- plogis(scenario_results$lo_S_HOR_CHP+SE_marg*scenario_results$S_HOR_CHP_sd)
+  scenario_results$S_HOR_CHP_LCL <- plogis(scenario_results$lo_S_HOR_CHP-lo_se_HOR*SE_marg)
+  scenario_results$S_HOR_CHP_UCL <- plogis(scenario_results$lo_S_HOR_CHP+lo_se_HOR*SE_marg)
   
+  # scenario_results$S_TCJ_CHP_LCL <- plogis(scenario_results$lo_S_TCJ_CHP-SE_marg*scenario_results$S_TCJ_CHP_sd)
+  # scenario_results$S_TCJ_CHP_UCL <- plogis(scenario_results$lo_S_TCJ_CHP+SE_marg*scenario_results$S_TCJ_CHP_sd)
+  # 
+  # scenario_results$S_HOR_CHP_LCL <- plogis(scenario_results$lo_S_HOR_CHP-SE_marg*scenario_results$S_HOR_CHP_sd)
+  # scenario_results$S_HOR_CHP_UCL <- plogis(scenario_results$lo_S_HOR_CHP+SE_marg*scenario_results$S_HOR_CHP_sd)
+  # 
   
   
   # Assign structured scenario numbers to the rows

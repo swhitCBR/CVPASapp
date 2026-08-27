@@ -10,6 +10,7 @@
 draw_est_ovr_surv_div_ui <-  function(){
  tagList( 
       div(
+      # column(width=12,
       id="overall_surv_panel",
       h3(
         paste0("Overall Survival"),

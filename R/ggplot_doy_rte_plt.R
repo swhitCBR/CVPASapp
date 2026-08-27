@@ -29,8 +29,13 @@ ggplot_doy_rte_plt <- function(
     ggplot2::theme(legend.position="none")+
     # ggplot2::scale_color_manual() + 
     # ggplot2::labs(x="",y="") + 
-    ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8)) +
-    ggplot2::scale_x_continuous(expand = c(0.01, 0.01))
+    # ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8)) +
+    # ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) + 
+    ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8),limits=c(0,1)) +
+    ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) +
+    ggplot2::labs(y="Survival Probability",x="Day of Year") + 
+    ggplot2::theme(axis.text.x = ggplot2::element_text(size=14),axis.text.y = ggplot2::element_text(size=14),
+                   axis.title.x = ggplot2::element_text(size=16),axis.title.y = ggplot2::element_text(size=16))
 
 
 print(head(HOR_TCJ_pred_tab_plt))
@@ -58,10 +63,18 @@ ggplot2::ggplot() +
     ggplot2::geom_point(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=SJR_prob),fill="#4E79A7",shape=21) +
     # ggplot2::geom_vline(xintercept = doy_int1) +
     # ggplot2::geom_vline(xintercept = doy_int2) +
-    ggplot2::theme(legend.position="none")+
-    ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8)) +
+    # ggplot2::theme(legend.position="bottom")+
+    ggplot2::labs(y="Route Use Probability",x="Day of Year") +
+    ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8),limits=c(0,1)) +
     ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) +
-    ggplot2::labs(y="Route Use Probability",x="Day of Year")
+    ggplot2::theme(axis.text.x = ggplot2::element_text(size=14),axis.text.y = ggplot2::element_text(size=14),
+                   axis.title.x = ggplot2::element_text(size=16),axis.title.y = ggplot2::element_text(size=16))#+
+  # scale_fill_manual(
+  #   name = "Manual Aesthetic Legend",
+  #   values = c(
+  #     "First Manual Label"  = "#4E79A7",
+  #     "Second Manual Label" = "#F28E2B"))
+
 
 
 

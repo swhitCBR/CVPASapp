@@ -17,6 +17,11 @@ ggplot_doy_pred_plt <- function(
   doy_int1 <- doy_rng_in[1]
   doy_int2 <- doy_rng_in[2]
   
+  # if(is.null(HOR_TCJ_pred_tab_plt$LCL)){
+  #   HOR_TCJ_pred_tab_plt$LCL=HOR_TCJ_pred_tab_plt$lo_pred-1.96*HOR_TCJ_pred_tab_plt$o_SEadj    
+  #   HOR_TCJ_pred_tab_plt$UCL=HOR_TCJ_pred_tab_plt$lo_pred+1.96*HOR_TCJ_pred_tab_plt$o_SEadj    
+  # }
+  
   # print(str(HOR_TCJ_pred_tab_plt))
   HOR_TCJ_pred_tab_plt <- subset(HOR_TCJ_pred_tab_plt,Year==pst_year_in)
   HOR_TCJ_pred_tab_plt$SELECTED  <- HOR_TCJ_pred_tab_plt$DOY >= doy_int1 & HOR_TCJ_pred_tab_plt$DOY <= doy_int2
@@ -37,9 +42,11 @@ ggplot_doy_pred_plt <- function(
     ggplot2::scale_color_manual(values = c("gray40", "#28547A")) + 
     ggplot2::theme(legend.position="none")+
     # ggplot2::labs(x="",y="") + 
-    ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8)) +
+    ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8),limits=c(0,1)) +
     ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) +
-    ggplot2::labs(y="Survival Probability",x="Day of Year")
+    ggplot2::labs(y="Survival Probability",x="Day of Year") + 
+    ggplot2::theme(axis.text.x = ggplot2::element_text(size=14),axis.text.y = ggplot2::element_text(size=14),
+                   axis.title.x = ggplot2::element_text(size=16),axis.title.y = ggplot2::element_text(size=16))
 
 
 

@@ -68,7 +68,10 @@ app_ui <- function(request) {
             condition = "input.tabs == 'inputs' || input.tabs == 'check' || input.tabs == 'estimates'
              || input.tabs == 'overall_surv' || input.tabs == 'reach_surv'|| input.tabs == 'route_spec_surv' || input.tabs == 'route_usage' || input.tabs == 'more_info'",
             draw_inputs_box_ui(init_data_source="Previous years",collapsed_in = golem::get_golem_options("inputs_box_collapsed")),
-            draw_est_box_ui(),
+                  # conditionalPanel(
+                    # condition = "input.Loc_in != 'HOR'",
+                    draw_est_box_ui()
+                  # )
           )
           ,
           conditionalPanel(

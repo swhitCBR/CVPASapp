@@ -14,7 +14,9 @@ draw_est_rte_spec_surv_div_ui <- function(
     "HOR_TCJ_pred_ggpplt_dup1b",
     "HOR_TCJ_pred_ggpplt_dup1a",
     "HOR_TCJ_pred_ggpplt_dup1e",
-    "HOR_TCJ_pred_ggpplt_dup1c")){
+     "TCJ_CHPviaTRN_ggpplt"
+    # "HOR_TCJ_pred_ggpplt_dup1c"
+  )){
   tagList(
       div(
       id='route_spec_surv_panel',

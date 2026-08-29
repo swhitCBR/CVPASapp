@@ -5,7 +5,7 @@
 \title{Title}
 \usage{
 draw_est_rch_surv_div_ui(
-  plots_in = list("HOR_TCJ_pred_ggpplt_rs1", "HOR_TCJ_pred_ggpplt_rs_2")
+  plots_in = list("HOR_TCJviaSJL_pred_ggpplt_rs1", "TCJ_CHP_all_pred_ggpplt_rs_2")
 )
 }
 \arguments{

@@ -709,11 +709,25 @@ app_server <- function(input, output, session) {
   OUT_tmp$HOR_CHPviaORE_pred_tab <- pred_tab_ls[["HOR_CHPviaORE"]]
   OUT_tmp$TCJ_CHPviaMAC_pred_tab <- pred_tab_ls[["TCJ_CHPviaMAC"]]
 
+  # long-form combined predictors
+  OUT_tmp$pred_pDF_comb <- pred_pDF_comb
 
+  # observeEvent(input$flength_in, {  
+  # observeEvent(flength_mod()!=244, {
+  # observeEvent(input$load_butt, {
+  observeEvent(input$generate_ests_butt, {
+    pred_tab_ls_TEMP <- get_comp_model_preds(
+      DOY_in = in_selected_RV$start_day:in_selected_RV$end_day,
+      # DOY_in = c(
+      #   in_selected_RV$start_day,
+      #   in_selected_RV$end_day),
+        years_in = in_selected_RV$past_water_year,
+        flength_in = in_selected_RV$flength)
 
-  observeEvent(input$load_butt, {
+    OUT_tmp$pred_pDF_comb <-  get_overall_surv_preds(
+      pred_tab_ls_in = pred_tab_ls_TEMP,
+      predict_int = F,conf_level = 0.95)[["pred_pDF_comb"]]
 
-    pred_tab_ls_TEMP <- all_mod_preds(DOY_in = 1:250,years_in = NULL,flength_in = 244)
 
     OUT_tmp$HOR_TCJ_pred_tab <- pred_tab_ls_TEMP[["HOR_TCJviaSJL"]]
     OUT_tmp$TCJ_pred_tab <- pred_tab_ls_TEMP[["TCJ"]]
@@ -724,6 +738,7 @@ app_server <- function(input, output, session) {
     OUT_tmp$HOR_CHPviaSJL_pred_tab <- pred_tab_ls_TEMP[["HOR_CHPviaSJL"]]
     OUT_tmp$HOR_CHPviaORE_pred_tab <- pred_tab_ls_TEMP[["HOR_CHPviaORE"]]
     OUT_tmp$TCJ_CHPviaMAC_pred_tab <- pred_tab_ls_TEMP[["TCJ_CHPviaMAC"]]
+
 
     # this function does a few things:
     # renames variables so that column names match the glmmTMB model.matrix
@@ -766,114 +781,152 @@ app_server <- function(input, output, session) {
 #     )
 #   })
 
+  output$HOR_TCJ_pred_ggpplt_s_tot <- renderPlot({
 
-  output$HOR_TCJ_pred_ggpplt_rs1 <- renderPlot({
-    # HOR_TCJ_pred_tab <- OUT_tmp$HOR_TCJ_pred_tab
+  # pred_pDF_comb_inarg <- pred_pDF_comb_TEMP
 
-    # replacement
-    HOR_TCJ_pred_tab <- pred_tab_ls[["HOR_TCJviaSJL"]]
-
-    ggplot_doy_pred_plt(
-      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
+    pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
+    ggplot_doy_pred_plt_single(
+      data_in =  pred_pDF_comb_inarg,
+      param_in="S_HOR_CHP",
       doy_rng_in = c(
-        in_selected_RV$start_day,
-        in_selected_RV$end_day
-      ),
-      pst_year_in = in_selected_RV$past_water_year
-    )
+          in_selected_RV$start_day,
+          in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year)
+  
+  })
+
+  output$HOR_TCJviaSJL_pred_ggpplt_rs1 <- renderPlot({
+
+    pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
+    ggplot_doy_pred_plt_single(
+      data_in =  pred_pDF_comb_inarg,
+      param_in="HOR_TCJviaSJL",
+      doy_rng_in = c(
+          in_selected_RV$start_day,
+          in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year)
+  # output$HOR_TCJ_pred_ggpplt_rs1 <- renderPlot({
+    # HOR_TCJ_pred_tab <- OUT_tmp$HOR_TCJ_pred_tab
+    # replacement
+    # HOR_TCJ_pred_tab <- pred_tab_ls[["HOR_TCJviaSJL"]]
+    # ggplot_doy_pred_plt(
+    #   HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
+    #   doy_rng_in = c(
+    #     in_selected_RV$start_day,
+    #     in_selected_RV$end_day
+    #   ),
+    #   pst_year_in = in_selected_RV$past_water_year
+    # )
   })
 
 
-
-  output$HOR_TCJ_pred_ggpplt_rs_2 <- renderPlot({
-    # reading from previously ran version of the data
-    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
-    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
-    HOR_TCJ_pred_tab_ORIG <- HOR_TCJ_pred_tab
-
-    # from scratch version
-    # this function does a few things:
-    # renames variables so that column names match the glmmTMB model.matrix
-    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
-    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
-    #                                      flength_in=in_selected_RV$flength)
-
-    HOR_TCJ_pred_tab$lo_pred <- log(
-      (plogis(HOR_TCJ_pred_tab$lo_pred) * 0.45) /
-        (1 - (plogis(HOR_TCJ_pred_tab$lo_pred) * 0.45))
-    )
-    HOR_TCJ_pred_tab$LCL <- log(
-      (plogis(HOR_TCJ_pred_tab$LCL) * 0.45) /
-        (1 - (plogis(HOR_TCJ_pred_tab$LCL) * 0.45))
-    )
-    HOR_TCJ_pred_tab$UCL <- log(
-      (plogis(HOR_TCJ_pred_tab$UCL) * 0.45) /
-        (1 - (plogis(HOR_TCJ_pred_tab$UCL) * 0.45))
-    )
-
-  # HOR_TCJ_pred_tab_mod <- HOR_TCJ_pred_tab_ORIG
-  # HOR_TCJ_pred_tab_mod$lo_pred <- HOR_TCJ_pred_tab$lo_pred /HOR_TCJ_pred_tab_ORIG$lo_pred 
-
-
-    ggplot_doy_pred_plt(
-      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
+  output$TCJ_CHP_all_pred_ggpplt_rs_2 <- renderPlot({
+    pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
+    ggplot_doy_pred_plt_single(
+      data_in =  pred_pDF_comb_inarg,
+      param_in="S_TCJ_CHP",
       doy_rng_in = c(
-        in_selected_RV$start_day,
-        in_selected_RV$end_day
-      ),
-      pst_year_in = 2013 + 9
-      # pst_year_in = in_selected_RV$past_water_year
-    )
+          in_selected_RV$start_day,
+          in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year)
+  })
+
+
+# HOR_TCJ_pred_ggpplt_dup1b
+#   HOR_CHPviaSJL_pred_ggplt_rss_1
+  output$HOR_CHPviaSJL_pred_ggplt_rss_1 <- renderPlot({
+    pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
+    ggplot_doy_pred_plt_single(
+      data_in =  pred_pDF_comb_inarg,
+      param_in="HOR_CHPviaSJL",
+      doy_rng_in = c(
+          in_selected_RV$start_day,
+          in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year)
+  })
+  
+  output$HOR_CHPviaORE_pred_ggplt_rss_2 <- renderPlot({
+    pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
+    ggplot_doy_pred_plt_single(
+      data_in =  pred_pDF_comb_inarg,
+      param_in="HOR_CHPviaORE",
+      doy_rng_in = c(
+          in_selected_RV$start_day,
+          in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year)
+  })
+  
+
+  output$TCJ_CHPviaMAC_pred_ggplt_rss_3 <- renderPlot({
+    pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
+    ggplot_doy_pred_plt_single(
+      data_in =  pred_pDF_comb_inarg,
+      param_in="TCJ_CHPviaMAC",
+      doy_rng_in = c(
+          in_selected_RV$start_day,
+          in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year)
+  })
+  
+    output$TCJ_CHPviaTRN_pred_ggplt_rss_4 <- renderPlot({
+    pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
+    ggplot_doy_pred_plt_single(
+      data_in =  pred_pDF_comb_inarg,
+      param_in="TCJ_CHPviaTRN",
+      doy_rng_in = c(
+          in_selected_RV$start_day,
+          in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year)
   })
 
 
   
-  output$HOR_TCJ_pred_ggpplt_s_tot <- renderPlot({
-    # reading from previously ran version of the data
-    # HOR_TCJ_pred_tab <- pred_prev_yrs_ls[["HOR_TCJ_pred_tab"]]
-    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
-    HOR_TCJ_pred_tab_ORIG <- HOR_TCJ_pred_tab
+output$HOR_pred_ggpplt_ALT <- renderPlot({
+    pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
 
-    # from scratch version
-    # this function does a few things:
-    # renames variables so that column names match the glmmTMB model.matrix
-    # HOR_TCJ_pred_tab <- HOR_TCJ_mod_wrap(sel_rows_tmp1 = CVhelp_dat_w,
-    #                                      HOR_TCJ_mod_ls=glmmTMB_mod_ls[["HOR_TCJ"]],
-    #                                      flength_in=in_selected_RV$flength)
+    ggplot_doy_pred_plt_compliment(
+      data_in =  pred_pDF_comb_inarg,
+      param_in="HOR",
+          doy_rng_in = c(
+          in_selected_RV$start_day,
+          in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year)
 
-    HOR_TCJ_pred_tab$lo_pred <- log(
-      (plogis(HOR_TCJ_pred_tab$lo_pred) * 0.45) /
-        (1 - (plogis(HOR_TCJ_pred_tab$lo_pred) * 0.45))
-    )
-    HOR_TCJ_pred_tab$LCL <- log(
-      (plogis(HOR_TCJ_pred_tab$LCL) * 0.45) /
-        (1 - (plogis(HOR_TCJ_pred_tab$LCL) * 0.45))
-    )
-    HOR_TCJ_pred_tab$UCL <- log(
-      (plogis(HOR_TCJ_pred_tab$UCL) * 0.45) /
-        (1 - (plogis(HOR_TCJ_pred_tab$UCL) * 0.45))
-    )
-
-  HOR_TCJ_pred_tab_mod <- HOR_TCJ_pred_tab_ORIG
-  HOR_TCJ_pred_tab_mod$lo_pred <- HOR_TCJ_pred_tab$lo_pred*HOR_TCJ_pred_tab_ORIG$lo_pred 
-  HOR_TCJ_pred_tab_mod$LCL <- HOR_TCJ_pred_tab$LCL*HOR_TCJ_pred_tab_ORIG$LCL 
-  HOR_TCJ_pred_tab_mod$UCL <- HOR_TCJ_pred_tab$UCL*HOR_TCJ_pred_tab_ORIG$UCL 
-
-    ggplot_doy_pred_plt(
-      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab_mod,
-      doy_rng_in = c(
-        in_selected_RV$start_day,
-        in_selected_RV$end_day
-      ),
-      pst_year_in = 2013 + 9
-      # pst_year_in = in_selected_RV$past_water_year
-    )
   })
 
 
+  output$TCJ_pred_ggpplt_ALT <- renderPlot({
+    pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
 
+    ggplot_doy_pred_plt_compliment(
+      data_in =  pred_pDF_comb_inarg,
+      param_in="TCJ",
+          doy_rng_in = c(
+          in_selected_RV$start_day,
+          in_selected_RV$end_day),
+      pst_year_in = in_selected_RV$past_water_year)
 
+    # ggplot_doy_pred_plt_single(
+    #   data_in =  pred_pDF_comb_inarg,
+    #   param_in="TCJ",
+    #   doy_rng_in = c(
+    #       in_selected_RV$start_day,
+    #       in_selected_RV$end_day),
+    #   pst_year_in = in_selected_RV$past_water_year)
+    # TCJ_pred_tab <-  pred_tab_ls[["TCJ"]]
 
+    # TCJ_pred_tab <- OUT_tmp$TCJ_pred_tab 
+
+    # ggplot_doy_rte_plt(
+    #   HOR_TCJ_pred_tab_plt = TCJ_pred_tab,
+    #   doy_rng_in = c(
+    #     in_selected_RV$start_day,
+    #     in_selected_RV$end_day
+    #   ),
+    #   pst_year_in = in_selected_RV$past_water_year
+    # )
+  })
 
 
 
@@ -938,18 +991,7 @@ app_server <- function(input, output, session) {
     )
   })
 
-  output$HOR_TCJ_pred_ggpplt_dup1b <- renderPlot({
-    HOR_TCJ_pred_tab <- OUT_tmp$"HOR_TCJ_pred_tab"
-    ggplot_doy_pred_plt(
-      HOR_TCJ_pred_tab_plt = HOR_TCJ_pred_tab,
-      doy_rng_in = c(
-        in_selected_RV$start_day,
-        in_selected_RV$end_day
-      ),
-      # pst_year_in = in_selected_RV$past_water_year
-      pst_year_in = 2013 + 8
-    )
-  })
+
 
    # TCJ to CHP via TRN
   # HOR_TCJ_pred_ggpplt_dup1c

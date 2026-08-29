@@ -3,11 +3,11 @@
 library(devtools)
 load_all()
 
-pred_tab_ls <- all_mod_preds(DOY_in = 1:250,years_in = NULL,flength_in = 200)
+pred_tab_ls <- get_comp_model_preds(DOY_in = 1:250,years_in = NULL,flength_in = 200)
 
 # options(digits = 3,scipen = 99)
-pred_tab_ls <- all_mod_preds(DOY_in = 1:250,years_in = NULL,flength_in = 200)
-pred_tab_ls2 <- all_mod_preds_fun2(pred_tab_ls_in = pred_tab_ls,predict_int = F,conf_level = 0.9)
+pred_tab_ls <- get_comp_model_preds(DOY_in = 1:250,years_in = NULL,flength_in = 200)
+pred_tab_ls2 <- get_overall_surv_preds(pred_tab_ls_in = pred_tab_ls,predict_int = F,conf_level = 0.9)
 # pred_tab_ls2$"beta_parm_df"
 get_pred_plts_dev(pred_pDF_comb_in = pred_tab_ls2$"pred_pDF_comb")
 

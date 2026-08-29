@@ -11,11 +11,11 @@
 #' 
 draw_est_rte_spec_surv_div_ui <- function(
   plots_in=list(
-    "HOR_TCJ_pred_ggpplt_dup1b",
-    "HOR_TCJ_pred_ggpplt_dup1a",
-    "HOR_TCJ_pred_ggpplt_dup1e",
-     "TCJ_CHPviaTRN_ggpplt"
-    # "HOR_TCJ_pred_ggpplt_dup1c"
+    "HOR_CHPviaSJL_pred_ggplt_rss_1",
+    "HOR_CHPviaORE_pred_ggplt_rss_2",
+    "TCJ_CHPviaMAC_pred_ggplt_rss_3",
+    "TCJ_CHPviaTRN_pred_ggplt_rss_4"
+    #  "TCJ_CHPviaTRN_ggpplt" # old method
   )){
   tagList(
       div(

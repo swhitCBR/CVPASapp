@@ -47,7 +47,8 @@ draw_details_sel_data_ui <- function(){
                             multiple = FALSE,
 
                             choices = c(as.character(2011:2024), "None"),
-                            selected = 2013,
+                            selected =   init_water_year # defined in  inst\global.R
+,
                             # selected = in_selected_RV[["past_water_year"]],
 
                             choicesOpt = list(

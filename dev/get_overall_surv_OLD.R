@@ -5,7 +5,15 @@
 #' @param SIGMA2_mat A matrix of the same dimensions containing logit-scale variances.
 #' @param conf_level A numeric value between 0 and 1 indicating the target confidence interval width (default = 0.95).
 #'
-#' @return A data frame containing multi-layer analytical results for each scenario row.
+#' @return A list with two elements:
+#'   \describe{
+#'     \item{deriv_ests}{A data frame containing multi-layer analytical results for each scenario row.}
+#'     \item{bias_correction_df}{A long-format data frame (one row per scenario x input variable)
+#'       reporting the Component 1 second-order mean-bias correction applied when mapping each
+#'       logit-scale input to the proportion scale: the uncorrected plug-in value \code{f(mu)},
+#'       the second derivative \code{f''(mu)}, the correction term \code{(sigma2/2) * f''(mu)},
+#'       and the corrected proportion-scale mean actually used downstream.}
+#'   }
 get_overall_surv_OLD <- function(MU_mat, SIGMA2_mat, conf_level = 0.95) {
   
   # Ensure inputs are treated as matrices
@@ -29,9 +37,29 @@ get_overall_surv_OLD <- function(MU_mat, SIGMA2_mat, conf_level = 0.95) {
   f_sec <- f_mu * (1 - f_mu) * (1 - 2 * f_mu)                    
   
   # Map parameters into proportion-domain moment matrices
-  E_prop <- f_mu + (SIGMA2_mat / 2) * f_sec                           
+  bias_correction_term <- (SIGMA2_mat / 2) * f_sec
+  E_prop <- f_mu + bias_correction_term
   V_prop <- (f_pr^2) * SIGMA2_mat                                     
-  
+
+  # Report the second-order mean-bias correction applied to each input
+  # variable/scenario, in long format for easy inspection.
+  var_names <- c("Psi_SLJ", "theta_HOR_TCJ_SLJ", "Psi_MAC",
+                 "theta_TCJ_CHP_MAC", "theta_TCJ_CHP_TRN", "theta_HOR_CHP_ORE")
+  bias_correction_df <- do.call(rbind, lapply(seq_len(ncol(MU_mat)), function(j) {
+    data.frame(
+      scenario           = paste0("Scenario_", seq_len(nrow(MU_mat))),
+      variable           = var_names[j],
+      mu                 = MU_mat[, j],
+      sigma2             = SIGMA2_mat[, j],
+      f_mu               = f_mu[, j],
+      f_sec              = f_sec[, j],
+      correction_term    = bias_correction_term[, j],
+      E_prop_uncorrected = f_mu[, j],
+      E_prop_corrected   = E_prop[, j]
+    )
+  }))
+  rownames(bias_correction_df) <- NULL
+
   # Isolate individual variable columns from the proportion matrices
   E_Psi_SLJ <- E_prop[, 1]; V_Psi_SLJ <- V_prop[, 1]
   E_t_SLJ   <- E_prop[, 2]; V_t_SLJ   <- V_prop[, 2]
@@ -42,8 +70,7 @@ get_overall_surv_OLD <- function(MU_mat, SIGMA2_mat, conf_level = 0.95) {
   
   # --- COMPONENT 2: SUB-METRIC ALLOCATION LAYER (S_TCJ-CHP) ---
   E_S_TCJ <- (E_Psi_MAC * E_t_MAC) + ((1 - E_Psi_MAC) * E_t_TRN)
-  print(E_Psi_SLJ)
-  
+
   V_S_TCJ <- (V_Psi_MAC + E_Psi_MAC^2) * V_t_MAC + 
     (V_Psi_MAC + (1 - E_Psi_MAC)^2) * V_t_TRN + 
     V_Psi_MAC * (E_t_MAC - E_t_TRN)^2
@@ -102,7 +129,10 @@ get_overall_surv_OLD <- function(MU_mat, SIGMA2_mat, conf_level = 0.95) {
   # Assign structured scenario numbers to the rows
   rownames(scenario_results) <- paste0("Scenario_", 1:nrow(MU_mat))
   
-  return(scenario_results)
+  return(list(
+    deriv_ests         = scenario_results,
+    bias_correction_df = bias_correction_df
+  ))
 }
 
 

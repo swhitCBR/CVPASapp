@@ -4,18 +4,37 @@
 \alias{get_overall_surv}
 \title{Analytical Logit-Normal Network Approximation for Matrices (Simulation-Free)}
 \usage{
-get_overall_surv(E_prop, V_prop, conf_level = 0.95)
+get_overall_surv(E_prop, V_prop, conf_level = 0.95, MU_mat = NULL)
 }
 \arguments{
-\item{E_prop}{A matrix where each row is a scenario and the 6 columns are logit-scale means in order:
-\link{,1} Psi_SLJ, \link{,2} theta_HOR-TCJ|SLJ, \link{,3} Psi_MAC, \link{,4} theta_TCJ-CHP|MAC, \link{,5} theta_TCJ-CHP|TRN, \link{,6} theta_HOR-CHP|ORE}
+\item{E_prop}{A matrix where each row is a scenario and the 6 columns are proportion-scale means (already converted from the logit scale) in order:
+\code{[,1]} Psi_SLJ, \code{[,2]} theta_HOR-TCJ|SLJ, \code{[,3]} Psi_MAC, \code{[,4]} theta_TCJ-CHP|MAC, \code{[,5]} theta_TCJ-CHP|TRN, \code{[,6]} theta_HOR-CHP|ORE}
 
-\item{V_prop}{A matrix of the same dimensions containing logit-scale variances.}
+\item{V_prop}{A matrix of the same dimensions containing proportion-scale variances (already converted from the logit scale).}
 
 \item{conf_level}{A numeric value between 0 and 1 indicating the target confidence interval width (default = 0.95).}
+
+\item{MU_mat}{Optional. A matrix of the same dimensions as \code{E_prop} containing the original
+logit-scale means that \code{E_prop} was derived from (if available to the caller). Since
+\code{get_overall_surv()} takes already-converted proportion-scale moments and has no Component 1
+step of its own, it cannot compute a mean-bias correction internally. When \code{MU_mat} is supplied,
+this argument is used purely for \emph{diagnostic} reporting: it lets \code{bias_correction_df} show how
+far the supplied \code{E_prop} differs from the naive, uncorrected \code{plogis(MU_mat)} plug-in,
+for comparison with \code{get_overall_surv_logit()}'s Component 1 correction. It has no effect on
+the returned \code{deriv_ests} calculation. Defaults to \code{NULL} (no diagnostic reporting).}
 }
 \value{
-A data frame containing multi-layer analytical results for each scenario row.
+A list with three elements:
+\describe{
+\item{deriv_ests}{A data frame containing multi-layer analytical results for each scenario row.}
+\item{beta_parm_df}{Beta-distribution shape parameters computed from the sub-metric and
+top-level moments. Retained for backwards compatibility; not used to derive the confidence
+intervals in \code{deriv_ests}, which instead use the logit-scale delta-method CI.}
+\item{bias_correction_df}{\code{NULL} if \code{MU_mat} is not supplied. Otherwise, a long-format
+data frame (one row per scenario x input variable) reporting the naive \code{plogis(mu)}
+plug-in, the supplied (possibly bias-corrected) \code{E_prop}, and their difference —
+for parity with the diagnostic reported by \code{get_overall_surv_logit()}.}
+}
 }
 \description{
 Analytical Logit-Normal Network Approximation for Matrices (Simulation-Free)

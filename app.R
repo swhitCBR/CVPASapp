@@ -6,4 +6,4 @@ pkgload::load_all(export_all = FALSE,helpers = FALSE,attach_testthat = FALSE)
 options( "golem.app.prod" = FALSE) # production mode vs development mode
 # options( "golem.app.prod" = TRUE) # production mode vs development mode
 
-CVPASapp::run_app(inputs_box_collapsed=FALSE)
+CVPASapp::run_app(inputs_box_collapsed=TRUE)

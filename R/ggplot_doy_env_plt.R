@@ -8,20 +8,26 @@ ggplot_doy_env_plt <- function(
 )
 {
   
+
+  
+  req_cont_vars <- c("VNS","OMT","CVP","SWP","MSD","CLC")
+  facet_levels <- c("log(VNS)","OMT","CVP","SWP","MSD","CLC")
+  
   if(!lattice_vers){
-  CVhelp_dat_l_plt <- subset(CVhelp_dat_l_plt,variable==sub_var_in)
-  leg_pos="right"
+    CVhelp_dat_l_plt <- subset(CVhelp_dat_l_plt, variable==sub_var_in)
+    leg_pos=c(0.85, 0.85)#"insidet"
   } else{
-    req_cont_vars <- c("VNS","OMT","CVP","SWP","MSD","CLC")
-    CVhelp_dat_l_plt <- subset(CVhelp_dat_l_plt,variable %in% req_cont_vars)
+    CVhelp_dat_l_plt <- subset(CVhelp_dat_l_plt, variable %in% req_cont_vars)
     CVhelp_dat_l_plt$variable <- factor(CVhelp_dat_l_plt$variable, 
                                    levels = req_cont_vars)
-    leg_pos="bottom"
-    
+    leg_pos="top"
   }
   
-  
+  # Create site variable with consistent ordering
   CVhelp_dat_l_plt$site <- gsub("^VNS$", "log(VNS)", CVhelp_dat_l_plt$variable)
+  CVhelp_dat_l_plt$site <- factor(CVhelp_dat_l_plt$site, levels = facet_levels)
+  
+  
   CVhelp_dat_l_plt$var <- CVhelp_dat_l_plt$variable
   CVhelp_dat_l_plt$year <- CVhelp_dat_l_plt$Year
   
@@ -71,7 +77,7 @@ ggplot_doy_env_plt <- function(
                    axis.title.x = ggplot2::element_text(size=16),
                    axis.text.x = ggplot2::element_text(size=14),
                    axis.text.y = ggplot2::element_text(size=14),
-                   strip.text = ggplot2::element_text(size=13.2),,legend.position = leg_pos)
+                   strip.text = ggplot2::element_text(size=13.2),legend.position = leg_pos)
   
   print(plt_tmp)
   

@@ -1,4 +1,6 @@
-## code to prepare `prev_pred_yrs` dataset goes here
+## code to prepare `prev_pred_yrs` dataset goes here 
+
+# I don't think I need to keep this stuff in memory 
 
 # usethis::use_data(prev_pred_yrs, overwrite = TRUE)
 # generate predictions and plot from HOR_TCJ glmmTMB models

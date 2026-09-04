@@ -25,7 +25,7 @@ draw_sidebar_ui <- function() {
         "About",
         tabName = "about",
         icon = icon("house"),
-        selected = FALSE
+        selected = TRUE
       ),
       shinydashboard::menuItem(
         "Inputs",
@@ -37,7 +37,7 @@ draw_sidebar_ui <- function() {
           "Starting location",
           tabName = "inputs",
           icon = HTML('<i class="fa-solid fa-location-dot"></i>'),
-          selected = TRUE
+          selected = FALSE
         )
           ,
           shinydashboard::menuSubItem(
@@ -95,19 +95,19 @@ draw_sidebar_ui <- function() {
       )
       )
     )
-          ,
-      br(),
-      tags$div(
-        id = "newsidebox", #needed for applying specific formatting
-        wellPanel(
-          textOutput("dyn_sidebar_txt")
-        )
-        ### FOR DEBUGGING ###
-        ,
-        verbatimTextOutput("sel_in_ls_text")
-        # ,
-        # actionButton("load_butt", "Load")
-        )
+      #     ,
+      # br(),
+      # tags$div(
+      #   id = "newsidebox", #needed for applying specific formatting
+      #   wellPanel(
+      #     textOutput("dyn_sidebar_txt")
+      #   )
+      #   ### FOR DEBUGGING ###
+      #   ,
+      #   verbatimTextOutput("sel_in_ls_text")
+      #   # ,
+      #   # actionButton("load_butt", "Load")
+      #   )
       )
     )
       }

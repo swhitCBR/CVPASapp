@@ -21,11 +21,15 @@ draw_upload_details_ui <- function(){
     tagList(
       fluidRow(
         style = "padding: 15px;",
+        div(style="margin-left: 15px;margin-bottom: 10px;font-size: 16px",
+          strong("Upload input data table (.csv)")),
         column(
           width = 12,
           fileInput(
             inputId = "file1",
-            label = "Choose CSV File",
+            label=NULL,
+            # label = "Upload input data table (.csv)",# CSV File",
+            # label = "Choose CSV File",
             # buttonLabel="aaa",
             accept = c(
               "text/csv",
@@ -34,13 +38,13 @@ draw_upload_details_ui <- function(){
             )
           ),
           shiny::fluidRow(
-            style = "margin-top:20px",
+            style = "margin-top:10px",
             column(
               width = 4,
               div(
                 role = "menuitem",
                 actionButton(
-                  inputId = "run_button",
+                  inputId = "run_button", # weird
                   label = "Load"
                 )
               )
@@ -67,6 +71,8 @@ draw_upload_details_ui <- function(){
           div(
             style = "padding-top: 20px;",
             role = "menu",
+                    div(style="margin-left: 15px;margin-bottom: 10px;font-size: 16px",
+          strong("Daily input variable template")),
             div(
               # shinyWidgets::dropMenu(
               #   placement = "bottom",

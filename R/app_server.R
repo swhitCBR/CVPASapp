@@ -62,7 +62,7 @@ app_server <- function(input, output, session) {
       session = session,
       selected = "inputs")
     }
-  })
+  }, ignoreInit = TRUE)
   
   observeEvent(input$sidebarItemExpanded, {
     # print(paste("expand",input$sidebarItemExpanded))
@@ -72,7 +72,7 @@ app_server <- function(input, output, session) {
       session = session,
       selected = "overall_surv")
     }
-  })
+  }, ignoreInit = TRUE)
 
   ### tab and navigation  ----
   observeEvent(input$data_source_picker, {
@@ -321,8 +321,11 @@ app_server <- function(input, output, session) {
       paste("data-", "CVPAS_example_input_data_",Sys.Date(), ".csv", sep="")
     },
     content = function(file) {
-      write.csv(head(CVhelp_dat_w), file)
-      # write.csv(head(get_upload_dat_example()), file)
+      sample_data <- get_upload_dat_example(
+        CVhelp_dat_w_in = CVhelp_dat_w,
+        columns_used = c("date", "Year", "WYT", "OMT", "barrierTF", "CLC", "VNS", "SWP", "CVP", "MSD")
+      )
+      write.csv(sample_data, file, row.names = FALSE)
     }
   )
 
@@ -334,7 +337,7 @@ app_server <- function(input, output, session) {
 
   output$table_upload_details <- DT::renderDataTable(
         # draw_inputs_ann_summ_dt(input_year = in_selected_RV$past_water_year)
-  draw_upload_examp_dt()
+    draw_upload_examp_dt()
     # DT::datatable( head(CVhelp_dat_w) )
     # draw_inputs_ann_summ_dt(input_year = in_selected_RV$past_water_year
     #     DT::datatable(

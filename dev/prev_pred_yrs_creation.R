@@ -180,29 +180,19 @@ as.numeric(tmpDF[["p_mat"]][1,1])
 get_overall_surv_sim()
 
 
+# glmmTMB_mod_ls[["HOR_TCJ"]]$HOR_TCJ_aictab |> dplyr::filter(dAIC<2)
+# tmp_tb <- glmmTMB_mod_ls[["HOR_TCJ"]]$HOR_TCJ_aictab |> dplyr::filter(dAIC<2) #|>#
+# tmp_tb$wt=get_aic_wts(tmp_tb,aic_column = "AIC")  
 
-TCJ_CHP_pred_comp_ls$AIC_DF_d2
-TCJ_CHP_pred_comp_ls$TCJ_CHP_mod_fits_d2_ls
-# TCJ_CHP_pred_comp_ls$TCJ_CHP_TMB_all_mods$pt_estsDF |> 
-#   dplyr::filter(dm %in% c(TCJ_CHP_pred_comp_ls$AIC_DF_d2$dm)) |>
-#   tidyr::pivot_wider(names_from = par_nm,values_from = S_coef)
 
-TCJ_CHP_pred_comp_ls$S_conf_ls$S_coef_confset_DF
-# kinda cool!
-TCJ_CHP_pred_comp_ls$TCJ_CHP_TMB_all_mods$pt_estsDF |> 
-  dplyr::filter(dm %in% c(TCJ_CHP_pred_comp_ls$AIC_DF_d2$dm)) |> 
-  dplyr::select(-dmID,-S_parID) |>
-  tidyr::pivot_wider(names_from = par_nm,values_from = S_coef)
 
-TCJ_CHP_pred_comp_ls$S_conf_ls$S_coef_confset_DF |> 
-  # dplyr::filter(dm %in% c(TCJ_CHP_pred_comp_ls$AIC_DF_d2$dm)) |> 
-  dplyr::select(-S_parID,-AICrank,-candmodID,-estimate,-SE) |>
-  tidyr::pivot_wider(names_from = par_nm,values_from = S_coef)
 
-TCJ_CHP_pred_comp_ls$TCJ_CHP_TMB_all_mods$pt_estsDF |> 
-  dplyr::filter(dm %in% c(TCJ_CHP_pred_comp_ls$AIC_DF_d2$dm)) |> 
-  dplyr::select(-dmID,-S_parID) |>
-  tidyr::pivot_wider(names_from = par_nm,values_from = S_coef) |>
+
+
+# TCJ_CHP_pred_comp_ls$"TCJ_CHP_TMB_all_mods"$"pt_estsDF" |> 
+#   dplyr::filter(dm %in% c(TCJ_CHP_pred_comp_ls$AIC_DF_d2$dm)) |> 
+#   dplyr::select(-dmID,-S_parID) |>
+#   tidyr::pivot_wider(names_from = par_nm,values_from = S_coef) |>
 
 
 

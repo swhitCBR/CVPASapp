@@ -2,7 +2,7 @@ ggplot_doy_pred_plt_compliment <- function(
     data_in,
     doy_rng_in=c(1,250),
     pst_year_in="2012",
-    param_in#=#"S_HOR_CHP"
+    param_in="HOR"#=#"S_HOR_CHP"
 ){
   
   stopifnot(is.character(param_in) & length(param_in)==1)
@@ -54,7 +54,9 @@ ggplot_doy_pred_plt_compliment <- function(
       ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8,1),limits=c(0,1)) +
       ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) +
       ggplot2::labs(y=param_in, x="Day of Year") + 
-      ggplot2::theme(legend.position="top",legend.justification="right",
+      ggplot2::theme(legend.position=c(0.98, 0.98),
+                     legend.justification=c(1, 1),
+                     legend.background = ggplot2::element_rect(fill="white", color="black", size=0.5),
                      axis.text.x = ggplot2::element_text(size=14),axis.text.y = ggplot2::element_text(size=14),
                      axis.title.x = ggplot2::element_text(size=16),
                      legend.title = ggplot2::element_text(color="black",size=14),
@@ -82,7 +84,9 @@ ggplot_doy_pred_plt_compliment <- function(
     ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8,1),limits=c(0,1)) +
     ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) +
     ggplot2::labs(y=param_in, x="Day of Year") + 
-    ggplot2::theme(legend.position="top",legend.justification="right",
+    ggplot2::theme(legend.position=c(0.98, 0.98),
+                   legend.justification=c(1, 1),
+                   legend.background = ggplot2::element_rect(fill="white", color="black", size=0.5),
                    axis.text.x = ggplot2::element_text(size=14),axis.text.y = ggplot2::element_text(size=14),
                    axis.title.x = ggplot2::element_text(size=16),
                    legend.title = ggplot2::element_text(color="black",size=14),

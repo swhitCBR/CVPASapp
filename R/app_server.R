@@ -325,6 +325,8 @@ app_server <- function(input, output, session) {
         CVhelp_dat_w_in = CVhelp_dat_w,
         columns_used = c("date", "Year", "WYT", "OMT", "barrierTF", "CLC", "VNS", "SWP", "CVP", "MSD")
       )
+      # Download only the first 6 rows displayed in the table
+      sample_data <- head(sample_data, 6)
       write.csv(sample_data, file, row.names = FALSE)
     }
   )
@@ -842,7 +844,21 @@ app_server <- function(input, output, session) {
 
   })
 
+  output$table_est_pred <- DT::renderDataTable({
+    draw_est_pred_dt(OUT_tmp$pred_pDF_comb)
+  })
 
+  output$download_est_pred <- downloadHandler(
+    filename = function() {
+      paste("CVPAS_predictions_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      cols_to_remove <- c("lo_pred", "lo_SEadj", "lo_SE", "p_SE")
+      pred_data_filtered <- OUT_tmp$pred_pDF_comb |> 
+        dplyr::select(-dplyr::any_of(cols_to_remove))
+      write.csv(pred_data_filtered, file, row.names = FALSE)
+    }
+  )
 
   # new revision
 #  output$HOR_TCJ_pred_plot <- renderPlot({
@@ -1125,13 +1141,27 @@ output$HOR_pred_ggpplt <- renderPlot({
 
     HOR_pred_tab <- OUT_tmp$HOR_pred_tab 
 
+
+    # ggplot_doy_pred_plt_compliment(
+    #     data_in =  HOR_pred_tab,
+    #     param_in="HOR",
+    #   doy_rng_in = c(
+    #     in_selected_RV$start_day,
+    #     in_selected_RV$end_day
+    #   ),
+    #   pst_year_in = in_selected_RV$past_water_year
+    #   )
+
+
+
     ggplot_doy_rte_plt(
       HOR_TCJ_pred_tab_plt = HOR_pred_tab,
       doy_rng_in = c(
         in_selected_RV$start_day,
         in_selected_RV$end_day
       ),
-      pst_year_in = in_selected_RV$past_water_year
+      pst_year_in = in_selected_RV$past_water_year,
+      label_route_1 = "SJL",label_route_2 = "ORE"
     )
   })
 
@@ -1176,7 +1206,8 @@ output$HOR_pred_ggpplt <- renderPlot({
         in_selected_RV$start_day,
         in_selected_RV$end_day
       ),
-      pst_year_in = in_selected_RV$past_water_year
+      pst_year_in = in_selected_RV$past_water_year,
+       label_route_1 = "MAC",label_route_2 = "TRN"
     )
   })
 

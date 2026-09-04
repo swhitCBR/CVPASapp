@@ -2,7 +2,9 @@
 ggplot_doy_rte_plt <- function(
     HOR_TCJ_pred_tab_plt,
     doy_rng_in=c(10,100),
-    pst_year_in="2012"#,
+    pst_year_in="2012",
+    label_route_1="SJL",
+    label_route_2="ORE"#,
     # disp_SE=TRUE
 ){
   doy_int1 <- doy_rng_in[1]
@@ -54,21 +56,35 @@ HOR_TCJ_pred_tab_plt <- HOR_TCJ_pred_tab_plt |>
 # Blue: #4E79A7 (Steel Blue)Orange: #F28E2B (Burnt Orange)
  HOR_TCJ_pred_tab_plt <- HOR_TCJ_pred_tab_plt[HOR_TCJ_pred_tab_plt$DOY >= doy_int1 & HOR_TCJ_pred_tab_plt$DOY <= doy_int2,]
   
-ggplot2::ggplot() +
-    ggplot2::geom_ribbon(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,ymin=SJR_prob_LCL,ymax=SJR_prob_UCL),fill="#4E79A7",alpha=0.4) +
-    ggplot2::geom_ribbon(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,ymin=nonSJR_prob_LCL,ymax=nonSJR_prob_UCL),fill="#F28E2B",alpha=0.4) +
+ ggplot2::ggplot() +
+    ggplot2::geom_ribbon(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,ymin=SJR_prob_LCL,ymax=SJR_prob_UCL,fill=label_route_1),alpha=0.4) +
+    ggplot2::geom_ribbon(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,ymin=nonSJR_prob_LCL,ymax=nonSJR_prob_UCL,fill=label_route_2),alpha=0.4) +
     ggplot2::geom_line(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=nonSJR_prob)) +
-    ggplot2::geom_point(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=nonSJR_prob),fill="#F28E2B",shape=21) +
+    ggplot2::geom_point(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=nonSJR_prob,fill=label_route_2),shape=21) +
     ggplot2::geom_line(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=SJR_prob)) +
-    ggplot2::geom_point(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=SJR_prob),fill="#4E79A7",shape=21) +
-    # ggplot2::geom_vline(xintercept = doy_int1) +
-    # ggplot2::geom_vline(xintercept = doy_int2) +
-    # ggplot2::theme(legend.position="bottom")+
+    ggplot2::geom_point(data=HOR_TCJ_pred_tab_plt,ggplot2::aes(x=DOY,y=SJR_prob,fill=label_route_1),shape=21) +
+    ggplot2::scale_fill_manual(name = "Route", values = setNames(c("#4E79A7", "#F28E2B"), c(label_route_1, label_route_2))) +
     ggplot2::labs(y="Route Use Probability",x="Day of Year") +
-    ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8),limits=c(0,1)) +
+    # ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8),limits=c(0,1)) +
+   ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8,1),limits=c(0,1)) +
+   
     ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) +
-    ggplot2::theme(axis.text.x = ggplot2::element_text(size=14),axis.text.y = ggplot2::element_text(size=14),
-                   axis.title.x = ggplot2::element_text(size=16),axis.title.y = ggplot2::element_text(size=16))#+
+   
+   ggplot2::theme(#legend.position=c(0.98, 0.98),
+                  #legend.justification=c(1, 1),
+                  # legend.background = ggplot2::element_rect(fill="white", color="black", size=0.5),
+                  # axis.text.x = ggplot2::element_text(size=14),axis.text.y = ggplot2::element_text(size=14),
+                  # axis.title.x = ggplot2::element_text(size=16),
+                  legend.title = ggplot2::element_text(color="black",size=14),
+                  axis.title.y= ggplot2::element_blank(),
+ 
+    # ggplot2::theme(
+    legend.position="top",
+                   legend.justification="right",
+                   plot.margin = ggplot2::margin(t=0, b=5, l=5, r=5),
+                   axis.text.x = ggplot2::element_text(size=14),axis.text.y = ggplot2::element_text(size=14),
+                   axis.title.x = ggplot2::element_text(size=16)#,#axis.title.y = ggplot2::element_text(size=16)
+    )#+
   # scale_fill_manual(
   #   name = "Manual Aesthetic Legend",
   #   values = c(

@@ -16,6 +16,18 @@ draw_est_more_info_div_ui <- function(){
         h3(
           paste0("Download"),
           style = "color:black;text-decoration: underline;"
+        ),
+        div(
+          style = "padding-top: 15px;",
+          DT::dataTableOutput("table_est_pred")
+        ),
+        div(
+          style = "padding-top: 15px; padding-bottom: 15px;",
+          downloadButton(
+            outputId = "download_est_pred",
+            label = "Download Estimates (.csv)",
+            icon = shiny::icon("download")
+          )
         )
       )
       ,
@@ -36,7 +48,7 @@ draw_est_more_info_div_ui <- function(){
           style = "margin-top:15px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
           tags$summary(
             title = "Click to open or close",
-            "Input Data Plots",
+            "Additional Input Data Plots",
             style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
                   padding-bottom: 2px;background-color:#ddd;"
           ),
@@ -48,42 +60,24 @@ draw_est_more_info_div_ui <- function(){
             style = "display:flex;",
             plotOutput("doy_ins_ggpplt", height = "800px") 
           )
-          # ,
-          # h4(
-          #   "Turner Cut Chipps Island via the San Joaquin River",
-          #   style = "margin-left:20px;"
-          # ),
-          # div(
-          #   style = "display:flex;",
-          #   plotOutput("doy_ins_ggpplt_dup1", height = "400px"),
-          #   plotOutput("HOR_TCJ_pred_ggpplt_dup3", height = "400px")
-          # ),
-          # h4(
-          #   "Head of Old River to Chipps Island via the Old and Middle rivers",
-          #   style = "margin-left:20px;"
-          # ),
-          # div(
-          #   style = "display:flex;",
-          #   plotOutput("doy_ins_ggpplt_dup2", height = "400px"),
-          #   plotOutput("HOR_TCJ_pred_ggpplt_dup1", height = "400px")
-          # )
-        ),
-        tags$details(
-          id = "hor_chp_ore_surv_deets",
-          open = NULL,
-          style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
-          tags$summary(
-            title = "Click to open or close",
-            "Model Details",
-            style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
-                  padding-bottom: 2px;background-color:#ddd;"
-          ),
-          h4("HOR-TCJ Survival", style = "margin-left:20px;"),
-          div(
-            style = "display:flex;",
-            p("placeholder")
-          )
         )
+        # ,
+        # tags$details(
+        #   id = "hor_chp_ore_surv_deets",
+        #   open = NULL,
+        #   style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+        #   tags$summary(
+        #     title = "Click to open or close",
+        #     "Model Details",
+        #     style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+        #           padding-bottom: 2px;background-color:#ddd;"
+        #   ),
+        #   h4("HOR-TCJ Survival", style = "margin-left:20px;"),
+        #   div(
+        #     style = "display:flex;",
+        #     p("placeholder")
+        #   )
+        # )
       )
     )
   }

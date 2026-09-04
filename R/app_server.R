@@ -369,6 +369,8 @@ app_server <- function(input, output, session) {
   )
 
 
+
+
   observeEvent(input$year_picker, {
     in_selected_RV$BAR <- ann_HORbar_WYT_data[
       which(ann_HORbar_WYT_data_TAB()$Year == input$year_picker),

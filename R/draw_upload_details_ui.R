@@ -9,6 +9,7 @@
 draw_upload_details_ui <- function(){
   tags$details(
     id = "details_up",
+    open = TRUE,
     # open=ifelse(
     #   input$data_source_picker=="Uploaded file (.csv)",TRUE,NULL),
     style = "margin-top:10px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white; ",

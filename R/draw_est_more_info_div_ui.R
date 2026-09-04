@@ -9,24 +9,39 @@
 #'
 draw_est_more_info_div_ui <- function(){
   div(
-      # style = "display: none;",
-            div(
-        id = "bottom_download_panel",
-        style = "padding-left: 10px;",
         h3(
-          paste0("Download"),
+          paste0("Tables"),
           style = "color:black;text-decoration: underline;"
         ),
-        div(
-          style = "padding-top: 15px;",
-          DT::dataTableOutput("table_est_pred")
-        ),
-        div(
-          style = "padding-top: 15px; padding-bottom: 15px;",
-          downloadButton(
-            outputId = "download_est_pred",
-            label = "Download Estimates (.csv)",
-            icon = shiny::icon("download")
+        
+      # style = "display: none;",
+            div(
+        style = "padding-left: 10px;",
+        tags$details(
+          id = "est_pred_deet",
+          open = TRUE,
+          style = "margin-top:15px; padding: 0px; color:#337ab7 ; border:solid; border-width: 1px ; background-color:white",
+          tags$summary(
+            title = "Click to open or close",
+            "Estimates",
+            style = "font-size: 18px; font-size: 18px; padding-left: 4px; padding-top: 2px;
+                  padding-bottom: 2px;background-color:#ddd;"
+          ),
+          div(
+            style = "padding: 15px;",
+             div(style="margin-left: 15px;margin-bottom: 10px;font-size: 16px",
+                strong("Table component model predicted probabilities and derived estimates")),
+
+            DT::dataTableOutput("table_est_pred"),
+                        div(
+              style = "padding-bottom: 15px;",
+              downloadButton(
+                outputId = "download_est_pred",
+                
+                label = "Download Estimates (.csv)",
+                icon = shiny::icon("download")
+              )
+            ),
           )
         )
       )

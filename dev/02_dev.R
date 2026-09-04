@@ -48,12 +48,14 @@ library(shinyWidgets)
 
 ################################################################################ #
 
+# usethis::use_package("CVhelp")
+
 # adding CVhelp code to package
 devtools::install_github("https://github.com/swhitCBR/CVhelp",auth_token = "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")
 # creating static data sets for CVhelp
 
 
-devtools::install_github("https://github.com/swhitCBR/CVhelp",auth_token = "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")
+devtools::install_github("https://github.com/swhitCBR/CVhelp",force=T)#,auth_token = "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")
 
 
 ################################################################################ #

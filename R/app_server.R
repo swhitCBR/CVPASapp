@@ -26,7 +26,7 @@ app_server <- function(input, output, session) {
   ### Tab switching behavior  ----
   observeEvent(input$tabs, {
     tab_selected(input$tabs) # changes tab
-    print(input$tabs)
+    # print(input$tabs)
     # scrollIntoView options
     if(input$tabs=="check"){shinyjs::runjs("window.scrollTo({top: document.getElementById('details_indiv').getBoundingClientRect().top + window.scrollY - 75, behavior: 'smooth'});")}
     if(input$tabs=="inputs"){shinyjs::runjs("window.scrollTo({top: document.getElementById('inputTop').getBoundingClientRect().top + window.scrollY - 75, behavior: 'smooth'});")}
@@ -55,7 +55,7 @@ app_server <- function(input, output, session) {
   # Auto-switching to top option when sidebar menu items are expanded
   
   observeEvent(input$sidebarItemExpanded, {
-    print(paste("expand",input$sidebarItemExpanded))
+    # print(paste("expand",input$sidebarItemExpanded))
     if(input$sidebarItemExpanded == "inputs_title"){
     shinydashboard::updateTabItems(
       inputId = "tabs",
@@ -65,7 +65,7 @@ app_server <- function(input, output, session) {
   })
   
   observeEvent(input$sidebarItemExpanded, {
-    print(paste("expand",input$sidebarItemExpanded))
+    # print(paste("expand",input$sidebarItemExpanded))
     if(input$sidebarItemExpanded == "estimates_title"){
     shinydashboard::updateTabItems(
       inputId = "tabs",

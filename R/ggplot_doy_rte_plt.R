@@ -38,8 +38,8 @@ ggplot_doy_rte_plt <- function(
                    axis.title.x = ggplot2::element_text(size=16),axis.title.y = ggplot2::element_text(size=16))
 
 
-print(head(HOR_TCJ_pred_tab_plt))
-print(str(HOR_TCJ_pred_tab_plt))
+# print(head(HOR_TCJ_pred_tab_plt))
+# print(str(HOR_TCJ_pred_tab_plt))
   
 HOR_TCJ_pred_tab_plt <- HOR_TCJ_pred_tab_plt |> 
   dplyr::mutate(SJR_prob=plogis(.data$lo_pred),

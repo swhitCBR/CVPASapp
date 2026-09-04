@@ -39,7 +39,9 @@ HOR_CHP_comp_alt <- function (HOR_CHP_data_inputs_ls_in, z_scale_vars = TRUE)
   scl_var_nms <- c("flength", "Tmsd.hor.7dadm", "log.VNS.hor.5", 
                    "SWP.hor.5", "CVP.hor.5", "Qomt.hor.1net", "Tclc.hor.3")
   if (z_scale_vars) {
-    XX_in <- CVhelp::scale_data_cols(repl_tab_in = repl_tab, 
+    # XX_in <- CVhelp::scale_data_cols(repl_tab_in = repl_tab, 
+    #                                  x.df_SUB_in = x.df_SUB)
+    XX_in <- scale_data_cols(repl_tab_in = repl_tab, 
                                      x.df_SUB_in = x.df_SUB)
   }
   else {

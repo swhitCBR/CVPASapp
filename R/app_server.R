@@ -7,6 +7,9 @@
 app_server <- function(input, output, session) {
 
   output$dyn_sidebar_txt <- renderText({paste0(get_sidebar_txt(input$tabs))})
+  
+  output$est_panel_visible <- reactive({est_panel_visible()})
+  outputOptions(output, "est_panel_visible", suspendWhenHidden = FALSE)
 
   # autoselect specify starting tab
   # session$onSessionEnded(stopApp)
@@ -15,6 +18,10 @@ app_server <- function(input, output, session) {
   tab_selected <- reactiveVal("inputs")
 
   data_source_selected <- reactiveVal("prev_pan")
+  
+  est_panel_visible <- reactiveVal(FALSE)
+  
+  estimates_generated <- reactiveVal(FALSE)
 
   ### Tab switching behavior  ----
   observeEvent(input$tabs, {
@@ -110,10 +117,12 @@ app_server <- function(input, output, session) {
 
   # print global (i.e., locked-in values)
   output$glob_in_ls_text = renderText({
-    get_rv_ls_txt(
-      heading = "none",
-      RVls_in = shiny::reactiveValuesToList(in_global_RV)
-    )
+    ""
+    # "input variable: 'VNS' exceeds upper threshold \n\tsee rowIDs: 1,2,3,4,5,6,..."
+    # get_rv_ls_txt(
+    #   heading = "none",
+    #   RVls_in = shiny::reactiveValuesToList(in_global_RV)
+    # )
   })
 
   observeEvent(input$start_loc_in, {
@@ -152,6 +161,14 @@ app_server <- function(input, output, session) {
       value = FALSE
     )
     shinyjs::disable("generate_ests_butt")
+    
+    # Reset estimates panel and sidebar menu
+    est_panel_visible(FALSE)
+    estimates_generated(FALSE)
+    
+    # Collapse Estimates sidebar menu and expand Inputs sidebar menu
+    shinyjs::runjs("$('a:contains(\"Estimates\")').parent().find('> a').click();")
+    shinyjs::runjs("$('a:contains(\"Inputs\")').parent().find('> a').click();")
   })
 
   output$time_of_year_entry_ui <- renderUI({
@@ -221,16 +238,28 @@ app_server <- function(input, output, session) {
 
 
   output$doy_ins_ggpplt <- renderPlot({
-    ggplot_doy_ins_plt(
+    
+    ggplot_doy_env_plt(
       CVhelp_dat_l_plt = CVhelp_dat_l,
       doy_rng_in = c(
         in_selected_RV$start_day,
         in_selected_RV$end_day
       ),
       pst_year_in = in_selected_RV$past_water_year,
-      sub_var_in = input$radio_metric_view
+      sub_var_in = input$radio_metric_view,
+      lattice=TRUE
       # log_trans
     )
+    # ggplot_doy_ins_plt(
+    #   CVhelp_dat_l_plt = CVhelp_dat_l,
+    #   doy_rng_in = c(
+    #     in_selected_RV$start_day,
+    #     in_selected_RV$end_day
+    #   ),
+    #   pst_year_in = in_selected_RV$past_water_year,
+    #   sub_var_in = input$radio_metric_view
+    #   # log_trans
+    # )
   })
   # duplicated
   output$doy_ins_ggpplt2 <- renderPlot({
@@ -273,6 +302,7 @@ app_server <- function(input, output, session) {
   })
 
   output$doy_ins_ggpplt2_dup3 <- renderPlot({
+    
     ggplot_doy_ins_plt(
       CVhelp_dat_l_plt = CVhelp_dat_l,
       doy_rng_in = c(
@@ -286,6 +316,15 @@ app_server <- function(input, output, session) {
   })
 
 
+  output$download_sample <- downloadHandler(
+    filename = function() {
+      paste("data-", "CVPAS_example_input_data_",Sys.Date(), ".csv", sep="")
+    },
+    content = function(file) {
+      write.csv(head(CVhelp_dat_w), file)
+      # write.csv(head(get_upload_dat_example()), file)
+    }
+  )
 
   proxy <- DT::dataTableProxy("table_in_WY")
 
@@ -293,7 +332,38 @@ app_server <- function(input, output, session) {
     draw_inputs_ann_summ_dt(input_year = in_selected_RV$past_water_year
   ))
 
-  
+  output$table_upload_details <- DT::renderDataTable(
+        # draw_inputs_ann_summ_dt(input_year = in_selected_RV$past_water_year)
+  draw_upload_examp_dt()
+    # DT::datatable( head(CVhelp_dat_w) )
+    # draw_inputs_ann_summ_dt(input_year = in_selected_RV$past_water_year
+    #     DT::datatable(
+    #   CVPAS_prev_yr_ref_tab[,columns_used],
+    #   selection = "none",
+    #   colnames = c("Year", "Water Year Type", "HOR Barrier", "Used in Models"),
+    #   rownames = FALSE,
+    #   options = list(
+    #     info = FALSE,
+    #     # dom = "t",
+    #     # pageLength = 14,
+    #     dom = '<"<"bottom"ip>', # only the bottom
+    #     pageLength = 6,
+    #     stripeClasses = list(),
+    #     pagingType = "simple",
+    #     initComplete = DT::JS(
+    #       "function(settings, json) {",
+    #       "$(this.api().table().header()).css({'font-size': '100%'});",
+    #       "$(this.api().table().body()).css({'font-size': '80%'});",
+    #       "$(this.api().table().footer()).css({'font-size': '80%'});",
+    #       "}"
+    #     )
+    #   )
+    # )
+  # )
+
+  )
+
+
   observeEvent(input$year_picker, {
     in_selected_RV$BAR <- ann_HORbar_WYT_data[
       which(ann_HORbar_WYT_data_TAB()$Year == input$year_picker),
@@ -621,27 +691,30 @@ app_server <- function(input, output, session) {
   })
 
   observeEvent(input$generate_ests_butt, {
-    # if (!input$input_box2$collapsed) {
-    #   shinydashboardPlus::updateBox("input_box2", action = "toggle")
-    # }
-
-    # if (input$est_box_ui$collapsed) {
-    #   shinydashboardPlus::updateBox("est_box_ui", action = "toggle")
-    # }
-
-    # if(input$tabs=="inputs"){
-    #   shinyjs::runjs("
-    #   document.getElementById('inputTop').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    #  ")
-
+    estimates_generated(TRUE)
+    est_panel_visible(TRUE)
+    
+    # Expand the Estimates sidebar menu by triggering a click on it
+    shinyjs::runjs("$('a:contains(\"Estimates\")').parent().find('> a').click();")
+    
     shinydashboard::updateTabItems(
       inputId = "tabs",
       session = session,
-      selected = "estimates"
+      selected = "overall_surv"
     )
 
-
     print(input$env_dat_tabpan)
+  })
+  
+  # Disable/enable Estimates menu item based on whether estimates have been generated
+  observeEvent(estimates_generated(), {
+    if (estimates_generated()) {
+      shinyjs::removeClass(selector = "a:contains('Estimates')", class = "disabled-menu-item")
+      shinyjs::runjs("$('a:contains(\"Estimates\")').css('pointer-events', 'auto').css('opacity', '1');")
+    } else {
+      shinyjs::addClass(selector = "a:contains('Estimates')", class = "disabled-menu-item")
+      shinyjs::runjs("$('a:contains(\"Estimates\")').css('pointer-events', 'none').css('opacity', '0.5');")
+    }
   })
 
   output$table_env_inputs <- DT::renderDataTable(
@@ -882,7 +955,7 @@ app_server <- function(input, output, session) {
 
 
   
-output$HOR_pred_ggpplt_ALT <- renderPlot({
+output$HOR_pred_ggpplt <- renderPlot({
     pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
 
     ggplot_doy_pred_plt_compliment(
@@ -896,7 +969,7 @@ output$HOR_pred_ggpplt_ALT <- renderPlot({
   })
 
 
-  output$TCJ_pred_ggpplt_ALT <- renderPlot({
+  output$TCJ_pred_ggpplt <- renderPlot({
     pred_pDF_comb_inarg <- OUT_tmp$pred_pDF_comb
 
     ggplot_doy_pred_plt_compliment(
@@ -907,25 +980,6 @@ output$HOR_pred_ggpplt_ALT <- renderPlot({
           in_selected_RV$end_day),
       pst_year_in = in_selected_RV$past_water_year)
 
-    # ggplot_doy_pred_plt_single(
-    #   data_in =  pred_pDF_comb_inarg,
-    #   param_in="TCJ",
-    #   doy_rng_in = c(
-    #       in_selected_RV$start_day,
-    #       in_selected_RV$end_day),
-    #   pst_year_in = in_selected_RV$past_water_year)
-    # TCJ_pred_tab <-  pred_tab_ls[["TCJ"]]
-
-    # TCJ_pred_tab <- OUT_tmp$TCJ_pred_tab 
-
-    # ggplot_doy_rte_plt(
-    #   HOR_TCJ_pred_tab_plt = TCJ_pred_tab,
-    #   doy_rng_in = c(
-    #     in_selected_RV$start_day,
-    #     in_selected_RV$end_day
-    #   ),
-    #   pst_year_in = in_selected_RV$past_water_year
-    # )
   })
 
 

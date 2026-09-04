@@ -1,10 +1,10 @@
 #' Derive overall survial
 #'  
-#' Analytical Logit-Normal Network Approximation for Matrices (Logit-Scale CI Method)
+#' Deriving overall survival estimates by application of the plug-in detla method
 #'
 #' @description Derive estimates of overall survival HOR-CHP and TCH-CHP based on logit-normal scale predictions from component models 
 #'
-#' @param lo_comp_estmat A matrix of log-odds (logit-scale) estimates from the
+#' @param lo_comp_estmat A linear predictors on the log-odds scale (etas)
 #'        component models, where each row is a scenario and the 6 columns are in order:
 #'        \code{[,1]} Psi_SLJ, \code{[,2]} theta_HOR-TCJ|SLJ, \code{[,3]} Psi_MAC, \code{[,4]} theta_TCJ-CHP|MAC, \code{[,5]} theta_TCJ-CHP|TRN, \code{[,6]} theta_HOR-CHP|ORE
 #' @param lo_comp_varmat A matrix of the same dimensions containing the logit-scale variances of the component model estimates.

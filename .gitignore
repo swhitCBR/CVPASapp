@@ -5,3 +5,6 @@
 
 /.quarto/
 inst/doc
+R/app_server.R
+R/app_server.R
+output/high_res_strips/*.png

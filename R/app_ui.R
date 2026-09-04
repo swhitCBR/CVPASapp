@@ -47,6 +47,13 @@ app_ui <- function(request) {
                   /* content: '\\f7a5' !important;  Example: arrow-circle-left */
                   font-family: 'Font Awesome 5 Free' !important;
                 }
+                
+                /* Styling for disabled menu items */
+                .disabled-menu-item {
+                  opacity: 0.5;
+                  pointer-events: none;
+                  cursor: not-allowed;
+                }
               "))
             ),
         ##ALT## {prevents the sidebar from scrollling with rest of page}
@@ -68,10 +75,10 @@ app_ui <- function(request) {
             condition = "input.tabs == 'inputs' || input.tabs == 'check' || input.tabs == 'estimates'
              || input.tabs == 'overall_surv' || input.tabs == 'reach_surv'|| input.tabs == 'route_spec_surv' || input.tabs == 'route_usage' || input.tabs == 'more_info'",
             draw_inputs_box_ui(init_data_source="Previous years",collapsed_in = golem::get_golem_options("inputs_box_collapsed")),
-                  # conditionalPanel(
-                    # condition = "input.Loc_in != 'HOR'",
-                    draw_est_box_ui()
-                  # )
+            conditionalPanel(
+              condition = "output.est_panel_visible",
+              draw_est_box_ui()
+            )
           )
           ,
           conditionalPanel(

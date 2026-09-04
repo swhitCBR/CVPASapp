@@ -4,7 +4,7 @@
 #' @export
 #'
 #' @examples
-draw_est_rte_div_uiBAD <- function(){
+draw_est_rte_div_ui <- function(){
   tagList(
   div(
         style = "padding-left: 10px;",
@@ -20,7 +20,7 @@ draw_est_rte_div_uiBAD <- function(){
               <strong>At Head of Old River</strong>
                </h4>'
           ),
-          # plotOutput("HOR_TCJ_pred_ggpplt_dup1d", height = "400px")
+
           plotOutput("HOR_pred_ggpplt", height = "400px")
         ),
         column(
@@ -31,7 +31,6 @@ draw_est_rte_div_uiBAD <- function(){
                </h4>'
           ),
           plotOutput("TCJ_pred_ggpplt", height = "400px")
-          # plotOutput("HOR_TCJ_pred_ggpplt_dup1d2", height = "400px")
         )
         # Blue: #4E79A7 (Steel Blue)Orange: #F28E2B (Burnt Orange)
       )

@@ -1,7 +1,7 @@
 # Initial values
   init_data_source <- "Previous year"
-  init_water_year <- 2011
-  init_DOY <- c(1, 250)
+  init_water_year <- 2013
+  init_DOY <- c(45, 135)
   init_WYT_type <- "Wet"
   init_start_loc <- "HOR"
   init_bar <- "Out"

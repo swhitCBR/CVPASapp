@@ -34,8 +34,7 @@ get_overall_surv_preds <- function(pred_tab_ls_in,predict_int=F,conf_level=0.95)
   
   # logit(1-p) = -logit(p), so the logit-scale complements of HOR/TCJ
   # (Psi_SJL = 1-Psi_ORE, Psi_MAC = 1-Psi_TRN on the proportion scale) are
-  # simply their negatives on the logit scale -- no plogis()/log() round-trip
-  # needed.
+  # simply their negatives on the logit scale -- no plogis()/log() r
   lo_pred_pDF_w1 <- pred_pDF |> #dplyr::filter(Year==2011 & DOY %in% 20:24) |> 
     dplyr::select(Year,DOY,param,lo_pred) |> 
     tidyr::pivot_wider(names_from=param,values_from = lo_pred) |> 

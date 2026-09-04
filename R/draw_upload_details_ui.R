@@ -22,7 +22,7 @@ draw_upload_details_ui <- function(){
       fluidRow(
         style = "padding: 15px;",
         column(
-          width = 5,
+          width = 12,
           fileInput(
             inputId = "file1",
             label = "Choose CSV File",
@@ -68,34 +68,32 @@ draw_upload_details_ui <- function(){
             style = "padding-top: 20px;",
             role = "menu",
             div(
-              # style = "display: flex; gap:20px;",
-              shinyWidgets::dropMenu(
-                placement = "bottom",
-                tag = actionButton(
-                  inputId = "man_input_dropdown",
-                  label = tags$div(
-                    HTML('<i class="fas fa-edit" role="presentation" aria-label="sliders icon"></i> Manual Input')),
-                ),
-                textAreaInput(
-                  inputId = "manual_input",
-                  label = "Manual Input",
-                  placeholder = 'year,date,WYT,barrier,VNS,OMT,T_MSD,T_CLC,CVP,SWP\n2013,"2013-04-29","Out",4130,-623,18.2,20.6,816,2421',
-                  rows = 3,width="500px"
-                )
-              )
+              # shinyWidgets::dropMenu(
+              #   placement = "bottom",
+              #   tag = actionButton(
+              #     inputId = "man_input_dropdown",
+              #     label = tags$div(
+              #       HTML('<i class="fas fa-edit" role="presentation" aria-label="sliders icon"></i> Manual Input')),
+              #   )
+              #   ,
+              #   textAreaInput(
+              #     inputId = "manual_input",
+              #     label = "Manual Input",
+              #     placeholder = 'year,date,WYT,barrier,VNS,OMT,T_MSD,T_CLC,CVP,SWP\n2013,"2013-04-29","Out",4130,-623,18.2,20.6,816,2421',
+              #     rows = 3,width="500px"
+              #   )
+              # )
             )
           )
         ),
         column(
-          width = 7,
+          width = 12,
+
           div(
+
             tags$ul(
               style = "padding-inline-start: 10px;",
-              tags$li(
-                h5(
-                  "[[Datatable placeholder]]"
-                )
-              )
+              DT::dataTableOutput("table_upload_details")
             )
             # ,
             # draw_info_bttn_dropdown_ui(inputID_in="daily_var_def_info_bttn2")

@@ -32,7 +32,7 @@ draw_chk_input_div_ui <- function(){
           width = 6,
           div(
             p(
-              "Verify that specified values conform with data used to fit statistical sub-models"
+              "Verify that specified values conform with data used to fit component models"
             )
           ),
           div(
@@ -75,7 +75,7 @@ draw_chk_input_div_ui <- function(){
           div(
             style = "display:block;margin-top:10px;",
             wellPanel(
-              # textOutput("glob_in_ls_text"),
+              textOutput("glob_in_ls_text"),
               tags$style(
                 type = "text/css",
                 "#glob_in_ls_text {white-space: pre-wrap;}"

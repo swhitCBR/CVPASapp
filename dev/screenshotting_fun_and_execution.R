@@ -101,7 +101,7 @@ slice_app_for_print(
   app_path = golem_app_object,#"path/to/shiny_app",
   output_dir = "output/high_res_strips",
   vwidth = 1440,
-  vheight = 12000,        # Make this large enough to fit your app contents
+  vheight = 1440*3,        # Make this large enough to fit your app contents
   target_width_in = 10.7,
   target_height_in = 7.5,
   dpi = 600,

@@ -50,13 +50,15 @@ ggplot_doy_pred_plt_compliment <- function(
       ggplot2::geom_point(ggplot2::aes(y=y, fill=type),shape=21,color="gray30",# size=3,
                           stroke=1,color="black") +
       ggplot2::scale_color_manual(values = c("gray40", "#28547A")) +
-      ggplot2::scale_fill_manual(name = NULL, values = c("MAC" = "#4E79A7", "TRN" = "#F28E2B")) +
+      ggplot2::scale_fill_manual(name = "Route", values = c("MAC" = "#4E79A7", "TRN" = "#F28E2B")) +
       ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8,1),limits=c(0,1)) +
       ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) +
-      ggplot2::labs(y=param_in, x="Day of Year",fill="Route") + 
-      ggplot2::theme(legend.position="top",
+      ggplot2::labs(y=param_in, x="Day of Year") + 
+      ggplot2::theme(legend.position="top",legend.justification="right",
                      axis.text.x = ggplot2::element_text(size=14),axis.text.y = ggplot2::element_text(size=14),
-                     axis.title.x = ggplot2::element_text(size=16),axis.title.y = ggplot2::element_text(size=16))
+                     axis.title.x = ggplot2::element_text(size=16),
+                     legend.title = ggplot2::element_text(color="black",size=14),
+                     axis.title.y= ggplot2::element_blank())
     return(plt_tmp)
 
   }
@@ -70,21 +72,21 @@ ggplot_doy_pred_plt_compliment <- function(
     dplyr::select(DOY, y = pr_comp, ymin = pLCL_comp, ymax = pUCL_comp, SELECTED, type)
   data_long <- dplyr::bind_rows(df_prop, df_comp)
   
-  ggplot2::ggplot(data_long, ggplot2::aes(x=DOY, fill=type)) + #, linetype=type , color=type
+  plt_tmp <- ggplot2::ggplot(data_long, ggplot2::aes(x=DOY, fill=type)) + #, linetype=type , color=type
     ggplot2::geom_ribbon(ggplot2::aes(ymin=ymin, ymax=ymax), alpha=0.2, color=NA) +
     ggplot2::geom_line(ggplot2::aes(y=y), size=1,linetype="solid") +
-    ggplot2::geom_point(ggplot2::aes(y=y, fill=type),shape=21,color="gray30", #size=3,
+    ggplot2::geom_point(ggplot2::aes(y=y, fill=type),shape=21,color="gray30",
                         stroke=1,color="black") +
-    # ggplot2::scale_fill_manual(values = c("darkgray", "#428BCA")) +
     ggplot2::scale_color_manual(values = c("gray40", "#28547A")) +
-    ggplot2::scale_fill_manual(name = NULL, values = c("SJL" = "#4E79A7", "ORE" = "#F28E2B")) +
+    ggplot2::scale_fill_manual(name = "Route", values = c("SJL" = "#4E79A7", "ORE" = "#F28E2B")) +
     ggplot2::scale_y_continuous(breaks=c(0,0.2,0.5,0.8,1),limits=c(0,1)) +
     ggplot2::scale_x_continuous(expand = c(0.01, 0.01)) +
-    ggplot2::labs(y=param_in, x="Day of Year",fill="Route") + 
-    ggplot2::theme(legend.position="top",
+    ggplot2::labs(y=param_in, x="Day of Year") + 
+    ggplot2::theme(legend.position="top",legend.justification="right",
                    axis.text.x = ggplot2::element_text(size=14),axis.text.y = ggplot2::element_text(size=14),
-                   axis.title.x = ggplot2::element_text(size=16),axis.title.y = ggplot2::element_text(size=16),legend.title = ggplot2::element_text(color="black",size=14))
+                   axis.title.x = ggplot2::element_text(size=16),
+                   legend.title = ggplot2::element_text(color="black",size=14),
+                   axis.title.y= ggplot2::element_blank())
   
-  
-  
+  return(plt_tmp)
 }

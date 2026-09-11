@@ -3,8 +3,23 @@
 #' @param input,output,session Internal parameters for {shiny}.
 #'     DO NOT REMOVE.
 #' @import shiny
+#' @import DT
+#' @import dplyr
+#' @import ggplot2
 #' @noRd
 app_server <- function(input, output, session) {
+  # Explicitly bring common functions into scope for linter recognition
+  # (these are already imported via @import directives, this is just for IDE linting)
+  renderText <- shiny::renderText
+  renderPlot <- shiny::renderPlot
+  renderUI <- shiny::renderUI
+  observeEvent <- shiny::observeEvent
+  reactive <- shiny::reactive
+  reactiveVal <- shiny::reactiveVal
+  reactiveValues <- shiny::reactiveValues
+  outputOptions <- shiny::outputOptions
+  downloadHandler <- shiny::downloadHandler
+  debounce <- shiny::debounce
 
   output$dyn_sidebar_txt <- renderText({paste0(get_sidebar_txt(input$tabs))})
   

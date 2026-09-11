@@ -4,12 +4,12 @@
 \alias{get_overall_surv_logit}
 \title{Derive overall survial
 
-Analytical Logit-Normal Network Approximation for Matrices (Logit-Scale CI Method)}
+Deriving overall survival estimates by application of the plug-in detla method}
 \usage{
 get_overall_surv_logit(lo_comp_estmat, lo_comp_varmat, conf_level = 0.95)
 }
 \arguments{
-\item{lo_comp_estmat}{A matrix of log-odds (logit-scale) estimates from the
+\item{lo_comp_estmat}{A linear predictors on the log-odds scale (etas)
 component models, where each row is a scenario and the 6 columns are in order:
 \code{[,1]} Psi_SLJ, \code{[,2]} theta_HOR-TCJ|SLJ, \code{[,3]} Psi_MAC, \code{[,4]} theta_TCJ-CHP|MAC, \code{[,5]} theta_TCJ-CHP|TRN, \code{[,6]} theta_HOR-CHP|ORE}
 

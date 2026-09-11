@@ -5,8 +5,8 @@
 \title{Title}
 \usage{
 draw_est_rte_spec_surv_div_ui(
-  plots_in = list("HOR_TCJ_pred_ggpplt_dup1b", "HOR_TCJ_pred_ggpplt_dup1a",
-    "HOR_TCJ_pred_ggpplt_dup1e", "TCJ_CHPviaTRN_ggpplt")
+  plots_in = list("HOR_CHPviaSJL_pred_ggplt_rss_1", "HOR_CHPviaORE_pred_ggplt_rss_2",
+    "TCJ_CHPviaMAC_pred_ggplt_rss_3", "TCJ_CHPviaTRN_pred_ggplt_rss_4")
 )
 }
 \arguments{

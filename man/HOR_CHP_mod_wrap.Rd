@@ -9,7 +9,8 @@ HOR_CHP_mod_wrap(
   DOY_in = 1:250,
   years_in = NULL,
   CVhelp_dat_w_in = CVhelp_dat_w,
-  SJL_route_in = TRUE
+  SJL_route_in = TRUE,
+  conf_level = 0.95
 )
 }
 \arguments{
@@ -22,6 +23,8 @@ HOR_CHP_mod_wrap(
 \item{CVhelp_dat_w_in}{}
 
 \item{SJL_route_in}{logical, SJL route as opposed to ORE}
+
+\item{conf_level}{confidence level}
 }
 \description{
 Title

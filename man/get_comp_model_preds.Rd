@@ -10,13 +10,6 @@ get_comp_model_preds(
   years_in = 2012,
   predict_int = TRUE
 )
-
-get_comp_model_preds(
-  flength_in = 244,
-  DOY_in = 50:53,
-  years_in = 2012,
-  predict_int = TRUE
-)
 }
 \arguments{
 \item{flength_in}{}
@@ -30,7 +23,5 @@ get_comp_model_preds(
 \item{TCJ_CHP_pred_comp_ls_in}{}
 }
 \description{
-Title
-
 Title
 }

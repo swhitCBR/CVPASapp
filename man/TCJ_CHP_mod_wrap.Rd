@@ -10,7 +10,8 @@ TCJ_CHP_mod_wrap(
   flength_in = 240,
   DOY_in = 1:250,
   years_in = NULL,
-  SJL_route_in = TRUE
+  SJL_route_in = TRUE,
+  conf_level = 0.95
 )
 }
 \arguments{
@@ -25,6 +26,8 @@ TCJ_CHP_mod_wrap(
 \item{years_in}{}
 
 \item{SJL_route_in}{}
+
+\item{conf_level}{confidence level}
 }
 \description{
 Title

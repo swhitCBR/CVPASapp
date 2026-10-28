@@ -23,20 +23,21 @@ draw_met_ref_page_ui <- function(){
           outputId = "surv_route_diagram_wtt",
           width = "70%",
           height = "100%"
-        ),
-        shiny::withMathJax(shiny::includeMarkdown(system.file(
-          "app/www/met_and_ref/how_calc_pt2.md",
-          package = "CVPASapp"
-        ))),
-        shiny::withMathJax(shiny::includeMarkdown(system.file(
-          "app/www/met_and_ref/how_env_comp.md",
-          package = "CVPASapp"
-        ))),
-        shiny::withMathJax(shiny::includeMarkdown(system.file(
-          "app/www/met_and_ref/model_selection_descript_Draft_09_09_26.md",
-          package = "CVPASapp"
-        )))
+        )
         ,
+        # shiny::withMathJax(shiny::includeMarkdown(system.file(
+        #   "app/www/met_and_ref/how_calc_pt2.md",
+        #   package = "CVPASapp"
+        # ))),
+        # shiny::withMathJax(shiny::includeMarkdown(system.file(
+        #   "app/www/met_and_ref/how_env_comp.md",
+        #   package = "CVPASapp"
+        # ))),
+        # shiny::withMathJax(shiny::includeMarkdown(system.file(
+        #   "app/www/met_and_ref/model_selection_descript_Draft_09_09_26.md",
+        #   package = "CVPASapp"
+        # )))
+        # ,
         # plots from manuscripts
         # tags$img(
         #   src = "https://onlinelibrary.wiley.com/cms/asset/25dec1bb-e0e1-40ea-95e2-f7762044473f/nafm11005-fig-0001-m.jpg",

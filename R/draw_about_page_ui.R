@@ -55,7 +55,7 @@ draw_about_page_ui <- function(){
           HTML('
           <p style="display:inline"> 
           The CVPAS tool produces survival predictions for hypothetical
-          groups of Juvenile Steelhead based on the timing of their arrival at key river junctions
+          groups of juvenile Steelhead based on the timing of their arrival at key river junctions
           and a data set defining environmental and operational conditions. The main quantities of
           interest that the CVPAS tool produces are predicted probabilities of survival to Chipps 
           Island (CHP) from either Head of Old River (HOR) or Turner Cut Junction (TCJ) denoted
@@ -128,7 +128,7 @@ draw_about_page_ui <- function(){
           # )
           # ,
           tags$caption(
-            shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/about_fig_cap.md",
+            shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/about/about_fig_cap.md",
                                                                   package = "CVPASapp"))
             )
           )

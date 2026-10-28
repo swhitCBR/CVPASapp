@@ -1,7 +1,14 @@
+#' Draws "About" page UI with .hover-modal showing thumbnail images of manuscripts
+#'
+#' @returns a 'shiny.tag' object
+#' @export
+#'
+#' @examples draw_about_page_ui()
+#' 
 draw_about_page_ui <- function(){
-  tagList(
-    tags$head(
-      tags$style("
+  shiny::tagList(
+    shiny::tags$head(
+      shiny::tags$style("
         .hover-container {
           position: relative;
           /* FIX: Changed from inline-block to inline so text wraps seamlessly without jumping to a new line */
@@ -39,20 +46,20 @@ draw_about_page_ui <- function(){
         }
       ")
     ),
-    fluidRow(
+    shiny::fluidRow(
       shinydashboard::box(
-        title = HTML("About"),
+        title = shiny::HTML("About"),
         # title = HTML("Purpose <small style ='font-size:0.6em; color: white;'>BetaVersion.Nov05</small>"),
         width = 12,
         solidHeader = TRUE,
         status = "primary",
-        column(
+        shiny::column(
           width = 7, 
           style="display:inline"
           # ,
           # shiny::includeMarkdown(system.file("app/www/about/about_left_col_text.md", package = "CVPASapp"))
           ,
-          HTML('
+          shiny::HTML('
           <p style="display:inline"> 
           The CVPAS tool produces survival predictions for hypothetical
           groups of juvenile Steelhead based on the timing of their arrival at key river junctions
@@ -83,19 +90,19 @@ draw_about_page_ui <- function(){
 						 </p>
         ')
           ,
-          div(
+          shiny::div(
             style="display:inline-flex; margin-right: 10px",
-            div(
+            shiny::div(
               class = "thumbnail-section",
-              actionButton("goto_inputs_butt", "Select Inputs",
+              shiny::actionButton("goto_inputs_butt", "Select Inputs",
                            class = "btn btn-primary",
                            style = "font-size: 13px; color: white; padding: 12px; text-align: center;"
               ) 
             )
             ,
-            div(
+            shiny::div(
               class = "thumbnail-section",
-              actionButton("goto_met_ref_butt", "Methods and References",
+              shiny::actionButton("goto_met_ref_butt", "Methods and References",
                            class = "btn btn-primary",
                            style = "font-size: 13px; color: white;margin-left: 10px;
                           padding: 12px; text-align: center;"
@@ -104,7 +111,7 @@ draw_about_page_ui <- function(){
           )
         )
         ,
-        column(
+        shiny::column(
           width = 5,
           # ORIGINAL SCHEMATIC
           # tags$img(
@@ -113,7 +120,7 @@ draw_about_page_ui <- function(){
           #   name = "Schematic view of junctions and routes through the south Delta ",
           #   alt = "Routes bifurcate at the Head of Old River and with the path along the San Joaquin River splitting again at Turner Cut junction; all paths converge prior to reaching Chipps Island"
           # ),
-          tags$img(
+          shiny::tags$img(
             src = "www/images/svg/overall_survival_schematic_abbrev.svg",
             style = "width: 80%; height: 80%;",# border: 2px solid #024c63;",
             name = "Schematic view of junctions and routes through the south Delta ",
@@ -127,7 +134,7 @@ draw_about_page_ui <- function(){
           #   alt = "Routes bifurcate at the Head of Old River and with the path along the San Joaquin River splitting again at Turner Cut junction; all paths converge prior to reaching Chipps Island"
           # )
           # ,
-          tags$caption(
+          shiny::tags$caption(
             shiny::withMathJax(shiny::includeMarkdown(system.file("app/www/about/about_fig_cap.md",
                                                                   package = "CVPASapp"))
             )

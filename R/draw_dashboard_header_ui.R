@@ -90,9 +90,9 @@ tags$header(
             target = "_blank",
             style = "padding-top: 0px; padding-bottom: 0px;",
             tags$img(
-              src = "www/cbr_logo_horiz.png",
+              src = "www/sacpas_logo_horiz.png",
               height = "40px",
-              title = "Image of Columbia Basin Research logo"
+              title = "Image of SacPAS logo"
             )
           )
         )

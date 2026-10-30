@@ -28,7 +28,7 @@ tags$header(
     # absolute and height style arguments ensure that bottom aligns with top bar
     style= "height:100%; display:inline-flex; position: absolute;",
     class = "logo",
-    "CVPAS - Steelhead"
+    "SJR - Steelhead"
   ),
   tags$nav(
     class = "navbar navbar-static-top",

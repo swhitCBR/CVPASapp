@@ -61,12 +61,12 @@ draw_about_page_ui <- function(){
           ,
           shiny::HTML('
           <p style="display:inline"> 
-          The CVPAS tool produces survival predictions for hypothetical
-          groups of juvenile Steelhead based on the timing of their arrival at key river junctions
+          This application generatees survival and route route use predictions for hypothetical
+          groups of San Joaquin River juvenile Steelhead based on the timing of their arrival at key river junctions
           and a data set defining environmental and operational conditions. The main quantities of
-          interest that the CVPAS tool produces are predicted probabilities of survival to Chipps 
-          Island (CHP) from either Head of Old River (HOR) or Turner Cut Junction (TCJ) denoted
-          as <span style="font-size: 80%;">\\(\\hat{S}_{HOR-CHP} \\)</span> and <span style="font-size: 80%;">\\(\\hat{S}_{TCJ-CHP} \\)</span> 
+          interest produced by the app are predicted probabilities of survival to Chipps 
+          Island ( <strong>CHP</strong> ) from either Head of Old River (<strong>HOR</strong>) or Turner Cut Junction (<strong>TCJ</strong>) denoted
+          as <span style="font-size: 85%;">\\(\\hat{S}_{HOR-CHP} \\)</span> and <span style="font-size: 85%;">\\(\\hat{S}_{TCJ-CHP} \\)</span> 
 					There are multiple paths that juvenile Steelhead may take as they migrate through the Delta
 					and route usage and reach-specific survival rates vary based on environmental conditions and
 					estimates are generated from an ensemble of survival and routing models were obtained by

@@ -66,7 +66,7 @@ app_ui <- function(request) {
           h2(
             style="padding-left:15px;",
             id="inputTop",
-            "CVPAS - South Delta Central Valley Steelhead Survival and Routing Predictions"
+            "San Joaquin River and South Delta Steelhead Survival and Routing Predictions"
           )
           ,
           hr()
